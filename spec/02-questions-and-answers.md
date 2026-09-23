@@ -71,27 +71,32 @@ Should they stay?
 
 Which ones should Journeyline include?
 **Answer:** "I want to keep all the options." All 12 ship.
-**Led to:** BD-13 (to be written once the questions on how to select a theme are answered)
+**Led to:** BD-13
 
-### Q-11 · 2026-09-24 · OPEN · One theme for both editor and diagram, or separate choices?
+### Q-11 · 2026-09-24 · One theme for both editor and diagram, or separate choices?
 **Asked:** Should one choice style both the editor and the diagram? Or should they be chosen separately, for example a dark editor with a light diagram for slides?
-**Answer:** *(open)*
+**Answer:** Option 2. One theme for both by default, with an "Apply to" choice to set the editor and the diagram separately. This was Claude's recommendation.
+**Led to:** BD-13
 
-### Q-12 · 2026-09-24 · OPEN · Where is the choice remembered?
+### Q-12 · 2026-09-24 · Where is the choice remembered?
 **Asked:**
 - **(a)** Per person, in their browser only.
 - **(b)** In the journey file, for example `theme Vivid` or `theme: Vivid`, so a diagram looks the same for everyone who opens it.
 - **(c)** Both. The file sets the diagram theme, and each person can override it for themselves.
 
-**Answer:** *(open)*
+When asked again in the new format, the options were: 1 = browser only, 2 = the file's `theme` line sets the diagram for everyone and overrides the personal choice, 3 = the file suggests and each person can override.
+**Answer:** Option 2. The file's `theme` line sets the diagram theme for everyone. Claude had recommended option 1 (browser only).
+**Led to:** BD-14
 
-### Q-13 · 2026-09-24 · OPEN · Follow the computer's light or dark mode?
+### Q-13 · 2026-09-24 · Follow the computer's light or dark mode?
 **Asked:** Should Journeyline switch between a light theme and its dark partner (such as Harbor and Harbor Night) when the operating system switches? Or should the chosen theme stay fixed?
-**Answer:** *(open)*
+**Answer:** Option 2. An optional toggle in the picker, off by default. You choose one light and one dark theme. This was Claude's recommendation.
+**Led to:** BD-13
 
-### Q-14 · 2026-09-24 · OPEN · Which theme does Copy SVG use?
+### Q-14 · 2026-09-24 · Which theme does Copy SVG use?
 **Asked:** Should the copied diagram use the theme on screen, or always a document-friendly light theme such as Harbor or Mono Ink?
-**Answer:** *(open)*
+**Answer:** Option 1. The diagram theme on screen. This was Claude's recommendation.
+**Led to:** BD-13
 
 ### Q-15 · 2026-09-24 · How does the user select a theme?
 **Asked by Bela.** Claude proposed:
@@ -104,4 +109,4 @@ Which ones should Journeyline include?
 
 Alternatives: a plain dropdown, or a `theme` line in the journey file (see Q-12). Claude asked Bela to confirm the picker, the editor and diagram split (Q-11), the theme line in the file (Q-12), the dark-mode toggle (Q-13) and Copy SVG (Q-14).
 **Answer:** "I like the picker as sketched." The details are still open in Q-11 to Q-14.
-**Led to:** BD-13 (to be written once Q-11 to Q-14 are answered)
+**Led to:** BD-13

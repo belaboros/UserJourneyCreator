@@ -94,3 +94,37 @@ A decision is never deleted. When one changes, its status becomes *Replaced by B
 - **Decision:** The project is licensed under Apache License 2.0 (`LICENSE`).
 - **Alternatives:** MIT, or no license (all rights reserved).
 - **Reasoning:** Not recorded. Apache 2.0 is a permissive license that also grants patent rights. It is compatible with the MIT-licensed js-yaml that `index.html` includes (AD-04).
+
+### BD-13 · Twelve themes, chosen with a picker
+- **Status:** Accepted · 2026-09-24 · Decided by Bela (I-08, Q-10, Q-11, Q-13, Q-14, Q-15)
+- **Decision:**
+  - Journeyline ships 12 themes:
+    - light, multi-color: Harbor, Stone, Vivid, Pastel
+    - light, single-color: Mono Ink, Forest
+    - dark, multi-color: Harbor Night, Midnight, High Contrast
+    - dark, single-color: Graphite, Blueprint, Amber Terminal
+  - A **Theme** button in the top bar opens a picker with the 12 themes as tiles in those four groups.
+  - Hovering over a tile, or moving to it with the arrow keys, previews it. Click or Enter applies it, and Esc goes back.
+  - **Apply to** sets the editor and the diagram together by default. You can also set either one on its own.
+  - An optional toggle, off by default, follows the computer's light or dark mode, with one theme chosen for each mode.
+  - Alt+T switches to the next theme.
+  - The choice is saved per person, in the browser.
+  - **Copy SVG** copies the diagram in the theme shown on screen.
+- **Alternatives:**
+  - a plain dropdown
+  - fewer themes
+  - the editor and diagram always chosen separately
+  - always following the computer's mode
+  - Copy SVG always in a light, document-friendly theme
+- **Reasoning:** Bela wanted all the options. The picker shows the colors before you choose. Keeping one theme for both by default makes the common case simple, and the split covers slides. What you see is what you copy.
+
+### BD-14 · A journey file can set its diagram theme for everyone
+- **Status:** Accepted · 2026-09-24 · Decided by Bela (Q-12)
+- **Decision:**
+  - The optional line `theme <name>` (PlantUML-like) or `theme: <name>` (YAML) draws that file's diagram in the named theme for everyone who opens it. It overrides the person's own diagram choice.
+  - The editor theme stays personal.
+  - An unknown name is listed as a mistake, and the diagram falls back to the personal choice.
+- **Alternatives:**
+  - **Personal setting only.** Claude recommended this, because it keeps the file format unchanged.
+  - **A suggestion that each person can override.**
+- **Reasoning:** A shared diagram should look the same for everyone who opens the file.

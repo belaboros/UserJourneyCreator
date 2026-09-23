@@ -43,6 +43,15 @@ Your latest edits are also kept in the browser, so closing the tab doesn't lose 
 - Mistakes are listed under the editor with their line numbers.
 - **Copy SVG** copies the diagram so you can paste it into docs or slides.
 
+## Themes
+
+The **Theme** button opens a picker with 12 themes: light and dark, multi-color and single-color. Hovering over a tile previews it, and clicking applies it. Alt+T switches to the next theme.
+
+- **Apply to:** set the editor and diagram together, or each on its own. For example, use a dark editor for yourself and a Vivid diagram for slides.
+- **Follow my computer's light or dark mode:** choose one theme for each mode, and Journeyline switches with your computer.
+- **The `theme` line:** a journey file can set its own diagram theme with `theme Vivid` (or `theme: Vivid` in YAML). Everyone who opens the file then sees the diagram in that theme.
+- **Copy SVG** copies the diagram in the theme you see.
+
 ## Example
 
 `examples/` has the same journey in both formats: a team creating a data product, with a data contract, a data pipeline and a compute cluster built in parallel.

@@ -2,7 +2,7 @@
 
 The refined, current description of what the product is and does. It is built from [01-ideas.md](01-ideas.md) and [02-questions-and-answers.md](02-questions-and-answers.md). When something changes, this file is updated so that it always describes the product as it should be now.
 
-**Status:** v0.3 · 2026-09-23 · implemented in `index.html`
+**Status:** v0.4 · 2026-09-24 · implemented in `index.html`
 
 ## 1. Purpose
 
@@ -54,12 +54,21 @@ Teams describe how a user gets something done from end to end, such as a data te
 - **FR-19** A lane can start after a gate step without joining it (`after`). A lane can contain labeled sections (BD-08).
 - **FR-20** The repo contains the data-product example in both formats (BD-10).
 
+### Themes
+- **FR-21** 12 themes: 6 light and 6 dark, some multi-color and some single-color (BD-13).
+- **FR-22** A **Theme** button opens a picker with the themes as tiles in four groups. Hovering over a tile, or moving to it with the arrow keys, previews it. Click or Enter applies it, and Esc goes back.
+- **FR-23** **Apply to** sets the editor and diagram together (the default), or either one on its own.
+- **FR-24** An optional "Follow my computer's light or dark mode" toggle, with one theme for light mode and one for dark mode.
+- **FR-25** A `theme <name>` or `theme: <name>` line in a journey file sets that file's diagram theme for everyone (BD-14).
+- **FR-26** The theme choice is saved per person in the browser. Alt+T switches to the next theme.
+- **FR-27** Copy SVG uses the diagram theme on screen.
+
 ## 5. Non-functional requirements
 
 - **NFR-01** Runs locally on any modern computer, with nothing to install and no server (AD-01).
 - **NFR-02** Works offline. Only the fonts come from the internet, and system fonts are used when they can't load (AD-04).
 - **NFR-03** It is one self-contained file, `index.html` (AD-01).
-- **NFR-04** The screen is readable in light and dark mode and usable on a narrow screen, where the panes stack.
+- **NFR-04** Every theme is readable, and the screen is usable on a narrow screen, where the panes stack.
 - **NFR-05** The repo is public on GitHub as `UserJourneyCreator` (BD-09).
 
 ## 6. Out of scope for now

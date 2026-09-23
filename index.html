@@ -16,26 +16,7 @@
   --s1:#C0412C; --s2:#D27B26; --s3:#8B95A3; --s4:#3D9A6C; --s5:#1F7A48;
   --t-kw:#0B6E8A; --t-sub:#9A3F12; --t-step:#0B6E8A; --t-gate:#6D3FC0; --t-score:#6D3FC0; --t-touch:#22804E; --t-com:#8B95A3;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0D1216; --panel:#151B21; --panel-2:#11171C; --ink:#E3E9EF; --muted:#98A4B2; --faint:#6C7885;
-    --line:#29323C; --line-soft:#1F272F; --accent:#3FB4D2; --accent-ink:#081116; --sel:rgba(63,180,210,.28);
-    --flow:#8E9AA8; --warn:#F3A55B;
-    --pain:#EE7A62; --gain:#5DC98E; --idea:#E2B04E; --note:#A3AEBB;
-    --s1:#EE7A62; --s2:#EFA059; --s3:#7D8894; --s4:#59BE8A; --s5:#3FB277;
-    --t-kw:#5CC3DD; --t-sub:#F0A070; --t-step:#5CC3DD; --t-gate:#B79BF2; --t-score:#B79BF2; --t-touch:#5DC98E; --t-com:#6C7885;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#0D1216; --panel:#151B21; --panel-2:#11171C; --ink:#E3E9EF; --muted:#98A4B2; --faint:#6C7885;
-  --line:#29323C; --line-soft:#1F272F; --accent:#3FB4D2; --accent-ink:#081116; --sel:rgba(63,180,210,.28);
-  --flow:#8E9AA8; --warn:#F3A55B;
-  --pain:#EE7A62; --gain:#5DC98E; --idea:#E2B04E; --note:#A3AEBB;
-  --s1:#EE7A62; --s2:#EFA059; --s3:#7D8894; --s4:#59BE8A; --s5:#3FB277;
-  --t-kw:#5CC3DD; --t-sub:#F0A070; --t-step:#5CC3DD; --t-gate:#B79BF2; --t-score:#B79BF2; --t-touch:#5DC98E; --t-com:#6C7885;
-}
+/* The colors above are the Harbor theme, used until the script applies the chosen theme. */
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;font-size:14px}
 [hidden]{display:none!important}
@@ -53,6 +34,29 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',
 .menu button{display:block;width:100%;text-align:left;background:none;border:0;border-radius:6px;padding:8px 10px;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
 .menu button:hover,.menu button:focus-visible{background:var(--panel-2);outline:none}
 .menu small{display:block;color:var(--muted);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11.5px}
+.theme-btn{display:inline-flex;align-items:center;gap:6px}
+.theme-btn .dots{display:inline-flex;gap:2px}
+.theme-btn .dots i{width:9px;height:9px;border-radius:50%;display:block;border:1px solid rgba(128,128,128,.35)}
+.picker{position:absolute;top:calc(100% + 6px);right:0;z-index:6;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 90px);overflow:auto;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:12px 14px 14px}
+.picker h3{margin:12px 0 6px;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.picker .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{font:500 12.5px 'IBM Plex Sans','Segoe UI',system-ui,sans-serif;padding:5px 10px;border:0;background:var(--panel);color:var(--ink);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-checked="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:6px}
+.tile{position:relative;display:flex;flex-direction:column;gap:6px;text-align:left;padding:7px 8px 8px;border-radius:8px;border:1px solid var(--line);cursor:pointer;font:500 12.5px 'IBM Plex Sans','Segoe UI',system-ui,sans-serif}
+.tile .sw{display:flex;height:16px;border-radius:4px;overflow:hidden;border:1px solid rgba(128,128,128,.3)}
+.tile .sw i{flex:1;display:block}
+.tile .marks{position:absolute;bottom:7px;right:7px;display:flex;gap:3px}
+.tile .marks b{font-size:9.5px;font-weight:700;padding:0 5px;border-radius:999px;line-height:15px;background:var(--accent);color:var(--accent-ink)}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tile.on{box-shadow:0 0 0 2px var(--accent)}
+.picker .note{margin-top:10px;padding:8px 10px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line);font-size:12.5px;color:var(--ink)}
+.picker .note code{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px}
+.picker label.chk{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:var(--ink);cursor:pointer}
+.picker .hint{font-size:12px;color:var(--muted);margin-top:4px}
 .work{flex:1;min-height:0;display:grid;grid-template-columns:var(--left,36%) 10px minmax(0,1fr)}
 .pane{background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
 .pane-head{display:flex;align-items:center;gap:6px;padding:7px 8px 7px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap;min-height:44px}
@@ -127,6 +131,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',
       <button class="btn" id="openBtn" title="Open (Ctrl+O)">Open</button>
       <button class="btn" id="saveBtn" title="Save (Ctrl+S)">Save</button>
       <button class="btn" id="saveAsBtn" title="Save as (Ctrl+Shift+S)">Save as</button>
+      <div style="position:relative">
+        <button class="btn theme-btn" id="themeBtn" aria-haspopup="dialog" aria-expanded="false" title="Theme (Alt+T cycles through themes)"><span class="dots" id="themeDots" aria-hidden="true"></span><span id="themeLabel">Theme</span></button>
+        <div class="picker" id="picker" role="dialog" aria-label="Choose a theme" hidden></div>
+      </div>
       <input type="file" id="fileInput" accept=".journey,.yaml,.yml,text/plain" hidden>
     </div>
   </header>
@@ -144,6 +152,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',
           <table>
             <tr><td>title &lt;text&gt;</td><td>Name of the end-to-end journey</td></tr>
             <tr><td>persona &lt;text&gt;</td><td>Who takes the journey</td></tr>
+            <tr><td>theme &lt;name&gt;</td><td>Optional. Draws the diagram in this theme for everyone, for example <code>theme Vivid</code></td></tr>
             <tr><td>start &lt;text&gt;</td><td>Start event. It forks into all sub-journeys with an AND-gateway</td></tr>
             <tr><td>sub &lt;name&gt; : &lt;tool&gt;</td><td>A sub-journey, drawn as its own top-to-bottom lane. The tool is optional</td></tr>
             <tr><td>  - &lt;step&gt; : &lt;tag&gt;</td><td>A step in the lane. The tag (environment, channel) is optional</td></tr>
@@ -160,6 +169,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',
           <table>
             <tr><td>title: &lt;text&gt;</td><td>Name of the end-to-end journey</td></tr>
             <tr><td>persona: &lt;text&gt;</td><td>Who takes the journey</td></tr>
+            <tr><td>theme: &lt;name&gt;</td><td>Optional. Draws the diagram in this theme for everyone, for example <code>theme: Vivid</code></td></tr>
             <tr><td>start: &lt;text&gt;</td><td>Start event. It forks into all sub-journeys</td></tr>
             <tr><td>subJourneys:</td><td>The list of sub-journeys, each drawn as a lane</td></tr>
             <tr><td>  - name: &lt;text&gt;
@@ -285,6 +295,108 @@ const store = {
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ======================================================================
+   Themes. Each theme styles the app and editor (ui, syn, det) and the
+   diagram (flow, scores, lanes, tags). The editor theme and the diagram
+   theme can differ.
+   ====================================================================== */
+const hsl = (h, s, l) => `hsl(${h} ${s}% ${l}%)`;
+const lanesLight = (hues, k = 1) => hues.map(h => ({strip: hsl(h, 45*k, 97), head: hsl(h, 58*k, 89), stroke: hsl(h, 42*k, 80), text: hsl(h, 55*k, 22), sub: hsl(h, 30*k, 38)}));
+const lanesDark = (hues, k = 1) => hues.map(h => ({strip: hsl(h, 22*k, 12.5), head: hsl(h, 32*k, 22), stroke: hsl(h, 32*k, 30), text: hsl(h, 60*k, 86), sub: hsl(h, 25*k, 65)}));
+const tagsLight = (hues, k = 1) => hues.map(h => ({fill: hsl(h, 70*k, 93), stroke: hsl(h, 45*k, 78), text: hsl(h, 60*k, 26)}));
+const tagsDark = (hues, k = 1) => hues.map(h => ({fill: hsl(h, 30*k, 22), stroke: hsl(h, 35*k, 34), text: hsl(h, 65*k, 84)}));
+const six = [0, 1, 2, 3, 4, 5];
+const HARBOR_HUES = [198, 152, 28, 268, 348, 88], TAG_HUES = [212, 40, 150, 352, 272, 186];
+
+const THEMES = [
+  { id:'harbor', name:'Harbor', tone:'light', color:'multi', partner:'harbor-night',
+    ui:{bg:'#E9EDF1', panel:'#FFFFFF', panel2:'#F7F9FB', ink:'#17202B', muted:'#5A6573', faint:'#8B95A3', line:'#D5DCE4', lineSoft:'#E7EBF0', accent:'#0B6E8A'},
+    syn:{kw:'#0B6E8A', sub:'#9A3F12', step:'#0B6E8A', gate:'#6D3FC0', score:'#6D3FC0', touch:'#22804E', com:'#8B95A3'},
+    det:{pain:'#C0412C', gain:'#22804E', idea:'#A86A12', note:'#5A6573'}, flow:'#4F5A68',
+    scores:['#C0412C','#D27B26','#8B95A3','#3D9A6C','#1F7A48'], lanes:lanesLight(HARBOR_HUES), tags:tagsLight(TAG_HUES) },
+  { id:'stone', name:'Stone', tone:'light', color:'multi', partner:'graphite',
+    ui:{bg:'#E8E6E1', panel:'#FBFAF8', panel2:'#F3F1ED', ink:'#23201C', muted:'#6A645B', faint:'#9A948A', line:'#D6D1C8', lineSoft:'#E7E3DC', accent:'#8A4B2A'},
+    syn:{kw:'#8A4B2A', sub:'#5E6B2E', step:'#8A4B2A', gate:'#44617A', score:'#44617A', touch:'#5E6B2E', com:'#9A948A'},
+    det:{pain:'#A63D2A', gain:'#5E6B2E', idea:'#9A6A1C', note:'#6A645B'}, flow:'#6A645B',
+    scores:['#A63D2A','#B8742F','#9A948A','#6E8A3A','#4D6B25'], lanes:lanesLight([18, 75, 208, 40, 300, 170], .55), tags:tagsLight([18, 75, 208, 40, 300, 170], .55) },
+  { id:'vivid', name:'Vivid', tone:'light', color:'multi', partner:'midnight',
+    ui:{bg:'#F4F5F7', panel:'#FFFFFF', panel2:'#F8F9FB', ink:'#101418', muted:'#4D5561', faint:'#8A919C', line:'#D9DDE3', lineSoft:'#ECEEF1', accent:'#2F5BEA'},
+    syn:{kw:'#2F5BEA', sub:'#D1432B', step:'#2F5BEA', gate:'#9B2FC9', score:'#9B2FC9', touch:'#0E8A5F', com:'#8A919C'},
+    det:{pain:'#D1432B', gain:'#0E8A5F', idea:'#C98A00', note:'#4D5561'}, flow:'#39414C',
+    scores:['#D1432B','#EE8A1F','#8A919C','#28A870','#0E8A5F'],
+    lanes:[230, 160, 15, 280, 45, 190].map(h => ({strip: hsl(h, 70, 97), head: hsl(h, 72, 44), stroke: hsl(h, 72, 38), text:'#FFFFFF', sub:'rgba(255,255,255,.86)'})),
+    tags:[222, 38, 152, 350, 280, 190].map(h => ({fill: hsl(h, 85, 94), stroke: hsl(h, 70, 62), text: hsl(h, 75, 30)})) },
+  { id:'pastel', name:'Pastel', tone:'light', color:'multi', partner:'midnight',
+    ui:{bg:'#F3F1F7', panel:'#FFFFFF', panel2:'#FAF9FC', ink:'#2A2438', muted:'#6B6480', faint:'#A39DB5', line:'#E2DEEB', lineSoft:'#EFEDF4', accent:'#7A5AF0'},
+    syn:{kw:'#7A5AF0', sub:'#C4507A', step:'#7A5AF0', gate:'#2E8FA3', score:'#2E8FA3', touch:'#3A9A6A', com:'#A39DB5'},
+    det:{pain:'#D9607A', gain:'#3A9A6A', idea:'#C98A2E', note:'#6B6480'}, flow:'#8A83A0',
+    scores:['#E27A8E','#EBA86A','#B8B2C8','#7CC9A0','#4FB585'],
+    lanes:[270, 330, 170, 35, 200, 80].map(h => ({strip: hsl(h, 70, 97.5), head: hsl(h, 75, 91), stroke: hsl(h, 55, 84), text: hsl(h, 40, 30), sub: hsl(h, 25, 45)})),
+    tags:[270, 35, 160, 340, 200, 80].map(h => ({fill: hsl(h, 80, 94), stroke: hsl(h, 55, 82), text: hsl(h, 45, 32)})) },
+  { id:'mono-ink', name:'Mono Ink', tone:'light', color:'single', partner:'graphite',
+    ui:{bg:'#ECECEC', panel:'#FFFFFF', panel2:'#F7F7F7', ink:'#111111', muted:'#555555', faint:'#8C8C8C', line:'#D0D0D0', lineSoft:'#E6E6E6', accent:'#111111'},
+    syn:{kw:'#111111', sub:'#111111', step:'#555555', gate:'#111111', score:'#555555', touch:'#777777', com:'#9A9A9A'},
+    det:{pain:'#111111', gain:'#8C8C8C', idea:'#555555', note:'#BDBDBD'}, flow:'#333333',
+    scores:['#111111','#444444','#777777','#9A9A9A','#BDBDBD'],
+    lanes:six.map(i => ({strip: hsl(0, 0, [98, 96.5, 95][i % 3]), head: hsl(0, 0, [90, 85, 80, 75, 88, 82][i]), stroke: hsl(0, 0, 70), text:'#111111', sub:'#555555'})),
+    tags:six.map(i => ({fill: hsl(0, 0, [95, 90, 85, 80, 92, 88][i]), stroke: hsl(0, 0, 70), text:'#222222'})) },
+  { id:'forest', name:'Forest', tone:'light', color:'single', partner:'graphite',
+    ui:{bg:'#E9EFEA', panel:'#FAFCFA', panel2:'#F2F6F2', ink:'#15261B', muted:'#4F6656', faint:'#8BA092', line:'#CFDCD2', lineSoft:'#E2EAE3', accent:'#1F6B3F'},
+    syn:{kw:'#1F6B3F', sub:'#0F3F24', step:'#2F8752', gate:'#0F3F24', score:'#2F8752', touch:'#4F6656', com:'#8BA092'},
+    det:{pain:'#0F3F24', gain:'#4FA36F', idea:'#2F8752', note:'#8BA092'}, flow:'#3C5A46',
+    scores:['#0F3F24','#1F6B3F','#6E9A7C','#4FA36F','#2F8752'],
+    lanes:six.map(i => ({strip: hsl(145, 30, [97, 95.5, 94][i % 3]), head: hsl(145, [40, 36, 32, 38, 34, 30][i], [88, 83, 78, 85, 80, 75][i]), stroke: hsl(145, 28, 72), text: hsl(145, 50, 16), sub: hsl(145, 20, 34)})),
+    tags:six.map(i => ({fill: hsl(145, 40, [94, 89, 84, 79, 91, 86][i]), stroke: hsl(145, 28, 70), text: hsl(145, 50, 20)})) },
+  { id:'harbor-night', name:'Harbor Night', tone:'dark', color:'multi', partner:'harbor', dark:true,
+    ui:{bg:'#0D1216', panel:'#151B21', panel2:'#11171C', ink:'#E3E9EF', muted:'#98A4B2', faint:'#6C7885', line:'#29323C', lineSoft:'#1F272F', accent:'#3FB4D2'},
+    syn:{kw:'#5CC3DD', sub:'#F0A070', step:'#5CC3DD', gate:'#B79BF2', score:'#B79BF2', touch:'#5DC98E', com:'#6C7885'},
+    det:{pain:'#EE7A62', gain:'#5DC98E', idea:'#E2B04E', note:'#A3AEBB'}, flow:'#8E9AA8',
+    scores:['#EE7A62','#EFA059','#7D8894','#59BE8A','#3FB277'], lanes:lanesDark(HARBOR_HUES), tags:tagsDark(TAG_HUES) },
+  { id:'midnight', name:'Midnight', tone:'dark', color:'multi', partner:'vivid', dark:true,
+    ui:{bg:'#080C1A', panel:'#0F1530', panel2:'#0B1026', ink:'#E8ECFF', muted:'#9AA3CC', faint:'#5F6899', line:'#232B52', lineSoft:'#1A2144', accent:'#8FA6FF'},
+    syn:{kw:'#8FA6FF', sub:'#FF8FC8', step:'#6FE3F0', gate:'#C49BFF', score:'#C49BFF', touch:'#6FF0B0', com:'#5F6899'},
+    det:{pain:'#FF7A9A', gain:'#6FF0B0', idea:'#FFD166', note:'#9AA3CC'}, flow:'#8C96C8',
+    scores:['#FF6B8B','#FFA45C','#6F78A8','#5FE0A0','#2FD38A'],
+    lanes:[265, 190, 330, 40, 150, 210].map(h => ({strip: hsl(h, 45, 11), head: hsl(h, 55, 26), stroke: hsl(h, 60, 40), text: hsl(h, 90, 88), sub: hsl(h, 40, 72)})),
+    tags:[230, 40, 160, 340, 280, 190].map(h => ({fill: hsl(h, 45, 22), stroke: hsl(h, 55, 42), text: hsl(h, 90, 86)})) },
+  { id:'high-contrast', name:'High Contrast', tone:'dark', color:'multi', partner:'mono-ink', dark:true,
+    ui:{bg:'#000000', panel:'#000000', panel2:'#0A0A0A', ink:'#FFFFFF', muted:'#E0E0E0', faint:'#B0B0B0', line:'#FFFFFF', lineSoft:'#5A5A5A', accent:'#FFE600'},
+    syn:{kw:'#FFE600', sub:'#00E5FF', step:'#FFFFFF', gate:'#FF5CF4', score:'#FF5CF4', touch:'#7CFF6B', com:'#B0B0B0'},
+    det:{pain:'#FF6B6B', gain:'#7CFF6B', idea:'#FFE600', note:'#FFFFFF'}, flow:'#FFFFFF',
+    scores:['#FF4D4D','#FFA500','#B0B0B0','#7CFF6B','#00FF85'],
+    lanes:['#FFE600','#00E5FF','#FF5CF4','#7CFF6B','#FFA500','#FFFFFF'].map(c => ({strip:'#000000', head:'#000000', stroke:c, text:c, sub:'#E0E0E0'})),
+    tags:['#FFE600','#00E5FF','#7CFF6B','#FF5CF4','#FFFFFF','#FFA500'].map(c => ({fill:'#000000', stroke:c, text:c})) },
+  { id:'graphite', name:'Graphite', tone:'dark', color:'single', partner:'mono-ink', dark:true,
+    ui:{bg:'#111213', panel:'#1A1B1D', panel2:'#151618', ink:'#E6E6E6', muted:'#A0A0A0', faint:'#6E6E6E', line:'#2E3033', lineSoft:'#232527', accent:'#E6E6E6'},
+    syn:{kw:'#E6E6E6', sub:'#FFFFFF', step:'#BDBDBD', gate:'#FFFFFF', score:'#BDBDBD', touch:'#9A9A9A', com:'#6E6E6E'},
+    det:{pain:'#FFFFFF', gain:'#8A8A8A', idea:'#C4C4C4', note:'#5E5E5E'}, flow:'#A0A0A0',
+    scores:['#F2F2F2','#C4C4C4','#8A8A8A','#6A6A6A','#4A4A4A'],
+    lanes:six.map(i => ({strip: hsl(0, 0, [12, 13.5, 15][i % 3]), head: hsl(0, 0, [22, 26, 30, 34, 24, 28][i]), stroke: hsl(0, 0, 36), text:'#F2F2F2', sub:'#A0A0A0'})),
+    tags:six.map(i => ({fill: hsl(0, 0, [24, 30, 36, 20, 28, 33][i]), stroke: hsl(0, 0, 44), text:'#EDEDED'})) },
+  { id:'blueprint', name:'Blueprint', tone:'dark', color:'single', partner:'harbor', dark:true,
+    ui:{bg:'#0B2A52', panel:'#0F3566', panel2:'#0D305D', ink:'#EAF2FF', muted:'#A9C4EA', faint:'#6F93C4', line:'#2D5A96', lineSoft:'#1E4A84', accent:'#FFFFFF'},
+    syn:{kw:'#FFFFFF', sub:'#CFE2FF', step:'#9CC3F5', gate:'#FFFFFF', score:'#CFE2FF', touch:'#9CC3F5', com:'#6F93C4'},
+    det:{pain:'#FFFFFF', gain:'#9CC3F5', idea:'#CFE2FF', note:'#6F93C4'}, flow:'#CFE2FF',
+    scores:['#FFFFFF','#CFE2FF','#9CC3F5','#6FA0E0','#4A80CC'],
+    lanes:six.map(i => ({strip: hsl(214, 70, [21, 23, 25][i % 3]), head: hsl(214, 60, [30, 34, 38, 42, 32, 36][i]), stroke:'#9CC3F5', text:'#FFFFFF', sub:'#CFE2FF'})),
+    tags:six.map(i => ({fill: hsl(214, 60, [30, 36, 42, 26, 33, 39][i]), stroke:'#9CC3F5', text:'#FFFFFF'})) },
+  { id:'amber-terminal', name:'Amber Terminal', tone:'dark', color:'single', partner:'stone', dark:true,
+    ui:{bg:'#0C0A06', panel:'#14110A', panel2:'#100D08', ink:'#FFCF7A', muted:'#C99A4A', faint:'#7A5E2E', line:'#3A2E16', lineSoft:'#261E0F', accent:'#FFB000'},
+    syn:{kw:'#FFB000', sub:'#FFDB9A', step:'#FFCF7A', gate:'#FFE3B3', score:'#FFB000', touch:'#C99A4A', com:'#7A5E2E'},
+    det:{pain:'#FFE3B3', gain:'#C99A4A', idea:'#FFB000', note:'#7A5E2E'}, flow:'#C99A4A',
+    scores:['#FFE3B3','#FFCF7A','#C99A4A','#FFB000','#E08A00'],
+    lanes:six.map(i => ({strip: hsl(38, 50, [5.5, 7, 8.5][i % 3]), head: hsl(38, 55, [13, 16, 19, 22, 14.5, 17.5][i]), stroke: hsl(38, 60, 30), text:'#FFCF7A', sub:'#C99A4A'})),
+    tags:six.map(i => ({fill: hsl(38, 55, [14, 18, 22, 11, 16, 20][i]), stroke: hsl(38, 60, 34), text:'#FFCF7A'})) },
+];
+const THEME_GROUPS = [['light','multi','Light · multi-color'], ['light','single','Light · single-color'], ['dark','multi','Dark · multi-color'], ['dark','single','Dark · single-color']];
+const themeKey = n => String(n).toLowerCase().replace(/[\s_-]+/g, '');
+function findTheme(n){ if (n == null) return null; const k = themeKey(n); return THEMES.find(t => themeKey(t.id) === k || themeKey(t.name) === k) || null; }
+function inkOn(hex){
+  const m = /^#([0-9a-f]{6})$/i.exec(hex); if (!m) return '#FFFFFF';
+  const n = parseInt(m[1], 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#111111' : '#FFFFFF';
+}
+
+/* ======================================================================
    Journey model. Both file formats are parsed into the same model:
    doc = {title, persona, start, end, lanes[{name, tool, line, items[]}],
           gates[], steps[], order[], warnings[{line, msg}]}
@@ -298,7 +410,7 @@ function clampScore(raw, ln, warn){
   return s;
 }
 function Builder(){
-  const doc = {title:'', persona:'', start:null, end:null, lanes:[], gates:[], steps:[], warnings:[]};
+  const doc = {title:'', persona:'', theme:null, start:null, end:null, lanes:[], gates:[], steps:[], warnings:[]};
   const gateMap = new Map();
   const warn = (line, msg) => doc.warnings.push({line, msg});
   return {
@@ -333,6 +445,10 @@ function Builder(){
       return {obj: g, rng: ref};
     },
     finish(){
+      if (doc.theme){
+        if (!doc.theme.name) warn(doc.theme.line, 'Name a theme, for example: theme Vivid');
+        else if (!findTheme(doc.theme.name)) warn(doc.theme.line, `Unknown theme "${doc.theme.name}". Use one of: ${THEMES.map(t => t.name).join(', ')}`);
+      }
       doc.gates.forEach(g => { if (!g.joins.size) g.refs.forEach(r => warn(r.line, `Nothing joins "${g.name}", so no lane waits for it. Add a join for it to at least one sub-journey`)); });
       doc.order = orderGates(doc, warn);
       return doc;
@@ -393,6 +509,7 @@ function parseText(text){
     const rest = m[2].trim().replace(/^:\s*/, '');
     if (kw === '-' || kw === '*') kw = 'step';
     if (kw === 'title'){ B.doc.title = rest; return; }
+    if (kw === 'theme'){ B.doc.theme = {name: rest, line: ln}; return; }
     if (kw === 'persona' || kw === 'actor'){ B.doc.persona = rest; return; }
     if (kw === 'start' || kw === 'end'){
       const o = newItem(ln); parseTail(rest, o, ln, warn);
@@ -419,7 +536,7 @@ function parseText(text){
       if (!rest){ warn(ln, `"${kw}" has no text`); return; }
       last.obj[kw].push(rest); last.rng.end = ln; return;
     }
-    warn(ln, `Unknown keyword "${m[1]}". Use title, persona, start, sub, -, join, after, end, pain, gain, idea or note`);
+    warn(ln, `Unknown keyword "${m[1]}". Use title, persona, theme, start, sub, -, join, after, end, pain, gain, idea or note`);
   });
   return B.finish();
 }
@@ -430,6 +547,7 @@ function toText(doc){
   const out = ['@startjourney'];
   if (doc.title) out.push(`title ${doc.title}`);
   if (doc.persona) out.push(`persona ${doc.persona}`);
+  if (doc.theme && doc.theme.name) out.push(`theme ${doc.theme.name}`);
   if (doc.start){ out.push('', `start ${nm(doc.start.name)}${tail(doc.start)}`, ...details(doc.start, '  ')); }
   const emitted = new Set();
   for (const l of doc.lanes){
@@ -484,9 +602,10 @@ function parseYaml(text){
   if (data == null) return B.finish();
   if (typeof data !== 'object' || Array.isArray(data)){ warn(1, 'The file should start with keys such as title:, start: and subJourneys:'); return B.finish(); }
   const L = Locator(text), ranges = [];
-  const TOP = ['title','persona','actor','start','end','subJourneys'];
-  for (const k of Object.keys(data)) if (!TOP.includes(k)) warn(L.top(k), `Unknown key "${k}". Use title, persona, start, subJourneys or end`);
+  const TOP = ['title','persona','actor','theme','start','end','subJourneys'];
+  for (const k of Object.keys(data)) if (!TOP.includes(k)) warn(L.top(k), `Unknown key "${k}". Use title, persona, theme, start, subJourneys or end`);
   if (data.title != null) doc.title = String(data.title);
+  if (data.theme != null) doc.theme = {name: String(data.theme), line: L.top('theme')};
   const persona = data.persona ?? data.actor;
   if (persona != null) doc.persona = String(persona);
 
@@ -565,6 +684,7 @@ function toYaml(doc){
   const out = [];
   if (doc.title) out.push(`title: ${yq(doc.title)}`);
   if (doc.persona) out.push(`persona: ${yq(doc.persona)}`);
+  if (doc.theme && doc.theme.name) out.push(`theme: ${yq(doc.theme.name)}`);
   if (doc.start) out.push(...event('start', doc.start));
   if (doc.lanes.length){
     out.push('', 'subJourneys:');
@@ -622,29 +742,15 @@ function txt(lines, x, y, size, lh, fill, weight, extra=''){
   return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}" ${extra}>` +
     lines.map((l,i) => `<tspan x="${x}" dy="${i ? lh : 0}">${esc(l)}</tspan>`).join('') + `</text>`;
 }
-function isDark(){
-  const t = document.documentElement.getAttribute('data-theme');
-  if (t === 'dark') return true; if (t === 'light') return false;
-  return matchMedia('(prefers-color-scheme: dark)').matches;
-}
+let DT = THEMES[0];   // the diagram theme in use
+function isDark(){ return !!DT.dark; }
 function tokens(){
-  const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue('--' + n).trim();
-  const o = {}; ['panel','panel-2','ink','muted','faint','line','line-soft','accent','flow','pain','gain','idea','note','s1','s2','s3','s4','s5'].forEach(n => o[n] = g(n));
-  return o;
+  const u = DT.ui;
+  return {panel:u.panel, 'panel-2':u.panel2, ink:u.ink, muted:u.muted, faint:u.faint, line:u.line, 'line-soft':u.lineSoft, accent:u.accent,
+    flow:DT.flow, ...DT.det, s1:DT.scores[0], s2:DT.scores[1], s3:DT.scores[2], s4:DT.scores[3], s5:DT.scores[4]};
 }
-const LANE_HUES = [198, 152, 28, 268, 348, 88, 222, 8];
-const TAG_HUES = [212, 40, 150, 352, 272, 186, 96, 18];
-function laneColors(i){
-  const h = LANE_HUES[i % LANE_HUES.length];
-  return isDark()
-    ? {strip:`hsl(${h} 22% 12.5%)`, head:`hsl(${h} 32% 22%)`, stroke:`hsl(${h} 32% 30%)`, text:`hsl(${h} 60% 86%)`, sub:`hsl(${h} 25% 65%)`}
-    : {strip:`hsl(${h} 45% 97%)`, head:`hsl(${h} 58% 89%)`, stroke:`hsl(${h} 42% 80%)`, text:`hsl(${h} 55% 22%)`, sub:`hsl(${h} 30% 38%)`};
-}
-function tagColors(h){
-  return isDark()
-    ? {fill:`hsl(${h} 30% 22%)`, stroke:`hsl(${h} 35% 34%)`, text:`hsl(${h} 65% 84%)`}
-    : {fill:`hsl(${h} 70% 93%)`, stroke:`hsl(${h} 45% 78%)`, text:`hsl(${h} 60% 26%)`};
-}
+function laneColors(i){ return DT.lanes[i % DT.lanes.length]; }
+function tagColors(i){ return DT.tags[i % DT.tags.length]; }
 const KINDS = [['pain','Pain point'],['gain','Gain'],['idea','Opportunity'],['note','Note']];
 
 function buildSvg(doc){
@@ -655,7 +761,7 @@ function buildSvg(doc){
   const W = Math.max(PAD * 2 + Math.max(n, 1) * LW + Math.max(n - 1, 0) * LG, 560);
   const flow = [], nodes = [], sels = [], meta = [];
   const tagHue = new Map();
-  const hueFor = t => { if (!tagHue.has(t)) tagHue.set(t, TAG_HUES[tagHue.size % TAG_HUES.length]); return tagHue.get(t); };
+  const hueFor = t => { if (!tagHue.has(t)) tagHue.set(t, tagHue.size); return tagHue.get(t); };
   let y = PAD, selId = 0;
 
   function diamond(gx, cy, r, small){
@@ -704,7 +810,7 @@ function buildSvg(doc){
     c += m.lines.length * 17;
     if (item.score){
       s += `<circle cx="${x + m.w - 20}" cy="${yy + 21}" r="10" fill="${T['s' + item.score]}"/>` +
-        `<text x="${x + m.w - 20}" y="${yy + 25}" font-size="11" font-weight="700" text-anchor="middle" fill="#FFFFFF">${item.score}</text>`;
+        `<text x="${x + m.w - 20}" y="${yy + 25}" font-size="11" font-weight="700" text-anchor="middle" fill="${inkOn(T['s' + item.score])}">${item.score}</text>`;
     }
     if (m.tag){
       c += 8;
@@ -869,7 +975,7 @@ function highlightText(text){
     if (GATE_KW.includes(kw)) return ind + `<span class="t-gate">${esc(k[1])}</span>` + colorizeTail(rest, 't-gate');
     if (kw === 'start' || kw === 'end') return ind + `<span class="t-kw">${esc(k[1])}</span>` + colorizeTail(rest);
     if (DETAIL_KW.includes(kw)) return ind + `<span class="t-${kw}">${esc(k[1])}</span>${esc(rest)}`;
-    if (['title','persona','actor'].includes(kw)) return ind + `<span class="t-kw">${esc(k[1])}</span>${esc(rest)}`;
+    if (['title','persona','actor','theme'].includes(kw)) return ind + `<span class="t-kw">${esc(k[1])}</span>${esc(rest)}`;
     return ind + `<span class="t-err">${esc(body)}</span>`;
   }).join('\n') + '\n ';
 }
@@ -1011,6 +1117,138 @@ function convert(){
   toast(`Converted to ${FORMAT_LABEL[target]}. Comments are not carried over. Save to keep it as ${file.name}.`);
 }
 
+/* ---------- Theme choice ----------
+   Saved per person in the browser. "fixed" is used normally. With "follow" on,
+   "light" or "dark" is used depending on the computer's mode. A theme line in
+   the journey file overrides the diagram theme for everyone. */
+const THEME_STORE = 'journeyline-theme';
+const osDark = () => matchMedia('(prefers-color-scheme: dark)').matches;
+const themeSettings = (() => {
+  const d = {target:'both', follow:false, fixed:{editor:'harbor', diagram:'harbor'}, light:{editor:'harbor', diagram:'harbor'}, dark:{editor:'harbor-night', diagram:'harbor-night'}};
+  let s = null; try { s = JSON.parse(store.get(THEME_STORE) || 'null'); } catch(e){}
+  if (s && typeof s === 'object'){
+    for (const k of ['fixed','light','dark']) if (s[k]) d[k] = {
+      editor: (findTheme(s[k].editor) || findTheme(d[k].editor)).id,
+      diagram: (findTheme(s[k].diagram) || findTheme(d[k].diagram)).id };
+    d.follow = !!s.follow;
+    if (['both','editor','diagram'].includes(s.target)) d.target = s.target;
+  }
+  return d;
+})();
+const saveThemeSettings = () => store.set(THEME_STORE, JSON.stringify(themeSettings));
+const activeSlot = () => themeSettings.follow ? (osDark() ? 'dark' : 'light') : 'fixed';
+let pickerSlot = null, themePreview = null;
+function fileTheme(){ return doc && doc.theme ? findTheme(doc.theme.name) : null; }
+function effectiveThemes(){
+  const c = themePreview || themeSettings[activeSlot()];
+  const ft = fileTheme();
+  return {editor: findTheme(c.editor) || THEMES[0], diagram: ft || findTheme(c.diagram) || THEMES[0], fromFile: !!ft};
+}
+function applyUiTheme(t){
+  const r = document.documentElement.style, u = t.ui, set = (k, v) => r.setProperty('--' + k, v);
+  set('bg', u.bg); set('panel', u.panel); set('panel-2', u.panel2); set('ink', u.ink); set('muted', u.muted); set('faint', u.faint);
+  set('line', u.line); set('line-soft', u.lineSoft); set('accent', u.accent); set('accent-ink', inkOn(u.accent));
+  set('sel', `color-mix(in srgb, ${u.accent} 28%, transparent)`); set('warn', t.det.idea);
+  for (const k of ['pain','gain','idea','note']) set(k, t.det[k]);
+  for (const k of ['kw','sub','step','gate','score','touch','com']) set('t-' + k, t.syn[k]);
+  r.colorScheme = t.dark ? 'dark' : 'light';
+}
+function applyThemes(redraw){
+  const e = effectiveThemes();
+  applyUiTheme(e.editor);
+  DT = e.diagram;
+  canvas.style.background = DT.ui.panel;
+  $('themeLabel').textContent = e.editor === e.diagram ? e.editor.name : `${e.editor.name} / ${e.diagram.name}`;
+  $('themeDots').innerHTML = e.diagram.lanes.slice(0, 3).map(l => `<i style="background:${l.head}"></i>`).join('');
+  if (redraw && doc) drawDiagram();
+}
+function chooseTheme(id, slotName){
+  const slot = themeSettings[slotName], tg = themeSettings.target;
+  if (tg !== 'diagram') slot.editor = id;
+  if (tg !== 'editor') slot.diagram = id;
+  saveThemeSettings();
+}
+function previewTheme(id){
+  const slot = {...themeSettings[pickerSlot || activeSlot()]}, tg = themeSettings.target;
+  if (tg !== 'diagram') slot.editor = id;
+  if (tg !== 'editor') slot.diagram = id;
+  themePreview = slot; applyThemes(true);
+}
+function endPreview(){ if (themePreview){ themePreview = null; applyThemes(true); } }
+
+function renderPicker(){
+  const p = $('picker'), s = themeSettings, slotName = pickerSlot || activeSlot(), slot = s[slotName], ft = fileTheme();
+  const seg = (items, cur, attr) => `<div class="seg" role="radiogroup">${items.map(([v, l]) =>
+    `<button type="button" role="radio" ${attr}="${v}" aria-checked="${v === cur}">${l}</button>`).join('')}</div>`;
+  const tile = t => {
+    const e = slot.editor === t.id, d = slot.diagram === t.id;
+    const marks = e && d ? '<b>✓</b>' : (e ? '<b title="Editor">E</b>' : '') + (d ? '<b title="Diagram">D</b>' : '');
+    const on = s.target === 'editor' ? e : s.target === 'diagram' ? d : (e && d);
+    const sw = [t.ui.bg, t.ui.accent, ...t.lanes.slice(0, 3).map(l => l.head)].map(c => `<i style="background:${c}"></i>`).join('');
+    return `<button type="button" class="tile${on ? ' on' : ''}" data-theme-id="${t.id}" style="background:${t.ui.panel};color:${t.ui.ink};border-color:${t.ui.line}" aria-pressed="${on}">
+      <span class="sw">${sw}</span>${esc(t.name)}<span class="marks">${marks}</span></button>`;
+  };
+  p.innerHTML = `
+    <div class="row"><span>Apply to</span>${seg([['both','Editor + diagram'], ['editor','Editor'], ['diagram','Diagram']], s.target, 'data-target')}</div>
+    ${s.follow ? `<div class="row" style="margin-top:8px"><span>Choosing for</span>${seg([['light','Light mode'], ['dark','Dark mode']], slotName, 'data-slot')}<span>${slotName === activeSlot() ? '(in use now)' : ''}</span></div>` : ''}
+    ${ft ? `<div class="note">This file sets the diagram theme to <b>${esc(ft.name)}</b> with <code>${file.format === 'yaml' ? 'theme: ' : 'theme '}${esc(doc.theme.name)}</code> on line ${doc.theme.line}. Everyone who opens it sees that theme. Your choice here still sets the editor.</div>` : ''}
+    ${THEME_GROUPS.map(([tone, color, label]) => `<h3>${label}</h3><div class="tiles">${THEMES.filter(t => t.tone === tone && t.color === color).map(tile).join('')}</div>`).join('')}
+    <label class="chk"><input type="checkbox" id="followChk" ${s.follow ? 'checked' : ''}> Follow my computer's light or dark mode</label>
+    <div class="hint">${s.follow ? 'Choose one theme for light mode and one for dark mode. Journeyline switches when your computer does.' : 'When this is on, you choose a theme for light mode and one for dark mode.'} Alt+T switches to the next theme.</div>`;
+}
+function openPicker(){
+  pickerSlot = activeSlot(); renderPicker();
+  $('picker').hidden = false; $('themeBtn').setAttribute('aria-expanded', 'true');
+  const cur = $('picker').querySelector('.tile.on') || $('picker').querySelector('.tile');
+  if (cur) cur.focus({preventScroll: false});
+}
+function closePicker(){
+  endPreview(); $('picker').hidden = true; $('themeBtn').setAttribute('aria-expanded', 'false');
+}
+$('themeBtn').addEventListener('click', () => $('picker').hidden ? openPicker() : closePicker());
+$('picker').addEventListener('click', e => {
+  const t = e.target.closest('[data-theme-id]');
+  if (t){ chooseTheme(t.dataset.themeId, pickerSlot); themePreview = null; applyThemes(true); closePicker(); $('themeBtn').focus(); return; }
+  const tg = e.target.closest('[data-target]');
+  if (tg){ themeSettings.target = tg.dataset.target; saveThemeSettings(); renderPicker(); return; }
+  const sl = e.target.closest('[data-slot]');
+  if (sl){ pickerSlot = sl.dataset.slot; renderPicker(); }
+});
+$('picker').addEventListener('change', e => {
+  if (e.target.id !== 'followChk') return;
+  const s = themeSettings;
+  if (e.target.checked){
+    const f = s.fixed, fe = findTheme(f.editor), fd = findTheme(f.diagram);
+    if (fe.dark){ s.dark = {...f}; s.light = {editor: fe.partner, diagram: fd.dark ? fd.partner : fd.id}; }
+    else { s.light = {...f}; s.dark = {editor: fe.partner, diagram: fd.dark ? fd.id : fd.partner}; }
+    s.follow = true;
+  } else { s.fixed = {...s[activeSlot()]}; s.follow = false; }
+  saveThemeSettings(); pickerSlot = activeSlot(); applyThemes(true); renderPicker();
+  $('followChk').focus();
+});
+$('picker').addEventListener('mouseover', e => { const t = e.target.closest('[data-theme-id]'); if (t) previewTheme(t.dataset.themeId); });
+$('picker').addEventListener('focusin', e => { const t = e.target.closest('[data-theme-id]'); if (t) previewTheme(t.dataset.themeId); });
+$('picker').addEventListener('mouseleave', () => { if (!$('picker').contains(document.activeElement) || !document.activeElement.closest('[data-theme-id]')) endPreview(); });
+$('picker').addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ e.preventDefault(); closePicker(); $('themeBtn').focus(); return; }
+  if (!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp'].includes(e.key)) return;
+  const tiles = [...$('picker').querySelectorAll('.tile')], i = tiles.indexOf(document.activeElement);
+  if (i < 0) return;
+  e.preventDefault();
+  const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
+  tiles[(i + step + tiles.length) % tiles.length].focus();
+});
+document.addEventListener('mousedown', e => { if (!$('picker').hidden && !e.target.closest('#picker') && !e.target.closest('#themeBtn')) closePicker(); });
+function cycleTheme(){
+  const slotName = activeSlot(), slot = themeSettings[slotName];
+  const cur = themeSettings.target === 'diagram' ? slot.diagram : slot.editor;
+  const next = THEMES[(THEMES.findIndex(t => t.id === cur) + 1) % THEMES.length];
+  chooseTheme(next.id, slotName); applyThemes(true);
+  toast(`Theme: ${next.name}`);
+  if (!$('picker').hidden) renderPicker();
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (themeSettings.follow){ applyThemes(true); if (!$('picker').hidden) renderPicker(); } });
+
 /* ---------- Rendering loop ---------- */
 let doc = null, built = null, zoom = 1, zoomMode = 'auto', activeSel = -1, warnLines = new Set(), curLine = 0;
 function renderGutter(){
@@ -1088,6 +1326,7 @@ function update(immediate){
   const run = () => {
     doc = file.format === 'yaml' ? parseYaml(src.value) : parseText(src.value);
     warnLines = new Set(doc.warnings.map(w => w.line));
+    applyThemes(false);
     renderGutter(); renderIssues(); renderStats(); drawDiagram(); syncFromCaret();
     saveDraft();
   };
@@ -1124,6 +1363,7 @@ src.addEventListener('keydown', e => {
   }
 });
 document.addEventListener('keydown', e => {
+  if (e.altKey && !e.ctrlKey && !e.metaKey && e.code === 'KeyT'){ e.preventDefault(); cycleTheme(); return; }
   if (!(e.ctrlKey || e.metaKey)) return;
   const k = e.key.toLowerCase();
   if (k === 's'){ e.preventDefault(); e.shiftKey ? saveAs() : save(); }
@@ -1200,8 +1440,6 @@ divider.addEventListener('keydown', e => {
   const pct = Math.min(75, Math.max(20, cur + (e.key === 'ArrowLeft' ? -3 : 3)));
   work.style.setProperty('--left', pct + '%'); store.set(SPLIT, pct + '%');
 });
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => doc && drawDiagram());
-new MutationObserver(() => doc && drawDiagram()).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
 
 /* ---------- Start ---------- */
 (function boot(){
@@ -1211,7 +1449,7 @@ new MutationObserver(() => doc && drawDiagram()).observe(document.documentElemen
     file.name = draft.name || 'untitled.journey'; file.format = draft.format === 'yaml' ? 'yaml' : 'text'; file.dirty = !!draft.dirty;
     src.value = draft.text;
   } else src.value = SAMPLE_TEXT;
-  renderFile(); update(true);
+  renderFile(); applyThemes(false); update(true);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => drawDiagram());
 })();
 </script>

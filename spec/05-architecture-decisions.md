@@ -82,7 +82,7 @@ Decisions about **how** the product is built. Each entry uses the same format as
 - **Reasoning:** It's a cheap safety net. The file on disk remains the real copy.
 
 ### AD-09 · Theme-aware colors
-- **Status:** Claude, open · 2026-09-23
+- **Status:** Replaced by AD-11 · 2026-09-24 (was: Claude, open · 2026-09-23)
 - **Decision:**
   - The app's colors are CSS variables for light and dark mode, and they follow the operating system or an explicit `data-theme`.
   - The diagram reads those variables when it draws, so a copied SVG has real colors in it.
@@ -92,3 +92,27 @@ Decisions about **how** the product is built. Each entry uses the same format as
 - **Status:** Accepted · 2026-09-23 · Decided by Bela (BD-11)
 - **Decision:** `spec/` in the repo holds the ideas, Q&A, product spec and decisions, and `CLAUDE.md` tells Claude how to use them. The Claude Project only keeps a pointer to the repo.
 - **Reasoning:** One place that lasts and is under version control.
+
+### AD-11 · How themes are built
+- **Status:** Accepted · 2026-09-24 · Decided by Claude (implements BD-13 and BD-14). Replaces AD-09.
+- **Decision:**
+  - Each theme is a data object in `index.html` with:
+    - `ui`: app and editor surfaces
+    - `syn`: syntax colors
+    - `det`: pain, gain, idea and note colors
+    - `flow`: connector lines
+    - `scores`: the 1–5 score colors
+    - `lanes`: six lane color sets
+    - `tags`: six tag color sets
+    - `partner`: its light or dark counterpart, used when following the computer's mode
+  - The editor theme is applied by setting CSS variables on the page from script.
+  - The diagram is drawn straight from its theme object, so a copied SVG has real colors in it.
+  - The choice is stored in `localStorage` under `journeyline-theme`. It has three slots: `fixed`, plus `light` and `dark` for following the computer's mode.
+  - A file's `theme` line wins over the diagram slot.
+  - Score numbers are black or white, whichever reads better on the score color.
+  - The host page's own light or dark mode is no longer used.
+- **Alternatives:**
+  - CSS classes per theme. Harder to keep the editor and diagram separate, and the SVG would lose its colors.
+  - Themes in a separate file. That would break the single-file rule (AD-01).
+- **Reasoning:** One data object per theme keeps adding a theme to one place, and it works the same for the screen and the copied SVG.
+- **Note:** The shortcut in the proposal was Ctrl+Shift+T. Chrome keeps that shortcut for reopening a closed tab, so it is Alt+T instead.

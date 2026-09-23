@@ -27,6 +27,7 @@ Gate steps are matched by name, and case doesn't matter. `join Product approval`
 | `@startjourney` / `@endjourney` | Optional wrappers |
 | `title <text>` | Title |
 | `persona <text>` | Persona (`actor` also works) |
+| `theme <name>` | Optional. Draws the diagram in this theme for everyone who opens the file |
 | `start <text>` | Start event |
 | `sub <name> : <tool>` | A sub-journey. The tool is optional |
 | `  - <step> : <tag>` | A step. The tag is optional |
@@ -45,6 +46,7 @@ Fields are separated by a colon with a space before it. So `- Deploy: run tests 
 ```yaml
 title: Create a data product
 persona: Data product team
+theme: Vivid                                    # optional, see Themes below
 start: Team decides to create a data product    # or an object: {name: ..., note: ...}
 
 subJourneys:
@@ -67,8 +69,21 @@ end: Data product is live in PRD
 | Key | Where | Meaning |
 |---|---|---|
 | `title`, `persona` | top level | Text |
+| `theme` | top level | Optional theme name for the diagram |
 | `start`, `end` | top level | Text, or an object with `name`, `tag`, `score` and details |
 | `subJourneys` | top level | A list of sub-journeys |
 | `name`, `tool`, `flow` | sub-journey | `flow` lists the steps and gates in order |
 | `step`, `join`, `after`, `section` | flow item | Exactly one of these per item |
 | `tag`, `score`, `pain`, `gain`, `idea`, `note` | step, gate, start or end | Optional |
+
+## Themes
+
+The `theme` line draws the diagram in one of these themes, for everyone who opens the file. Case, spaces and hyphens don't matter, so `theme high contrast` and `theme High-Contrast` both work.
+
+| | Multi-color | Single-color |
+|---|---|---|
+| **Light** | Harbor, Stone, Vivid, Pastel | Mono Ink, Forest |
+| **Dark** | Harbor Night, Midnight, High Contrast | Graphite, Blueprint, Amber Terminal |
+
+Without a `theme` line, each person's own choice in the Theme picker is used.
+
