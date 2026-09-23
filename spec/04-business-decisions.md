@@ -58,13 +58,13 @@ A decision is never deleted. When one changes, its status becomes *Replaced by B
 - **Reasoning:** Each name says what the file contains, and the YAML name still ends in `.yaml`, so editors treat it as YAML.
 
 ### BD-07 · Steps carry a tag, a score and details
-- **Status:** Claude, open · 2026-09-23 (Q-09)
+- **Status:** Accepted · 2026-09-24 · Proposed by Claude on 2026-09-23 and confirmed by Bela (Q-09)
 - **Decision:** A step can have a tag, such as an environment, an experience score from 1 to 5, and pain, gain, idea and note details.
 - **Alternatives:** Steps with a name only.
 - **Reasoning:** Tags make the EXP → DEV → ACC → PRD promotion visible. Scores and details come from classic journey mapping and cost nothing when unused.
 
 ### BD-08 · Lanes can start after a gate step, and can have sections
-- **Status:** Claude, open · 2026-09-23 (Q-09)
+- **Status:** Accepted · 2026-09-24 · Proposed by Claude on 2026-09-23 and confirmed by Bela (Q-09)
 - **Decision:**
   - `after <gate step>` starts a lane after that gate step without the lane joining it.
   - An indented `sub` inside a lane becomes a labeled section.
@@ -81,7 +81,7 @@ A decision is never deleted. When one changes, its status becomes *Replaced by B
 - **Status:** Accepted · 2026-09-23 · Decided by Bela (I-03, I-05 item 3)
 - **Decision:** `examples/data-product.journey` and `examples/data-product.journey.yaml` hold Bela's data-product journey. The editor opens with it the first time.
 - **Reasoning:** It's a real case that uses every core feature: three lanes and three AND-joins.
-- **Note:** The tool names on the lanes are placeholders (Q-08).
+- **Note:** The tool names on the lanes (Contract editor, Notebook then PySpark, Cluster console) were made up by Claude. Bela chose to keep them as they are (Q-08).
 
 ### BD-11 · Work in a specification-driven way
 - **Status:** Accepted · 2026-09-23 · Decided by Bela (I-07, and point 5 of I-05 as confirmed in Q-07)

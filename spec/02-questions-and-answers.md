@@ -48,11 +48,12 @@ Claude noted that YAML wins when other tools must create or read the files.
 **Answer:** (2026-09-24) "Point 5 was the specification-driven development." So point 5 is the request recorded as I-07.
 **Led to:** BD-11
 
-### Q-08 · 2026-09-23 · OPEN · Which tools does each sub-journey use?
+### Q-08 · 2026-09-23 · Which tools does each sub-journey use?
 **Asked:** The example's tools (Contract editor, Notebook then PySpark, Cluster console) are placeholders Claude made up. Which tools does the team really use?
-**Answer:** *(open)*
+**Answer:** (2026-09-24) Keep the made-up tool names.
+**Led to:** BD-10
 
-### Q-09 · 2026-09-23 · OPEN · Keep the features Claude added without being asked?
+### Q-09 · 2026-09-23 · Keep the features Claude added without being asked?
 **Asked:** Claude added these on its own:
 - `after` (a lane that starts after a gate step without joining it)
 - sections inside a lane
@@ -61,7 +62,8 @@ Claude noted that YAML wins when other tools must create or read the files.
 - tags such as EXP, DEV, ACC and PRD
 
 Should they stay?
-**Answer:** *(open)*. They stay until you decide otherwise. See BD-07 and BD-08.
+**Answer:** (2026-09-24) Keep all of them.
+**Led to:** BD-07, BD-08
 
 ### Q-10 · 2026-09-24 · Which themes should ship?
 **Asked:** Claude showed 12 options in a gallery. Each one is applied to the real editor and flow diagram:

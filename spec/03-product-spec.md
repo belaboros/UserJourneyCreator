@@ -80,4 +80,4 @@ Teams describe how a user gets something done from end to end, such as a data te
 
 ## 7. Open items
 
-See the open questions in [02-questions-and-answers.md](02-questions-and-answers.md): Q-07, Q-08 and Q-09.
+No open questions as of 2026-09-24. Architecture decisions AD-05 to AD-08 are still marked **Claude, open** for Bela's review.
