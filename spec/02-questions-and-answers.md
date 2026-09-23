@@ -134,3 +134,16 @@ Option 1 was to accept all four, option 2 to review them one by one, option 3 to
 Claude recommended option 2.
 **Answer:** Option 2.
 **Led to:** BD-15
+
+### Q-18 · 2026-09-24 · OPEN (postponed by Bela) · Which improvements to the SDD way of working should we adopt?
+**Asked:** Bela asked what could be improved. Claude proposed seven improvements:
+1. **Tests in the repo:** a `tests/` script that opens `index.html` without a visible browser. It checks for errors, checks that both examples parse and convert back and forth, and has one check per requirement.
+2. **Acceptance criteria:** each requirement gets "given … when … then …" lines.
+3. **A spec file per feature:** for example `spec/features/F-01-themes.md`, with the goal, issue link, scope, question and decision IDs, criteria and status.
+4. **A fixed checklist per feature in `CLAUDE.md`:** idea → questions → decisions → spec and criteria → show options visually → build → tests → review Claude's own decisions → close the issue. It also includes an assumptions list for each feature.
+5. **Versions and a changelog:** git tags and a `CHANGELOG.md`.
+6. **One source of truth:** once the repo is added to sessions, the spec copy in the Claude Project becomes a one-line pointer to the repo.
+7. **Branches and pull requests:** each feature goes on a branch, and Bela's merge of the pull request is the approval.
+
+The options were: option 1 = adopt all seven, option 2 = adopt 1 to 5 now and 6 and 7 once the repo is added to a session, option 3 = Bela picks. Claude recommended option 2.
+**Answer:** *(open)*. Bela postponed this question on 2026-09-24. Ask again when starting the next feature.

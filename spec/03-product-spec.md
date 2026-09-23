@@ -80,4 +80,4 @@ Teams describe how a user gets something done from end to end, such as a data te
 
 ## 7. Open items
 
-No open questions and no unconfirmed decisions as of 2026-09-24.
+Open: Q-18 (improvements to the way of working, postponed). There are no unconfirmed decisions.
