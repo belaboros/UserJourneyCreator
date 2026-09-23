@@ -128,3 +128,17 @@ A decision is never deleted. When one changes, its status becomes *Replaced by B
   - **Personal setting only.** Claude recommended this, because it keeps the file format unchanged.
   - **A suggestion that each person can override.**
 - **Reasoning:** A shared diagram should look the same for everyone who opens the file.
+
+### BD-15 · GitHub Issues hold the work, `spec/` holds the decisions
+- **Status:** Accepted · 2026-09-24 · Decided by Bela (Q-17)
+- **Decision:**
+  - **GitHub Issues:** the backlog of ideas, tasks and bugs, plus any discussion about them.
+  - **Moving into the spec:** when Bela decides to build an idea, it gets an `I-nn` entry in `spec/01-ideas.md` that links to the issue.
+  - **Questions:** they can be discussed in the issue, but the final answer always goes into `spec/02-questions-and-answers.md`.
+  - **Decisions:** they live only in `spec/`, never only in an issue.
+  - **Closing:** the commit that builds the work closes the issue, with "Fixes #n" in its message.
+- **Alternatives:**
+  - files only, as before
+  - issues for everything
+- **Reasoning:** Decisions stay next to the code, where Claude reads them in every session, and the work gets a visible backlog that others can use too.
+- **Needs:** Claude can create and manage issues only in a session that has the repo added. The Claude GitHub App must be installed on it.

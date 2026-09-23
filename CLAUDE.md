@@ -33,6 +33,13 @@ Bela asked for this format (2026-09-24). Questions buried in running text get mi
 - Commit the spec changes together with the code change they explain.
 - **Commit identity:** commit with the identity already set in this repo's git config, which is Bela's GitHub no-reply address (`12049437+belaboros@users.noreply.github.com`). Never pass a personal email address with `-c user.email` or `--author`. A public repo publishes it in every commit.
 
+## Issues and the spec (BD-15)
+
+- **New ideas, tasks and bugs:** open them as GitHub Issues.
+- **When Bela decides to build an idea:** add an `I-nn` entry to `spec/01-ideas.md` that links the issue, and log the questions and decisions in `spec/`.
+- **Commit message:** reference the issue, and use `Fixes #n` in the commit that completes it.
+- **Decisions:** never leave a decision only in an issue.
+
 ## Project rules
 
 - The app is one self-contained file, `index.html` (AD-01). It uses no build step and no external scripts. The only external request is the Google Fonts stylesheet, and system fonts work without it.

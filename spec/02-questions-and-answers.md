@@ -124,3 +124,13 @@ Alternatives: a plain dropdown, or a `theme` line in the journey file (see Q-12)
 Option 1 was to accept all four, option 2 to review them one by one, option 3 to leave them open. Claude recommended option 1.
 **Answer:** Option 1, accept all.
 **Led to:** AD-05, AD-06, AD-07, AD-08
+
+### Q-17 · 2026-09-24 · Should GitHub Issues become part of the workflow?
+**Asked:**
+- Option 1: files only.
+- Option 2: issues hold the backlog, tasks and bugs, and `spec/` holds decisions. An idea moves from an issue into the spec when Bela decides to build it, and the commit that builds it closes the issue.
+- Option 3: issues for everything.
+
+Claude recommended option 2.
+**Answer:** Option 2.
+**Led to:** BD-15
