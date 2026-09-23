@@ -31,6 +31,7 @@ Bela asked for this format (2026-09-24). Questions buried in running text get mi
 - **Behavior changed:** update `spec/03-product-spec.md`, meaning the requirements and the status line, so it always describes the product as it should be now.
 - **Code changed:** update `README.md`, `docs/syntax.md` and both files in `examples/` when they are affected.
 - Commit the spec changes together with the code change they explain.
+- **Commit identity:** commit with the identity already set in this repo's git config, which is Bela's GitHub no-reply address (`12049437+belaboros@users.noreply.github.com`). Never pass a personal email address with `-c user.email` or `--author`. A public repo publishes it in every commit.
 
 ## Project rules
 
