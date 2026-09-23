@@ -80,4 +80,4 @@ Teams describe how a user gets something done from end to end, such as a data te
 
 ## 7. Open items
 
-No open questions as of 2026-09-24. Architecture decisions AD-05 to AD-08 are still marked **Claude, open** for Bela's review.
+No open questions and no unconfirmed decisions as of 2026-09-24.

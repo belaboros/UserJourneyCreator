@@ -113,3 +113,14 @@ When asked again in the new format, the options were: 1 = browser only, 2 = the 
 Alternatives: a plain dropdown, or a `theme` line in the journey file (see Q-12). Claude asked Bela to confirm the picker, the editor and diagram split (Q-11), the theme line in the file (Q-12), the dark-mode toggle (Q-13) and Copy SVG (Q-14).
 **Answer:** "I like the picker as sketched." The details are still open in Q-11 to Q-14.
 **Led to:** BD-13
+
+### Q-16 · 2026-09-24 · Should the four technical decisions Claude made alone stay?
+**Asked:** Claude made four technical decisions while building, all still marked Claude, open:
+- AD-05: the diagram is drawn with Claude's own code, not a diagram library.
+- AD-06: the rules of the PlantUML-like format.
+- AD-07: the editor is a plain text box with coloring.
+- AD-08: unsaved edits are kept in the browser.
+
+Option 1 was to accept all four, option 2 to review them one by one, option 3 to leave them open. Claude recommended option 1.
+**Answer:** Option 1, accept all.
+**Led to:** AD-05, AD-06, AD-07, AD-08

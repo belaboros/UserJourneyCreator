@@ -45,7 +45,7 @@ Decisions about **how** the product is built. Each entry uses the same format as
 - **Reasoning:** The app keeps working offline as one file.
 
 ### AD-05 · Hand-built SVG layout instead of a diagram library
-- **Status:** Claude, open · 2026-09-23
+- **Status:** Accepted · 2026-09-24 · Made by Claude on 2026-09-23 and confirmed by Bela (Q-16)
 - **Decision:** The app does its own lane layout and draws SVG directly.
   1. Gate steps are put in order with a topological sort of each lane's sequence.
   2. Each lane is placed up to its next gate step.
@@ -58,7 +58,7 @@ Decisions about **how** the product is built. Each entry uses the same format as
 - **Reasoning:** The layout is specific to this journey model and small enough to own, and it keeps the app to one file.
 
 ### AD-06 · Rules for the PlantUML-like format
-- **Status:** Claude, open · 2026-09-23
+- **Status:** Accepted · 2026-09-24 · Made by Claude on 2026-09-23 and confirmed by Bela (Q-16)
 - **Decision:**
   - The keywords are `title`, `persona`, `start`, `sub`, `-`, `join`, `after`, `end`, `pain`, `gain`, `idea` and `note`.
   - Fields are separated by a colon with whitespace before it, so `Deploy: run tests : DEV` keeps the colon in the name.
@@ -67,7 +67,7 @@ Decisions about **how** the product is built. Each entry uses the same format as
 - **Reasoning:** It's forgiving to type, and names can contain a colon.
 
 ### AD-07 · Plain textarea editor with a highlighting layer
-- **Status:** Claude, open · 2026-09-23
+- **Status:** Accepted · 2026-09-24 · Made by Claude on 2026-09-23 and confirmed by Bela (Q-16)
 - **Decision:**
   - The editor is a `<textarea>` with a syntax-highlighted `<pre>` behind it and its own line-number gutter.
   - Tab inserts two spaces, and Enter keeps the indentation.
@@ -76,7 +76,7 @@ Decisions about **how** the product is built. Each entry uses the same format as
 - **Reasoning:** It keeps the single file small, and the formats are simple.
 
 ### AD-08 · Drafts are kept in the browser
-- **Status:** Claude, open · 2026-09-23
+- **Status:** Accepted · 2026-09-24 · Made by Claude on 2026-09-23 and confirmed by Bela (Q-16)
 - **Decision:** The current text, file name, format and unsaved state are stored in `localStorage` after every change and restored when the page opens. Every read and write is wrapped in try/catch.
 - **Alternatives:** Nothing is kept, so closing the tab loses unsaved work.
 - **Reasoning:** It's a cheap safety net. The file on disk remains the real copy.
