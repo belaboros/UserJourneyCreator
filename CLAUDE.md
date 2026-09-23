@@ -12,6 +12,15 @@ This project uses **specification-driven development**. The `spec/` folder holds
 2. If an open question matters for the task, ask it before building.
 3. Do not contradict an accepted decision without saying so. If a change reverses one, ask first, then record the change.
 
+## How to ask Bela questions
+
+Bela asked for this format (2026-09-24). Questions buried in running text get missed, so:
+
+- Put every question under its own H1 heading with its ID, for example `# Q-11: Should the editor and diagram share one theme?`
+- List the choices below it as `Option 1: …`, `Option 2: …`, each one short.
+- Say which option Claude recommends, and why, in one line.
+- Put the questions at the end of the reply, after any explanation.
+
 ## While working
 
 - **New idea from Bela:** add it to `spec/01-ideas.md` as `I-nn`, word for word apart from typo fixes.

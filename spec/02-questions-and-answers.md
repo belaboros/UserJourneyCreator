@@ -93,7 +93,7 @@ Which ones should Journeyline include?
 **Asked:** Should the copied diagram use the theme on screen, or always a document-friendly light theme such as Harbor or Mono Ink?
 **Answer:** *(open)*
 
-### Q-15 · 2026-09-24 · OPEN · How does the user select a theme?
+### Q-15 · 2026-09-24 · How does the user select a theme?
 **Asked by Bela.** Claude proposed:
 - a **Theme** button in the top bar that opens a picker with 12 tiles, grouped by light or dark and multi- or single-color
 - a live preview on hover or arrow keys, Enter to apply and Esc to go back
@@ -103,4 +103,5 @@ Which ones should Journeyline include?
 - the choice saved per person in the browser
 
 Alternatives: a plain dropdown, or a `theme` line in the journey file (see Q-12). Claude asked Bela to confirm the picker, the editor and diagram split (Q-11), the theme line in the file (Q-12), the dark-mode toggle (Q-13) and Copy SVG (Q-14).
-**Answer:** *(open)*
+**Answer:** "I like the picker as sketched." The details are still open in Q-11 to Q-14.
+**Led to:** BD-13 (to be written once Q-11 to Q-14 are answered)
