@@ -84,7 +84,7 @@ A decision is never deleted. When one changes, its status becomes *Replaced by B
 - **Note:** The tool names on the lanes are placeholders (Q-08).
 
 ### BD-11 · Work in a specification-driven way
-- **Status:** Accepted · 2026-09-23 · Decided by Bela (I-07)
+- **Status:** Accepted · 2026-09-23 · Decided by Bela (I-07, and point 5 of I-05 as confirmed in Q-07)
 - **Decision:** Ideas, questions and answers, the refined spec and all decisions are kept in `spec/` in the repo. Claude reads them at the start of every session and keeps them up to date.
 - **Alternatives:** Keep this only in the Claude Project or in chat history.
 - **Reasoning:** The repo is the one lasting place, and it can be read in any session and by anyone.

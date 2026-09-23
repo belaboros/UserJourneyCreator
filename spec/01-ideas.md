@@ -39,7 +39,7 @@ Example given with this idea:
 > 2. The user journey files are saved/loaded to/from the local filesystem
 > 3. Save the sample user journey file to the git repo as an example
 > 4. Let's use the `*.e2euj.yaml` filename pattern (let me know if you have a better suggestion)
-> 5. *(left unfinished, see Q-07)*
+> 5. *(left unfinished at the time. Bela later said it meant the specification-driven development in I-07, see Q-07)*
 
 ### I-06 · 2026-09-23 · Keep both formats
 > Let's keep both formats. The users will decide which one they prefer.

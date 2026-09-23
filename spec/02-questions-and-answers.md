@@ -43,9 +43,10 @@ Claude noted that YAML wins when other tools must create or read the files.
 **Answer:** Keep both, and let users choose (I-06).
 **Led to:** BD-05
 
-### Q-07 · 2026-09-23 · OPEN · What was point 5?
+### Q-07 · 2026-09-23 · What was point 5?
 **Asked:** Your list of how the app should work stopped at "5.". What was it?
-**Answer:** *(open)*
+**Answer:** (2026-09-24) "Point 5 was the specification-driven development." So point 5 is the request recorded as I-07.
+**Led to:** BD-11
 
 ### Q-08 · 2026-09-23 · OPEN · Which tools does each sub-journey use?
 **Asked:** The example's tools (Contract editor, Notebook then PySpark, Cluster console) are placeholders Claude made up. Which tools does the team really use?
