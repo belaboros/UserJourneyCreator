@@ -61,3 +61,33 @@ Claude noted that YAML wins when other tools must create or read the files.
 
 Should they stay?
 **Answer:** *(open)*. They stay until you decide otherwise. See BD-07 and BD-08.
+
+### Q-10 · 2026-09-24 · OPEN · Which themes should ship?
+**Asked:** Claude showed 12 options in a gallery. Each one is applied to the real editor and flow diagram:
+- **Light, multi-color:** 01 Harbor (the current look), 03 Stone, 04 Vivid, 05 Pastel
+- **Light, single-color:** 06 Mono Ink, 07 Forest
+- **Dark, multi-color:** 02 Harbor Night (the current dark look), 08 Midnight, 09 High Contrast
+- **Dark, single-color:** 10 Graphite, 11 Blueprint, 12 Amber Terminal
+
+Which ones should Journeyline include?
+**Answer:** *(open)*
+
+### Q-11 · 2026-09-24 · OPEN · One theme for both editor and diagram, or separate choices?
+**Asked:** Should one choice style both the editor and the diagram? Or should they be chosen separately, for example a dark editor with a light diagram for slides?
+**Answer:** *(open)*
+
+### Q-12 · 2026-09-24 · OPEN · Where is the choice remembered?
+**Asked:**
+- **(a)** Per person, in their browser only.
+- **(b)** In the journey file, for example `theme Vivid` or `theme: Vivid`, so a diagram looks the same for everyone who opens it.
+- **(c)** Both. The file sets the diagram theme, and each person can override it for themselves.
+
+**Answer:** *(open)*
+
+### Q-13 · 2026-09-24 · OPEN · Follow the computer's light or dark mode?
+**Asked:** Should Journeyline switch between a light theme and its dark partner (such as Harbor and Harbor Night) when the operating system switches? Or should the chosen theme stay fixed?
+**Answer:** *(open)*
+
+### Q-14 · 2026-09-24 · OPEN · Which theme does Copy SVG use?
+**Asked:** Should the copied diagram use the theme on screen, or always a document-friendly light theme such as Harbor or Mono Ink?
+**Answer:** *(open)*

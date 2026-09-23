@@ -47,3 +47,7 @@ Example given with this idea:
 ### I-07 · 2026-09-23 · Work in a specification-driven way
 > Can I use you to work in an SDD (Specification-Driven Development) way?
 > Store extra files in the git repo: my high-level ideas, the questions you asked, my answers, the refined and more complete idea, the list of business decisions (with the alternatives and the reasoning, if there is any), and the list of architectural decisions (e.g. this is a single HTML file rather than a locally running server, because it is simpler and Chrome/Edge is OK for my users). Save all this valuable information into the UserJourneyCreator GitHub repo and use it next time I work on it with you.
+
+### I-08 · 2026-09-24 · Selectable color themes (first incremental feature)
+> Let's start the first incremental feature. Idea: the user can select from multiple color palettes/themes both for the text editor and for the diagrams.
+> Show me multiple light, dark, single-color and multi-color options to choose from.
