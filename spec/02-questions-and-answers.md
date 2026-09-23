@@ -62,7 +62,7 @@ Claude noted that YAML wins when other tools must create or read the files.
 Should they stay?
 **Answer:** *(open)*. They stay until you decide otherwise. See BD-07 and BD-08.
 
-### Q-10 · 2026-09-24 · OPEN · Which themes should ship?
+### Q-10 · 2026-09-24 · Which themes should ship?
 **Asked:** Claude showed 12 options in a gallery. Each one is applied to the real editor and flow diagram:
 - **Light, multi-color:** 01 Harbor (the current look), 03 Stone, 04 Vivid, 05 Pastel
 - **Light, single-color:** 06 Mono Ink, 07 Forest
@@ -70,7 +70,8 @@ Should they stay?
 - **Dark, single-color:** 10 Graphite, 11 Blueprint, 12 Amber Terminal
 
 Which ones should Journeyline include?
-**Answer:** *(open)*
+**Answer:** "I want to keep all the options." All 12 ship.
+**Led to:** BD-13 (to be written once the questions on how to select a theme are answered)
 
 ### Q-11 · 2026-09-24 · OPEN · One theme for both editor and diagram, or separate choices?
 **Asked:** Should one choice style both the editor and the diagram? Or should they be chosen separately, for example a dark editor with a light diagram for slides?
@@ -90,4 +91,16 @@ Which ones should Journeyline include?
 
 ### Q-14 · 2026-09-24 · OPEN · Which theme does Copy SVG use?
 **Asked:** Should the copied diagram use the theme on screen, or always a document-friendly light theme such as Harbor or Mono Ink?
+**Answer:** *(open)*
+
+### Q-15 · 2026-09-24 · OPEN · How does the user select a theme?
+**Asked by Bela.** Claude proposed:
+- a **Theme** button in the top bar that opens a picker with 12 tiles, grouped by light or dark and multi- or single-color
+- a live preview on hover or arrow keys, Enter to apply and Esc to go back
+- an **Apply to** choice: editor and diagram together, or each on its own
+- an optional "Follow my computer's dark mode" toggle
+- Ctrl+Shift+T to cycle through the themes
+- the choice saved per person in the browser
+
+Alternatives: a plain dropdown, or a `theme` line in the journey file (see Q-12). Claude asked Bela to confirm the picker, the editor and diagram split (Q-11), the theme line in the file (Q-12), the dark-mode toggle (Q-13) and Copy SVG (Q-14).
 **Answer:** *(open)*
