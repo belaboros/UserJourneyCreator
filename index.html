@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Journeyline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#E9EDF1; --panel:#FFFFFF; --panel-2:#F7F9FB; --ink:#17202B; --muted:#5A6573; --faint:#8B95A3;
+  --line:#D5DCE4; --line-soft:#E7EBF0; --accent:#0B6E8A; --accent-ink:#FFFFFF; --sel:rgba(11,110,138,.22);
+  --flow:#4F5A68; --warn:#B54708;
+  --pain:#C0412C; --gain:#22804E; --idea:#A86A12; --note:#5A6573;
+  --s1:#C0412C; --s2:#D27B26; --s3:#8B95A3; --s4:#3D9A6C; --s5:#1F7A48;
+  --t-kw:#0B6E8A; --t-sub:#9A3F12; --t-step:#0B6E8A; --t-gate:#6D3FC0; --t-score:#6D3FC0; --t-touch:#22804E; --t-com:#8B95A3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0D1216; --panel:#151B21; --panel-2:#11171C; --ink:#E3E9EF; --muted:#98A4B2; --faint:#6C7885;
+    --line:#29323C; --line-soft:#1F272F; --accent:#3FB4D2; --accent-ink:#081116; --sel:rgba(63,180,210,.28);
+    --flow:#8E9AA8; --warn:#F3A55B;
+    --pain:#EE7A62; --gain:#5DC98E; --idea:#E2B04E; --note:#A3AEBB;
+    --s1:#EE7A62; --s2:#EFA059; --s3:#7D8894; --s4:#59BE8A; --s5:#3FB277;
+    --t-kw:#5CC3DD; --t-sub:#F0A070; --t-step:#5CC3DD; --t-gate:#B79BF2; --t-score:#B79BF2; --t-touch:#5DC98E; --t-com:#6C7885;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0D1216; --panel:#151B21; --panel-2:#11171C; --ink:#E3E9EF; --muted:#98A4B2; --faint:#6C7885;
+  --line:#29323C; --line-soft:#1F272F; --accent:#3FB4D2; --accent-ink:#081116; --sel:rgba(63,180,210,.28);
+  --flow:#8E9AA8; --warn:#F3A55B;
+  --pain:#EE7A62; --gain:#5DC98E; --idea:#E2B04E; --note:#A3AEBB;
+  --s1:#EE7A62; --s2:#EFA059; --s3:#7D8894; --s4:#59BE8A; --s5:#3FB277;
+  --t-kw:#5CC3DD; --t-sub:#F0A070; --t-step:#5CC3DD; --t-gate:#B79BF2; --t-score:#B79BF2; --t-touch:#5DC98E; --t-com:#6C7885;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;font-size:14px}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+.app{height:100%;display:flex;flex-direction:column;gap:10px;padding-inline:16px;padding-block:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap}
+.brand{font-size:17px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.brand i{font-style:normal;color:var(--accent)}
+.file{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 220px}
+.file .name{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file .dirty{font-size:12px;color:var(--warn);white-space:nowrap}
+.chip{font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.actions{display:flex;gap:6px;flex-wrap:wrap;position:relative}
+.menu{position:absolute;top:calc(100% + 6px);left:0;z-index:5;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:4px;min-width:230px}
+.menu button{display:block;width:100%;text-align:left;background:none;border:0;border-radius:6px;padding:8px 10px;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.menu button:hover,.menu button:focus-visible{background:var(--panel-2);outline:none}
+.menu small{display:block;color:var(--muted);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11.5px}
+.work{flex:1;min-height:0;display:grid;grid-template-columns:var(--left,36%) 10px minmax(0,1fr)}
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.pane-head{display:flex;align-items:center;gap:6px;padding:7px 8px 7px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap;min-height:44px}
+.pane-head .label{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.pane-head .grow{margin-right:auto}
+.stats{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;margin-left:8px}
+.btn{font:500 12.5px 'IBM Plex Sans','Segoe UI',system-ui,sans-serif;padding:5px 10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;cursor:pointer;line-height:18px;white-space:nowrap}
+.btn:hover{border-color:var(--faint)}
+.btn[aria-pressed="true"]{background:var(--panel-2);border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.armed{border-color:var(--warn);color:var(--warn)}
+.btn:focus-visible,.divider:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.zoomval{min-width:44px;text-align:center;font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--muted)}
+.divider{cursor:col-resize;display:flex;align-items:center;justify-content:center;border-radius:4px}
+.divider::after{content:"";width:2px;height:36px;border-radius:2px;background:var(--line)}
+.divider:hover::after{background:var(--faint)}
+
+.help{border-bottom:1px solid var(--line);background:var(--panel);max-height:55%;overflow:auto;padding:10px 12px 12px}
+.help table{border-collapse:collapse;width:100%;font-size:12.5px}
+.help td{padding:4px 8px 4px 0;vertical-align:top;border-bottom:1px solid var(--line-soft)}
+.help td:first-child{font-family:'IBM Plex Mono',ui-monospace,monospace;white-space:pre;color:var(--t-kw);font-size:12px}
+.help td:last-child{color:var(--muted)}
+.help p{margin:8px 0 0;color:var(--muted);font-size:12.5px;max-width:62ch}
+.help code{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:var(--ink)}
+
+.editor{flex:1;min-height:0;display:flex;background:var(--panel-2);position:relative}
+.editor.drop::after{content:"Drop a .journey or .journey.yaml file to open it";position:absolute;inset:8px;border:2px dashed var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--panel);color:var(--accent);font-weight:600;opacity:.95}
+.gutter{width:42px;flex:none;overflow:hidden;border-right:1px solid var(--line-soft);font:12px/20px 'IBM Plex Mono',ui-monospace,monospace;color:var(--faint);text-align:right;user-select:none}
+.gutter div{padding-right:8px;height:20px}
+.gutter .warn{color:var(--pain);font-weight:500}
+.gutter .cur{color:var(--ink)}
+.code{position:relative;flex:1;min-width:0}
+.code pre,.code textarea{position:absolute;inset:0;margin:0;padding:12px 14px;font:13px/20px 'IBM Plex Mono',ui-monospace,monospace;white-space:pre;tab-size:2;border:0;letter-spacing:0;font-variant-ligatures:none}
+.code pre{pointer-events:none;overflow:hidden;color:var(--ink)}
+.code textarea{background:transparent;color:transparent;caret-color:var(--ink);resize:none;outline:none;overflow:auto;width:100%;height:100%}
+.code textarea::selection{background:var(--sel);color:transparent}
+.t-kw{color:var(--t-kw)} .t-sub{color:var(--t-sub)} .t-step{color:var(--t-step)} .t-gate{color:var(--t-gate)}
+.t-score{color:var(--t-score)} .t-touch{color:var(--t-touch)} .t-punct{color:var(--faint)} .t-com{color:var(--t-com);font-style:italic}
+.t-pain{color:var(--pain)} .t-gain{color:var(--gain)} .t-idea{color:var(--idea)} .t-note{color:var(--note)} .t-err{text-decoration:wavy underline var(--pain)}
+.issues{border-top:1px solid var(--line);max-height:30%;overflow:auto;background:var(--panel);font-size:12.5px}
+.issues button{display:flex;gap:10px;width:100%;text-align:left;background:none;border:0;padding:6px 12px;color:var(--ink);font:inherit;cursor:pointer;border-bottom:1px solid var(--line-soft)}
+.issues button:hover{background:var(--panel-2)}
+.issues .ln{font-family:'IBM Plex Mono',ui-monospace,monospace;color:var(--pain);min-width:56px;font-size:12px}
+
+.canvas{flex:1;min-height:0;overflow:auto;background:var(--panel)}
+.canvas svg{display:block}
+.canvas [data-line]{cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:9px 14px;border-radius:8px;font-size:13px;max-width:min(560px,calc(100% - 32px));box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:10}
+
+@media (max-width:760px){
+  .work{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(240px,42%) minmax(0,1fr);gap:10px}
+  .divider{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand">Journey<i>line</i></div>
+    <div class="file">
+      <span class="name" id="fileName">untitled.journey</span>
+      <span class="chip" id="formatChip">PlantUML-like</span>
+      <span class="dirty" id="dirty" hidden>● Unsaved changes</span>
+    </div>
+    <div class="actions">
+      <button class="btn" id="newBtn" aria-haspopup="true" aria-expanded="false">New</button>
+      <div class="menu" id="newMenu" role="menu" hidden>
+        <button role="menuitem" data-new="text">PlantUML-like journey<small>.journey</small></button>
+        <button role="menuitem" data-new="yaml">YAML journey<small>.journey.yaml</small></button>
+      </div>
+      <button class="btn" id="openBtn" title="Open (Ctrl+O)">Open</button>
+      <button class="btn" id="saveBtn" title="Save (Ctrl+S)">Save</button>
+      <button class="btn" id="saveAsBtn" title="Save as (Ctrl+Shift+S)">Save as</button>
+      <input type="file" id="fileInput" accept=".journey,.yaml,.yml,text/plain" hidden>
+    </div>
+  </header>
+  <main class="work" id="work">
+    <section class="pane" aria-label="Journey source">
+      <div class="pane-head">
+        <span class="label grow">Source</span>
+        <button class="btn" id="convertBtn">Convert to YAML</button>
+        <button class="btn" id="helpBtn" aria-pressed="false">Syntax</button>
+        <button class="btn" id="exampleBtn">Example</button>
+        <button class="btn" id="copyTextBtn">Copy</button>
+      </div>
+      <div class="help" id="help" hidden>
+        <div data-help="text">
+          <table>
+            <tr><td>title &lt;text&gt;</td><td>Name of the end-to-end journey</td></tr>
+            <tr><td>persona &lt;text&gt;</td><td>Who takes the journey</td></tr>
+            <tr><td>start &lt;text&gt;</td><td>Start event. It forks into all sub-journeys with an AND-gateway</td></tr>
+            <tr><td>sub &lt;name&gt; : &lt;tool&gt;</td><td>A sub-journey, drawn as its own top-to-bottom lane. The tool is optional</td></tr>
+            <tr><td>  - &lt;step&gt; : &lt;tag&gt;</td><td>A step in the lane. The tag (environment, channel) is optional</td></tr>
+            <tr><td>  - &lt;step&gt; : &lt;1-5&gt; : &lt;tag&gt;</td><td>The same step with an experience score (1 = bad, 5 = great)</td></tr>
+            <tr><td>  join &lt;gate step&gt;</td><td>AND-join. Every lane that names the same gate step must arrive before it starts. Then the lanes fork again</td></tr>
+            <tr><td>  after &lt;gate step&gt;</td><td>The lane starts only after that gate step, without joining it</td></tr>
+            <tr><td>    pain / gain / idea / note</td><td>Detail for the step, gate, start or end above</td></tr>
+            <tr><td>end &lt;text&gt;</td><td>End event. An AND-join waits for all lanes</td></tr>
+            <tr><td>' comment</td><td>Ignored, like in PlantUML</td></tr>
+          </table>
+          <p>Fields are separated by a colon with a space before it, so <code>Deploy: run tests : DEV</code> keeps "Deploy: run tests" as the step name. A <code>sub</code> indented under another <code>sub</code> becomes a section inside that lane.</p>
+        </div>
+        <div data-help="yaml" hidden>
+          <table>
+            <tr><td>title: &lt;text&gt;</td><td>Name of the end-to-end journey</td></tr>
+            <tr><td>persona: &lt;text&gt;</td><td>Who takes the journey</td></tr>
+            <tr><td>start: &lt;text&gt;</td><td>Start event. It forks into all sub-journeys</td></tr>
+            <tr><td>subJourneys:</td><td>The list of sub-journeys, each drawn as a lane</td></tr>
+            <tr><td>  - name: &lt;text&gt;
+    tool: &lt;text&gt;
+    flow:</td><td>One sub-journey. <code>tool</code> is optional. <code>flow</code> lists its steps and gates in order</td></tr>
+            <tr><td>      - step: &lt;text&gt;
+        tag: &lt;text&gt;
+        score: 1-5</td><td>A step. <code>tag</code> and <code>score</code> are optional. A plain <code>- Some step</code> also works</td></tr>
+            <tr><td>      - join: &lt;gate step&gt;</td><td>AND-join. Lanes that name the same gate step meet there, then fork again</td></tr>
+            <tr><td>      - after: &lt;gate step&gt;</td><td>The lane starts only after that gate step, without joining it</td></tr>
+            <tr><td>      - section: &lt;text&gt;</td><td>A labeled section inside the lane</td></tr>
+            <tr><td>        pain / gain / idea / note:</td><td>Detail on a step, gate, start or end. Text, or a list of texts</td></tr>
+            <tr><td>end: &lt;text&gt;</td><td>End event. An AND-join waits for all lanes</td></tr>
+            <tr><td># comment</td><td>Ignored</td></tr>
+          </table>
+          <p>For details on the start or end, write it as an object: <code>start:</code> followed by indented <code>name:</code> and <code>note:</code>.</p>
+        </div>
+        <p>Tab inserts two spaces. Click anything in the flow to jump to its line. Drop a file on the editor to open it.</p>
+      </div>
+      <div class="editor" id="editor">
+        <div class="gutter" aria-hidden="true"><div id="gutterInner"></div></div>
+        <div class="code">
+          <pre id="hl" aria-hidden="true"></pre>
+          <textarea id="src" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off" aria-label="Journey definition"></textarea>
+        </div>
+      </div>
+      <div class="issues" id="issues" hidden></div>
+    </section>
+    <div class="divider" id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes" tabindex="0"></div>
+    <section class="pane" aria-label="Journey flow">
+      <div class="pane-head">
+        <span class="label">Journey flow</span>
+        <span class="stats grow" id="stats"></span>
+        <button class="btn" id="zoomOut" aria-label="Zoom out">−</button>
+        <span class="zoomval" id="zoomVal">100%</span>
+        <button class="btn" id="zoomIn" aria-label="Zoom in">+</button>
+        <button class="btn" id="fitBtn">Fit</button>
+        <button class="btn primary" id="copySvgBtn">Copy SVG</button>
+      </div>
+      <div class="canvas" id="canvas"></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- js-yaml 4.1.0 (MIT), inlined so the app works offline as one file -->
+<script>
+/*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT */
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).jsyaml={})}(this,(function(e){"use strict";function t(e){return null==e}var n={isNothing:t,isObject:function(e){return"object"==typeof e&&null!==e},toArray:function(e){return Array.isArray(e)?e:t(e)?[]:[e]},repeat:function(e,t){var n,i="";for(n=0;n<t;n+=1)i+=e;return i},isNegativeZero:function(e){return 0===e&&Number.NEGATIVE_INFINITY===1/e},extend:function(e,t){var n,i,r,o;if(t)for(n=0,i=(o=Object.keys(t)).length;n<i;n+=1)e[r=o[n]]=t[r];return e}};function i(e,t){var n="",i=e.reason||"(unknown reason)";return e.mark?(e.mark.name&&(n+='in "'+e.mark.name+'" '),n+="("+(e.mark.line+1)+":"+(e.mark.column+1)+")",!t&&e.mark.snippet&&(n+="\n\n"+e.mark.snippet),i+" "+n):i}function r(e,t){Error.call(this),this.name="YAMLException",this.reason=e,this.mark=t,this.message=i(this,!1),Error.captureStackTrace?Error.captureStackTrace(this,this.constructor):this.stack=(new Error).stack||""}r.prototype=Object.create(Error.prototype),r.prototype.constructor=r,r.prototype.toString=function(e){return this.name+": "+i(this,e)};var o=r;function a(e,t,n,i,r){var o="",a="",l=Math.floor(r/2)-1;return i-t>l&&(t=i-l+(o=" ... ").length),n-i>l&&(n=i+l-(a=" ...").length),{str:o+e.slice(t,n).replace(/\t/g,"→")+a,pos:i-t+o.length}}function l(e,t){return n.repeat(" ",t-e.length)+e}var c=function(e,t){if(t=Object.create(t||null),!e.buffer)return null;t.maxLength||(t.maxLength=79),"number"!=typeof t.indent&&(t.indent=1),"number"!=typeof t.linesBefore&&(t.linesBefore=3),"number"!=typeof t.linesAfter&&(t.linesAfter=2);for(var i,r=/\r?\n|\r|\0/g,o=[0],c=[],s=-1;i=r.exec(e.buffer);)c.push(i.index),o.push(i.index+i[0].length),e.position<=i.index&&s<0&&(s=o.length-2);s<0&&(s=o.length-1);var u,p,f="",d=Math.min(e.line+t.linesAfter,c.length).toString().length,h=t.maxLength-(t.indent+d+3);for(u=1;u<=t.linesBefore&&!(s-u<0);u++)p=a(e.buffer,o[s-u],c[s-u],e.position-(o[s]-o[s-u]),h),f=n.repeat(" ",t.indent)+l((e.line-u+1).toString(),d)+" | "+p.str+"\n"+f;for(p=a(e.buffer,o[s],c[s],e.position,h),f+=n.repeat(" ",t.indent)+l((e.line+1).toString(),d)+" | "+p.str+"\n",f+=n.repeat("-",t.indent+d+3+p.pos)+"^\n",u=1;u<=t.linesAfter&&!(s+u>=c.length);u++)p=a(e.buffer,o[s+u],c[s+u],e.position-(o[s]-o[s+u]),h),f+=n.repeat(" ",t.indent)+l((e.line+u+1).toString(),d)+" | "+p.str+"\n";return f.replace(/\n$/,"")},s=["kind","multi","resolve","construct","instanceOf","predicate","represent","representName","defaultStyle","styleAliases"],u=["scalar","sequence","mapping"];var p=function(e,t){if(t=t||{},Object.keys(t).forEach((function(t){if(-1===s.indexOf(t))throw new o('Unknown option "'+t+'" is met in definition of "'+e+'" YAML type.')})),this.options=t,this.tag=e,this.kind=t.kind||null,this.resolve=t.resolve||function(){return!0},this.construct=t.construct||function(e){return e},this.instanceOf=t.instanceOf||null,this.predicate=t.predicate||null,this.represent=t.represent||null,this.representName=t.representName||null,this.defaultStyle=t.defaultStyle||null,this.multi=t.multi||!1,this.styleAliases=function(e){var t={};return null!==e&&Object.keys(e).forEach((function(n){e[n].forEach((function(e){t[String(e)]=n}))})),t}(t.styleAliases||null),-1===u.indexOf(this.kind))throw new o('Unknown kind "'+this.kind+'" is specified for "'+e+'" YAML type.')};function f(e,t){var n=[];return e[t].forEach((function(e){var t=n.length;n.forEach((function(n,i){n.tag===e.tag&&n.kind===e.kind&&n.multi===e.multi&&(t=i)})),n[t]=e})),n}function d(e){return this.extend(e)}d.prototype.extend=function(e){var t=[],n=[];if(e instanceof p)n.push(e);else if(Array.isArray(e))n=n.concat(e);else{if(!e||!Array.isArray(e.implicit)&&!Array.isArray(e.explicit))throw new o("Schema.extend argument should be a Type, [ Type ], or a schema definition ({ implicit: [...], explicit: [...] })");e.implicit&&(t=t.concat(e.implicit)),e.explicit&&(n=n.concat(e.explicit))}t.forEach((function(e){if(!(e instanceof p))throw new o("Specified list of YAML types (or a single Type object) contains a non-Type object.");if(e.loadKind&&"scalar"!==e.loadKind)throw new o("There is a non-scalar type in the implicit list of a schema. Implicit resolving of such types is not supported.");if(e.multi)throw new o("There is a multi type in the implicit list of a schema. Multi tags can only be listed as explicit.")})),n.forEach((function(e){if(!(e instanceof p))throw new o("Specified list of YAML types (or a single Type object) contains a non-Type object.")}));var i=Object.create(d.prototype);return i.implicit=(this.implicit||[]).concat(t),i.explicit=(this.explicit||[]).concat(n),i.compiledImplicit=f(i,"implicit"),i.compiledExplicit=f(i,"explicit"),i.compiledTypeMap=function(){var e,t,n={scalar:{},sequence:{},mapping:{},fallback:{},multi:{scalar:[],sequence:[],mapping:[],fallback:[]}};function i(e){e.multi?(n.multi[e.kind].push(e),n.multi.fallback.push(e)):n[e.kind][e.tag]=n.fallback[e.tag]=e}for(e=0,t=arguments.length;e<t;e+=1)arguments[e].forEach(i);return n}(i.compiledImplicit,i.compiledExplicit),i};var h=d,g=new p("tag:yaml.org,2002:str",{kind:"scalar",construct:function(e){return null!==e?e:""}}),m=new p("tag:yaml.org,2002:seq",{kind:"sequence",construct:function(e){return null!==e?e:[]}}),y=new p("tag:yaml.org,2002:map",{kind:"mapping",construct:function(e){return null!==e?e:{}}}),b=new h({explicit:[g,m,y]});var A=new p("tag:yaml.org,2002:null",{kind:"scalar",resolve:function(e){if(null===e)return!0;var t=e.length;return 1===t&&"~"===e||4===t&&("null"===e||"Null"===e||"NULL"===e)},construct:function(){return null},predicate:function(e){return null===e},represent:{canonical:function(){return"~"},lowercase:function(){return"null"},uppercase:function(){return"NULL"},camelcase:function(){return"Null"},empty:function(){return""}},defaultStyle:"lowercase"});var v=new p("tag:yaml.org,2002:bool",{kind:"scalar",resolve:function(e){if(null===e)return!1;var t=e.length;return 4===t&&("true"===e||"True"===e||"TRUE"===e)||5===t&&("false"===e||"False"===e||"FALSE"===e)},construct:function(e){return"true"===e||"True"===e||"TRUE"===e},predicate:function(e){return"[object Boolean]"===Object.prototype.toString.call(e)},represent:{lowercase:function(e){return e?"true":"false"},uppercase:function(e){return e?"TRUE":"FALSE"},camelcase:function(e){return e?"True":"False"}},defaultStyle:"lowercase"});function w(e){return 48<=e&&e<=55}function k(e){return 48<=e&&e<=57}var C=new p("tag:yaml.org,2002:int",{kind:"scalar",resolve:function(e){if(null===e)return!1;var t,n,i=e.length,r=0,o=!1;if(!i)return!1;if("-"!==(t=e[r])&&"+"!==t||(t=e[++r]),"0"===t){if(r+1===i)return!0;if("b"===(t=e[++r])){for(r++;r<i;r++)if("_"!==(t=e[r])){if("0"!==t&&"1"!==t)return!1;o=!0}return o&&"_"!==t}if("x"===t){for(r++;r<i;r++)if("_"!==(t=e[r])){if(!(48<=(n=e.charCodeAt(r))&&n<=57||65<=n&&n<=70||97<=n&&n<=102))return!1;o=!0}return o&&"_"!==t}if("o"===t){for(r++;r<i;r++)if("_"!==(t=e[r])){if(!w(e.charCodeAt(r)))return!1;o=!0}return o&&"_"!==t}}if("_"===t)return!1;for(;r<i;r++)if("_"!==(t=e[r])){if(!k(e.charCodeAt(r)))return!1;o=!0}return!(!o||"_"===t)},construct:function(e){var t,n=e,i=1;if(-1!==n.indexOf("_")&&(n=n.replace(/_/g,"")),"-"!==(t=n[0])&&"+"!==t||("-"===t&&(i=-1),t=(n=n.slice(1))[0]),"0"===n)return 0;if("0"===t){if("b"===n[1])return i*parseInt(n.slice(2),2);if("x"===n[1])return i*parseInt(n.slice(2),16);if("o"===n[1])return i*parseInt(n.slice(2),8)}return i*parseInt(n,10)},predicate:function(e){return"[object Number]"===Object.prototype.toString.call(e)&&e%1==0&&!n.isNegativeZero(e)},represent:{binary:function(e){return e>=0?"0b"+e.toString(2):"-0b"+e.toString(2).slice(1)},octal:function(e){return e>=0?"0o"+e.toString(8):"-0o"+e.toString(8).slice(1)},decimal:function(e){return e.toString(10)},hexadecimal:function(e){return e>=0?"0x"+e.toString(16).toUpperCase():"-0x"+e.toString(16).toUpperCase().slice(1)}},defaultStyle:"decimal",styleAliases:{binary:[2,"bin"],octal:[8,"oct"],decimal:[10,"dec"],hexadecimal:[16,"hex"]}}),x=new RegExp("^(?:[-+]?(?:[0-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");var I=/^[-+]?[0-9]+e/;var S=new p("tag:yaml.org,2002:float",{kind:"scalar",resolve:function(e){return null!==e&&!(!x.test(e)||"_"===e[e.length-1])},construct:function(e){var t,n;return n="-"===(t=e.replace(/_/g,"").toLowerCase())[0]?-1:1,"+-".indexOf(t[0])>=0&&(t=t.slice(1)),".inf"===t?1===n?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY:".nan"===t?NaN:n*parseFloat(t,10)},predicate:function(e){return"[object Number]"===Object.prototype.toString.call(e)&&(e%1!=0||n.isNegativeZero(e))},represent:function(e,t){var i;if(isNaN(e))switch(t){case"lowercase":return".nan";case"uppercase":return".NAN";case"camelcase":return".NaN"}else if(Number.POSITIVE_INFINITY===e)switch(t){case"lowercase":return".inf";case"uppercase":return".INF";case"camelcase":return".Inf"}else if(Number.NEGATIVE_INFINITY===e)switch(t){case"lowercase":return"-.inf";case"uppercase":return"-.INF";case"camelcase":return"-.Inf"}else if(n.isNegativeZero(e))return"-0.0";return i=e.toString(10),I.test(i)?i.replace("e",".e"):i},defaultStyle:"lowercase"}),O=b.extend({implicit:[A,v,C,S]}),j=O,T=new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"),N=new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$");var F=new p("tag:yaml.org,2002:timestamp",{kind:"scalar",resolve:function(e){return null!==e&&(null!==T.exec(e)||null!==N.exec(e))},construct:function(e){var t,n,i,r,o,a,l,c,s=0,u=null;if(null===(t=T.exec(e))&&(t=N.exec(e)),null===t)throw new Error("Date resolve error");if(n=+t[1],i=+t[2]-1,r=+t[3],!t[4])return new Date(Date.UTC(n,i,r));if(o=+t[4],a=+t[5],l=+t[6],t[7]){for(s=t[7].slice(0,3);s.length<3;)s+="0";s=+s}return t[9]&&(u=6e4*(60*+t[10]+ +(t[11]||0)),"-"===t[9]&&(u=-u)),c=new Date(Date.UTC(n,i,r,o,a,l,s)),u&&c.setTime(c.getTime()-u),c},instanceOf:Date,represent:function(e){return e.toISOString()}});var E=new p("tag:yaml.org,2002:merge",{kind:"scalar",resolve:function(e){return"<<"===e||null===e}}),M="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r";var L=new p("tag:yaml.org,2002:binary",{kind:"scalar",resolve:function(e){if(null===e)return!1;var t,n,i=0,r=e.length,o=M;for(n=0;n<r;n++)if(!((t=o.indexOf(e.charAt(n)))>64)){if(t<0)return!1;i+=6}return i%8==0},construct:function(e){var t,n,i=e.replace(/[\r\n=]/g,""),r=i.length,o=M,a=0,l=[];for(t=0;t<r;t++)t%4==0&&t&&(l.push(a>>16&255),l.push(a>>8&255),l.push(255&a)),a=a<<6|o.indexOf(i.charAt(t));return 0===(n=r%4*6)?(l.push(a>>16&255),l.push(a>>8&255),l.push(255&a)):18===n?(l.push(a>>10&255),l.push(a>>2&255)):12===n&&l.push(a>>4&255),new Uint8Array(l)},predicate:function(e){return"[object Uint8Array]"===Object.prototype.toString.call(e)},represent:function(e){var t,n,i="",r=0,o=e.length,a=M;for(t=0;t<o;t++)t%3==0&&t&&(i+=a[r>>18&63],i+=a[r>>12&63],i+=a[r>>6&63],i+=a[63&r]),r=(r<<8)+e[t];return 0===(n=o%3)?(i+=a[r>>18&63],i+=a[r>>12&63],i+=a[r>>6&63],i+=a[63&r]):2===n?(i+=a[r>>10&63],i+=a[r>>4&63],i+=a[r<<2&63],i+=a[64]):1===n&&(i+=a[r>>2&63],i+=a[r<<4&63],i+=a[64],i+=a[64]),i}}),_=Object.prototype.hasOwnProperty,D=Object.prototype.toString;var U=new p("tag:yaml.org,2002:omap",{kind:"sequence",resolve:function(e){if(null===e)return!0;var t,n,i,r,o,a=[],l=e;for(t=0,n=l.length;t<n;t+=1){if(i=l[t],o=!1,"[object Object]"!==D.call(i))return!1;for(r in i)if(_.call(i,r)){if(o)return!1;o=!0}if(!o)return!1;if(-1!==a.indexOf(r))return!1;a.push(r)}return!0},construct:function(e){return null!==e?e:[]}}),q=Object.prototype.toString;var Y=new p("tag:yaml.org,2002:pairs",{kind:"sequence",resolve:function(e){if(null===e)return!0;var t,n,i,r,o,a=e;for(o=new Array(a.length),t=0,n=a.length;t<n;t+=1){if(i=a[t],"[object Object]"!==q.call(i))return!1;if(1!==(r=Object.keys(i)).length)return!1;o[t]=[r[0],i[r[0]]]}return!0},construct:function(e){if(null===e)return[];var t,n,i,r,o,a=e;for(o=new Array(a.length),t=0,n=a.length;t<n;t+=1)i=a[t],r=Object.keys(i),o[t]=[r[0],i[r[0]]];return o}}),R=Object.prototype.hasOwnProperty;var B=new p("tag:yaml.org,2002:set",{kind:"mapping",resolve:function(e){if(null===e)return!0;var t,n=e;for(t in n)if(R.call(n,t)&&null!==n[t])return!1;return!0},construct:function(e){return null!==e?e:{}}}),K=j.extend({implicit:[F,E],explicit:[L,U,Y,B]}),P=Object.prototype.hasOwnProperty,W=/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/,H=/[\x85\u2028\u2029]/,$=/[,\[\]\{\}]/,G=/^(?:!|!!|![a-z\-]+!)$/i,V=/^(?:!|[^,\[\]\{\}])(?:%[0-9a-f]{2}|[0-9a-z\-#;\/\?:@&=\+\$,_\.!~\*'\(\)\[\]])*$/i;function Z(e){return Object.prototype.toString.call(e)}function J(e){return 10===e||13===e}function Q(e){return 9===e||32===e}function z(e){return 9===e||32===e||10===e||13===e}function X(e){return 44===e||91===e||93===e||123===e||125===e}function ee(e){var t;return 48<=e&&e<=57?e-48:97<=(t=32|e)&&t<=102?t-97+10:-1}function te(e){return 48===e?"\0":97===e?"":98===e?"\b":116===e||9===e?"\t":110===e?"\n":118===e?"\v":102===e?"\f":114===e?"\r":101===e?"":32===e?" ":34===e?'"':47===e?"/":92===e?"\\":78===e?"":95===e?" ":76===e?"\u2028":80===e?"\u2029":""}function ne(e){return e<=65535?String.fromCharCode(e):String.fromCharCode(55296+(e-65536>>10),56320+(e-65536&1023))}for(var ie=new Array(256),re=new Array(256),oe=0;oe<256;oe++)ie[oe]=te(oe)?1:0,re[oe]=te(oe);function ae(e,t){this.input=e,this.filename=t.filename||null,this.schema=t.schema||K,this.onWarning=t.onWarning||null,this.legacy=t.legacy||!1,this.json=t.json||!1,this.listener=t.listener||null,this.implicitTypes=this.schema.compiledImplicit,this.typeMap=this.schema.compiledTypeMap,this.length=e.length,this.position=0,this.line=0,this.lineStart=0,this.lineIndent=0,this.firstTabInLine=-1,this.documents=[]}function le(e,t){var n={name:e.filename,buffer:e.input.slice(0,-1),position:e.position,line:e.line,column:e.position-e.lineStart};return n.snippet=c(n),new o(t,n)}function ce(e,t){throw le(e,t)}function se(e,t){e.onWarning&&e.onWarning.call(null,le(e,t))}var ue={YAML:function(e,t,n){var i,r,o;null!==e.version&&ce(e,"duplication of %YAML directive"),1!==n.length&&ce(e,"YAML directive accepts exactly one argument"),null===(i=/^([0-9]+)\.([0-9]+)$/.exec(n[0]))&&ce(e,"ill-formed argument of the YAML directive"),r=parseInt(i[1],10),o=parseInt(i[2],10),1!==r&&ce(e,"unacceptable YAML version of the document"),e.version=n[0],e.checkLineBreaks=o<2,1!==o&&2!==o&&se(e,"unsupported YAML version of the document")},TAG:function(e,t,n){var i,r;2!==n.length&&ce(e,"TAG directive accepts exactly two arguments"),i=n[0],r=n[1],G.test(i)||ce(e,"ill-formed tag handle (first argument) of the TAG directive"),P.call(e.tagMap,i)&&ce(e,'there is a previously declared suffix for "'+i+'" tag handle'),V.test(r)||ce(e,"ill-formed tag prefix (second argument) of the TAG directive");try{r=decodeURIComponent(r)}catch(t){ce(e,"tag prefix is malformed: "+r)}e.tagMap[i]=r}};function pe(e,t,n,i){var r,o,a,l;if(t<n){if(l=e.input.slice(t,n),i)for(r=0,o=l.length;r<o;r+=1)9===(a=l.charCodeAt(r))||32<=a&&a<=1114111||ce(e,"expected valid JSON character");else W.test(l)&&ce(e,"the stream contains non-printable characters");e.result+=l}}function fe(e,t,i,r){var o,a,l,c;for(n.isObject(i)||ce(e,"cannot merge mappings; the provided source object is unacceptable"),l=0,c=(o=Object.keys(i)).length;l<c;l+=1)a=o[l],P.call(t,a)||(t[a]=i[a],r[a]=!0)}function de(e,t,n,i,r,o,a,l,c){var s,u;if(Array.isArray(r))for(s=0,u=(r=Array.prototype.slice.call(r)).length;s<u;s+=1)Array.isArray(r[s])&&ce(e,"nested arrays are not supported inside keys"),"object"==typeof r&&"[object Object]"===Z(r[s])&&(r[s]="[object Object]");if("object"==typeof r&&"[object Object]"===Z(r)&&(r="[object Object]"),r=String(r),null===t&&(t={}),"tag:yaml.org,2002:merge"===i)if(Array.isArray(o))for(s=0,u=o.length;s<u;s+=1)fe(e,t,o[s],n);else fe(e,t,o,n);else e.json||P.call(n,r)||!P.call(t,r)||(e.line=a||e.line,e.lineStart=l||e.lineStart,e.position=c||e.position,ce(e,"duplicated mapping key")),"__proto__"===r?Object.defineProperty(t,r,{configurable:!0,enumerable:!0,writable:!0,value:o}):t[r]=o,delete n[r];return t}function he(e){var t;10===(t=e.input.charCodeAt(e.position))?e.position++:13===t?(e.position++,10===e.input.charCodeAt(e.position)&&e.position++):ce(e,"a line break is expected"),e.line+=1,e.lineStart=e.position,e.firstTabInLine=-1}function ge(e,t,n){for(var i=0,r=e.input.charCodeAt(e.position);0!==r;){for(;Q(r);)9===r&&-1===e.firstTabInLine&&(e.firstTabInLine=e.position),r=e.input.charCodeAt(++e.position);if(t&&35===r)do{r=e.input.charCodeAt(++e.position)}while(10!==r&&13!==r&&0!==r);if(!J(r))break;for(he(e),r=e.input.charCodeAt(e.position),i++,e.lineIndent=0;32===r;)e.lineIndent++,r=e.input.charCodeAt(++e.position)}return-1!==n&&0!==i&&e.lineIndent<n&&se(e,"deficient indentation"),i}function me(e){var t,n=e.position;return!(45!==(t=e.input.charCodeAt(n))&&46!==t||t!==e.input.charCodeAt(n+1)||t!==e.input.charCodeAt(n+2)||(n+=3,0!==(t=e.input.charCodeAt(n))&&!z(t)))}function ye(e,t){1===t?e.result+=" ":t>1&&(e.result+=n.repeat("\n",t-1))}function be(e,t){var n,i,r=e.tag,o=e.anchor,a=[],l=!1;if(-1!==e.firstTabInLine)return!1;for(null!==e.anchor&&(e.anchorMap[e.anchor]=a),i=e.input.charCodeAt(e.position);0!==i&&(-1!==e.firstTabInLine&&(e.position=e.firstTabInLine,ce(e,"tab characters must not be used in indentation")),45===i)&&z(e.input.charCodeAt(e.position+1));)if(l=!0,e.position++,ge(e,!0,-1)&&e.lineIndent<=t)a.push(null),i=e.input.charCodeAt(e.position);else if(n=e.line,we(e,t,3,!1,!0),a.push(e.result),ge(e,!0,-1),i=e.input.charCodeAt(e.position),(e.line===n||e.lineIndent>t)&&0!==i)ce(e,"bad indentation of a sequence entry");else if(e.lineIndent<t)break;return!!l&&(e.tag=r,e.anchor=o,e.kind="sequence",e.result=a,!0)}function Ae(e){var t,n,i,r,o=!1,a=!1;if(33!==(r=e.input.charCodeAt(e.position)))return!1;if(null!==e.tag&&ce(e,"duplication of a tag property"),60===(r=e.input.charCodeAt(++e.position))?(o=!0,r=e.input.charCodeAt(++e.position)):33===r?(a=!0,n="!!",r=e.input.charCodeAt(++e.position)):n="!",t=e.position,o){do{r=e.input.charCodeAt(++e.position)}while(0!==r&&62!==r);e.position<e.length?(i=e.input.slice(t,e.position),r=e.input.charCodeAt(++e.position)):ce(e,"unexpected end of the stream within a verbatim tag")}else{for(;0!==r&&!z(r);)33===r&&(a?ce(e,"tag suffix cannot contain exclamation marks"):(n=e.input.slice(t-1,e.position+1),G.test(n)||ce(e,"named tag handle cannot contain such characters"),a=!0,t=e.position+1)),r=e.input.charCodeAt(++e.position);i=e.input.slice(t,e.position),$.test(i)&&ce(e,"tag suffix cannot contain flow indicator characters")}i&&!V.test(i)&&ce(e,"tag name cannot contain such characters: "+i);try{i=decodeURIComponent(i)}catch(t){ce(e,"tag name is malformed: "+i)}return o?e.tag=i:P.call(e.tagMap,n)?e.tag=e.tagMap[n]+i:"!"===n?e.tag="!"+i:"!!"===n?e.tag="tag:yaml.org,2002:"+i:ce(e,'undeclared tag handle "'+n+'"'),!0}function ve(e){var t,n;if(38!==(n=e.input.charCodeAt(e.position)))return!1;for(null!==e.anchor&&ce(e,"duplication of an anchor property"),n=e.input.charCodeAt(++e.position),t=e.position;0!==n&&!z(n)&&!X(n);)n=e.input.charCodeAt(++e.position);return e.position===t&&ce(e,"name of an anchor node must contain at least one character"),e.anchor=e.input.slice(t,e.position),!0}function we(e,t,i,r,o){var a,l,c,s,u,p,f,d,h,g=1,m=!1,y=!1;if(null!==e.listener&&e.listener("open",e),e.tag=null,e.anchor=null,e.kind=null,e.result=null,a=l=c=4===i||3===i,r&&ge(e,!0,-1)&&(m=!0,e.lineIndent>t?g=1:e.lineIndent===t?g=0:e.lineIndent<t&&(g=-1)),1===g)for(;Ae(e)||ve(e);)ge(e,!0,-1)?(m=!0,c=a,e.lineIndent>t?g=1:e.lineIndent===t?g=0:e.lineIndent<t&&(g=-1)):c=!1;if(c&&(c=m||o),1!==g&&4!==i||(d=1===i||2===i?t:t+1,h=e.position-e.lineStart,1===g?c&&(be(e,h)||function(e,t,n){var i,r,o,a,l,c,s,u=e.tag,p=e.anchor,f={},d=Object.create(null),h=null,g=null,m=null,y=!1,b=!1;if(-1!==e.firstTabInLine)return!1;for(null!==e.anchor&&(e.anchorMap[e.anchor]=f),s=e.input.charCodeAt(e.position);0!==s;){if(y||-1===e.firstTabInLine||(e.position=e.firstTabInLine,ce(e,"tab characters must not be used in indentation")),i=e.input.charCodeAt(e.position+1),o=e.line,63!==s&&58!==s||!z(i)){if(a=e.line,l=e.lineStart,c=e.position,!we(e,n,2,!1,!0))break;if(e.line===o){for(s=e.input.charCodeAt(e.position);Q(s);)s=e.input.charCodeAt(++e.position);if(58===s)z(s=e.input.charCodeAt(++e.position))||ce(e,"a whitespace character is expected after the key-value separator within a block mapping"),y&&(de(e,f,d,h,g,null,a,l,c),h=g=m=null),b=!0,y=!1,r=!1,h=e.tag,g=e.result;else{if(!b)return e.tag=u,e.anchor=p,!0;ce(e,"can not read an implicit mapping pair; a colon is missed")}}else{if(!b)return e.tag=u,e.anchor=p,!0;ce(e,"can not read a block mapping entry; a multiline key may not be an implicit key")}}else 63===s?(y&&(de(e,f,d,h,g,null,a,l,c),h=g=m=null),b=!0,y=!0,r=!0):y?(y=!1,r=!0):ce(e,"incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line"),e.position+=1,s=i;if((e.line===o||e.lineIndent>t)&&(y&&(a=e.line,l=e.lineStart,c=e.position),we(e,t,4,!0,r)&&(y?g=e.result:m=e.result),y||(de(e,f,d,h,g,m,a,l,c),h=g=m=null),ge(e,!0,-1),s=e.input.charCodeAt(e.position)),(e.line===o||e.lineIndent>t)&&0!==s)ce(e,"bad indentation of a mapping entry");else if(e.lineIndent<t)break}return y&&de(e,f,d,h,g,null,a,l,c),b&&(e.tag=u,e.anchor=p,e.kind="mapping",e.result=f),b}(e,h,d))||function(e,t){var n,i,r,o,a,l,c,s,u,p,f,d,h=!0,g=e.tag,m=e.anchor,y=Object.create(null);if(91===(d=e.input.charCodeAt(e.position)))a=93,s=!1,o=[];else{if(123!==d)return!1;a=125,s=!0,o={}}for(null!==e.anchor&&(e.anchorMap[e.anchor]=o),d=e.input.charCodeAt(++e.position);0!==d;){if(ge(e,!0,t),(d=e.input.charCodeAt(e.position))===a)return e.position++,e.tag=g,e.anchor=m,e.kind=s?"mapping":"sequence",e.result=o,!0;h?44===d&&ce(e,"expected the node content, but found ','"):ce(e,"missed comma between flow collection entries"),f=null,l=c=!1,63===d&&z(e.input.charCodeAt(e.position+1))&&(l=c=!0,e.position++,ge(e,!0,t)),n=e.line,i=e.lineStart,r=e.position,we(e,t,1,!1,!0),p=e.tag,u=e.result,ge(e,!0,t),d=e.input.charCodeAt(e.position),!c&&e.line!==n||58!==d||(l=!0,d=e.input.charCodeAt(++e.position),ge(e,!0,t),we(e,t,1,!1,!0),f=e.result),s?de(e,o,y,p,u,f,n,i,r):l?o.push(de(e,null,y,p,u,f,n,i,r)):o.push(u),ge(e,!0,t),44===(d=e.input.charCodeAt(e.position))?(h=!0,d=e.input.charCodeAt(++e.position)):h=!1}ce(e,"unexpected end of the stream within a flow collection")}(e,d)?y=!0:(l&&function(e,t){var i,r,o,a,l,c=1,s=!1,u=!1,p=t,f=0,d=!1;if(124===(a=e.input.charCodeAt(e.position)))r=!1;else{if(62!==a)return!1;r=!0}for(e.kind="scalar",e.result="";0!==a;)if(43===(a=e.input.charCodeAt(++e.position))||45===a)1===c?c=43===a?3:2:ce(e,"repeat of a chomping mode identifier");else{if(!((o=48<=(l=a)&&l<=57?l-48:-1)>=0))break;0===o?ce(e,"bad explicit indentation width of a block scalar; it cannot be less than one"):u?ce(e,"repeat of an indentation width identifier"):(p=t+o-1,u=!0)}if(Q(a)){do{a=e.input.charCodeAt(++e.position)}while(Q(a));if(35===a)do{a=e.input.charCodeAt(++e.position)}while(!J(a)&&0!==a)}for(;0!==a;){for(he(e),e.lineIndent=0,a=e.input.charCodeAt(e.position);(!u||e.lineIndent<p)&&32===a;)e.lineIndent++,a=e.input.charCodeAt(++e.position);if(!u&&e.lineIndent>p&&(p=e.lineIndent),J(a))f++;else{if(e.lineIndent<p){3===c?e.result+=n.repeat("\n",s?1+f:f):1===c&&s&&(e.result+="\n");break}for(r?Q(a)?(d=!0,e.result+=n.repeat("\n",s?1+f:f)):d?(d=!1,e.result+=n.repeat("\n",f+1)):0===f?s&&(e.result+=" "):e.result+=n.repeat("\n",f):e.result+=n.repeat("\n",s?1+f:f),s=!0,u=!0,f=0,i=e.position;!J(a)&&0!==a;)a=e.input.charCodeAt(++e.position);pe(e,i,e.position,!1)}}return!0}(e,d)||function(e,t){var n,i,r;if(39!==(n=e.input.charCodeAt(e.position)))return!1;for(e.kind="scalar",e.result="",e.position++,i=r=e.position;0!==(n=e.input.charCodeAt(e.position));)if(39===n){if(pe(e,i,e.position,!0),39!==(n=e.input.charCodeAt(++e.position)))return!0;i=e.position,e.position++,r=e.position}else J(n)?(pe(e,i,r,!0),ye(e,ge(e,!1,t)),i=r=e.position):e.position===e.lineStart&&me(e)?ce(e,"unexpected end of the document within a single quoted scalar"):(e.position++,r=e.position);ce(e,"unexpected end of the stream within a single quoted scalar")}(e,d)||function(e,t){var n,i,r,o,a,l,c;if(34!==(l=e.input.charCodeAt(e.position)))return!1;for(e.kind="scalar",e.result="",e.position++,n=i=e.position;0!==(l=e.input.charCodeAt(e.position));){if(34===l)return pe(e,n,e.position,!0),e.position++,!0;if(92===l){if(pe(e,n,e.position,!0),J(l=e.input.charCodeAt(++e.position)))ge(e,!1,t);else if(l<256&&ie[l])e.result+=re[l],e.position++;else if((a=120===(c=l)?2:117===c?4:85===c?8:0)>0){for(r=a,o=0;r>0;r--)(a=ee(l=e.input.charCodeAt(++e.position)))>=0?o=(o<<4)+a:ce(e,"expected hexadecimal character");e.result+=ne(o),e.position++}else ce(e,"unknown escape sequence");n=i=e.position}else J(l)?(pe(e,n,i,!0),ye(e,ge(e,!1,t)),n=i=e.position):e.position===e.lineStart&&me(e)?ce(e,"unexpected end of the document within a double quoted scalar"):(e.position++,i=e.position)}ce(e,"unexpected end of the stream within a double quoted scalar")}(e,d)?y=!0:!function(e){var t,n,i;if(42!==(i=e.input.charCodeAt(e.position)))return!1;for(i=e.input.charCodeAt(++e.position),t=e.position;0!==i&&!z(i)&&!X(i);)i=e.input.charCodeAt(++e.position);return e.position===t&&ce(e,"name of an alias node must contain at least one character"),n=e.input.slice(t,e.position),P.call(e.anchorMap,n)||ce(e,'unidentified alias "'+n+'"'),e.result=e.anchorMap[n],ge(e,!0,-1),!0}(e)?function(e,t,n){var i,r,o,a,l,c,s,u,p=e.kind,f=e.result;if(z(u=e.input.charCodeAt(e.position))||X(u)||35===u||38===u||42===u||33===u||124===u||62===u||39===u||34===u||37===u||64===u||96===u)return!1;if((63===u||45===u)&&(z(i=e.input.charCodeAt(e.position+1))||n&&X(i)))return!1;for(e.kind="scalar",e.result="",r=o=e.position,a=!1;0!==u;){if(58===u){if(z(i=e.input.charCodeAt(e.position+1))||n&&X(i))break}else if(35===u){if(z(e.input.charCodeAt(e.position-1)))break}else{if(e.position===e.lineStart&&me(e)||n&&X(u))break;if(J(u)){if(l=e.line,c=e.lineStart,s=e.lineIndent,ge(e,!1,-1),e.lineIndent>=t){a=!0,u=e.input.charCodeAt(e.position);continue}e.position=o,e.line=l,e.lineStart=c,e.lineIndent=s;break}}a&&(pe(e,r,o,!1),ye(e,e.line-l),r=o=e.position,a=!1),Q(u)||(o=e.position+1),u=e.input.charCodeAt(++e.position)}return pe(e,r,o,!1),!!e.result||(e.kind=p,e.result=f,!1)}(e,d,1===i)&&(y=!0,null===e.tag&&(e.tag="?")):(y=!0,null===e.tag&&null===e.anchor||ce(e,"alias node should not have any properties")),null!==e.anchor&&(e.anchorMap[e.anchor]=e.result)):0===g&&(y=c&&be(e,h))),null===e.tag)null!==e.anchor&&(e.anchorMap[e.anchor]=e.result);else if("?"===e.tag){for(null!==e.result&&"scalar"!==e.kind&&ce(e,'unacceptable node kind for !<?> tag; it should be "scalar", not "'+e.kind+'"'),s=0,u=e.implicitTypes.length;s<u;s+=1)if((f=e.implicitTypes[s]).resolve(e.result)){e.result=f.construct(e.result),e.tag=f.tag,null!==e.anchor&&(e.anchorMap[e.anchor]=e.result);break}}else if("!"!==e.tag){if(P.call(e.typeMap[e.kind||"fallback"],e.tag))f=e.typeMap[e.kind||"fallback"][e.tag];else for(f=null,s=0,u=(p=e.typeMap.multi[e.kind||"fallback"]).length;s<u;s+=1)if(e.tag.slice(0,p[s].tag.length)===p[s].tag){f=p[s];break}f||ce(e,"unknown tag !<"+e.tag+">"),null!==e.result&&f.kind!==e.kind&&ce(e,"unacceptable node kind for !<"+e.tag+'> tag; it should be "'+f.kind+'", not "'+e.kind+'"'),f.resolve(e.result,e.tag)?(e.result=f.construct(e.result,e.tag),null!==e.anchor&&(e.anchorMap[e.anchor]=e.result)):ce(e,"cannot resolve a node with !<"+e.tag+"> explicit tag")}return null!==e.listener&&e.listener("close",e),null!==e.tag||null!==e.anchor||y}function ke(e){var t,n,i,r,o=e.position,a=!1;for(e.version=null,e.checkLineBreaks=e.legacy,e.tagMap=Object.create(null),e.anchorMap=Object.create(null);0!==(r=e.input.charCodeAt(e.position))&&(ge(e,!0,-1),r=e.input.charCodeAt(e.position),!(e.lineIndent>0||37!==r));){for(a=!0,r=e.input.charCodeAt(++e.position),t=e.position;0!==r&&!z(r);)r=e.input.charCodeAt(++e.position);for(i=[],(n=e.input.slice(t,e.position)).length<1&&ce(e,"directive name must not be less than one character in length");0!==r;){for(;Q(r);)r=e.input.charCodeAt(++e.position);if(35===r){do{r=e.input.charCodeAt(++e.position)}while(0!==r&&!J(r));break}if(J(r))break;for(t=e.position;0!==r&&!z(r);)r=e.input.charCodeAt(++e.position);i.push(e.input.slice(t,e.position))}0!==r&&he(e),P.call(ue,n)?ue[n](e,n,i):se(e,'unknown document directive "'+n+'"')}ge(e,!0,-1),0===e.lineIndent&&45===e.input.charCodeAt(e.position)&&45===e.input.charCodeAt(e.position+1)&&45===e.input.charCodeAt(e.position+2)?(e.position+=3,ge(e,!0,-1)):a&&ce(e,"directives end mark is expected"),we(e,e.lineIndent-1,4,!1,!0),ge(e,!0,-1),e.checkLineBreaks&&H.test(e.input.slice(o,e.position))&&se(e,"non-ASCII line breaks are interpreted as content"),e.documents.push(e.result),e.position===e.lineStart&&me(e)?46===e.input.charCodeAt(e.position)&&(e.position+=3,ge(e,!0,-1)):e.position<e.length-1&&ce(e,"end of the stream or a document separator is expected")}function Ce(e,t){t=t||{},0!==(e=String(e)).length&&(10!==e.charCodeAt(e.length-1)&&13!==e.charCodeAt(e.length-1)&&(e+="\n"),65279===e.charCodeAt(0)&&(e=e.slice(1)));var n=new ae(e,t),i=e.indexOf("\0");for(-1!==i&&(n.position=i,ce(n,"null byte is not allowed in input")),n.input+="\0";32===n.input.charCodeAt(n.position);)n.lineIndent+=1,n.position+=1;for(;n.position<n.length-1;)ke(n);return n.documents}var xe={loadAll:function(e,t,n){null!==t&&"object"==typeof t&&void 0===n&&(n=t,t=null);var i=Ce(e,n);if("function"!=typeof t)return i;for(var r=0,o=i.length;r<o;r+=1)t(i[r])},load:function(e,t){var n=Ce(e,t);if(0!==n.length){if(1===n.length)return n[0];throw new o("expected a single document in the stream, but found more")}}},Ie=Object.prototype.toString,Se=Object.prototype.hasOwnProperty,Oe=65279,je={0:"\\0",7:"\\a",8:"\\b",9:"\\t",10:"\\n",11:"\\v",12:"\\f",13:"\\r",27:"\\e",34:'\\"',92:"\\\\",133:"\\N",160:"\\_",8232:"\\L",8233:"\\P"},Te=["y","Y","yes","Yes","YES","on","On","ON","n","N","no","No","NO","off","Off","OFF"],Ne=/^[-+]?[0-9_]+(?::[0-9_]+)+(?:\.[0-9_]*)?$/;function Fe(e){var t,i,r;if(t=e.toString(16).toUpperCase(),e<=255)i="x",r=2;else if(e<=65535)i="u",r=4;else{if(!(e<=4294967295))throw new o("code point within a string may not be greater than 0xFFFFFFFF");i="U",r=8}return"\\"+i+n.repeat("0",r-t.length)+t}function Ee(e){this.schema=e.schema||K,this.indent=Math.max(1,e.indent||2),this.noArrayIndent=e.noArrayIndent||!1,this.skipInvalid=e.skipInvalid||!1,this.flowLevel=n.isNothing(e.flowLevel)?-1:e.flowLevel,this.styleMap=function(e,t){var n,i,r,o,a,l,c;if(null===t)return{};for(n={},r=0,o=(i=Object.keys(t)).length;r<o;r+=1)a=i[r],l=String(t[a]),"!!"===a.slice(0,2)&&(a="tag:yaml.org,2002:"+a.slice(2)),(c=e.compiledTypeMap.fallback[a])&&Se.call(c.styleAliases,l)&&(l=c.styleAliases[l]),n[a]=l;return n}(this.schema,e.styles||null),this.sortKeys=e.sortKeys||!1,this.lineWidth=e.lineWidth||80,this.noRefs=e.noRefs||!1,this.noCompatMode=e.noCompatMode||!1,this.condenseFlow=e.condenseFlow||!1,this.quotingType='"'===e.quotingType?2:1,this.forceQuotes=e.forceQuotes||!1,this.replacer="function"==typeof e.replacer?e.replacer:null,this.implicitTypes=this.schema.compiledImplicit,this.explicitTypes=this.schema.compiledExplicit,this.tag=null,this.result="",this.duplicates=[],this.usedDuplicates=null}function Me(e,t){for(var i,r=n.repeat(" ",t),o=0,a=-1,l="",c=e.length;o<c;)-1===(a=e.indexOf("\n",o))?(i=e.slice(o),o=c):(i=e.slice(o,a+1),o=a+1),i.length&&"\n"!==i&&(l+=r),l+=i;return l}function Le(e,t){return"\n"+n.repeat(" ",e.indent*t)}function _e(e){return 32===e||9===e}function De(e){return 32<=e&&e<=126||161<=e&&e<=55295&&8232!==e&&8233!==e||57344<=e&&e<=65533&&e!==Oe||65536<=e&&e<=1114111}function Ue(e){return De(e)&&e!==Oe&&13!==e&&10!==e}function qe(e,t,n){var i=Ue(e),r=i&&!_e(e);return(n?i:i&&44!==e&&91!==e&&93!==e&&123!==e&&125!==e)&&35!==e&&!(58===t&&!r)||Ue(t)&&!_e(t)&&35===e||58===t&&r}function Ye(e,t){var n,i=e.charCodeAt(t);return i>=55296&&i<=56319&&t+1<e.length&&(n=e.charCodeAt(t+1))>=56320&&n<=57343?1024*(i-55296)+n-56320+65536:i}function Re(e){return/^\n* /.test(e)}function Be(e,t,n,i,r,o,a,l){var c,s,u=0,p=null,f=!1,d=!1,h=-1!==i,g=-1,m=De(s=Ye(e,0))&&s!==Oe&&!_e(s)&&45!==s&&63!==s&&58!==s&&44!==s&&91!==s&&93!==s&&123!==s&&125!==s&&35!==s&&38!==s&&42!==s&&33!==s&&124!==s&&61!==s&&62!==s&&39!==s&&34!==s&&37!==s&&64!==s&&96!==s&&function(e){return!_e(e)&&58!==e}(Ye(e,e.length-1));if(t||a)for(c=0;c<e.length;u>=65536?c+=2:c++){if(!De(u=Ye(e,c)))return 5;m=m&&qe(u,p,l),p=u}else{for(c=0;c<e.length;u>=65536?c+=2:c++){if(10===(u=Ye(e,c)))f=!0,h&&(d=d||c-g-1>i&&" "!==e[g+1],g=c);else if(!De(u))return 5;m=m&&qe(u,p,l),p=u}d=d||h&&c-g-1>i&&" "!==e[g+1]}return f||d?n>9&&Re(e)?5:a?2===o?5:2:d?4:3:!m||a||r(e)?2===o?5:2:1}function Ke(e,t,n,i,r){e.dump=function(){if(0===t.length)return 2===e.quotingType?'""':"''";if(!e.noCompatMode&&(-1!==Te.indexOf(t)||Ne.test(t)))return 2===e.quotingType?'"'+t+'"':"'"+t+"'";var a=e.indent*Math.max(1,n),l=-1===e.lineWidth?-1:Math.max(Math.min(e.lineWidth,40),e.lineWidth-a),c=i||e.flowLevel>-1&&n>=e.flowLevel;switch(Be(t,c,e.indent,l,(function(t){return function(e,t){var n,i;for(n=0,i=e.implicitTypes.length;n<i;n+=1)if(e.implicitTypes[n].resolve(t))return!0;return!1}(e,t)}),e.quotingType,e.forceQuotes&&!i,r)){case 1:return t;case 2:return"'"+t.replace(/'/g,"''")+"'";case 3:return"|"+Pe(t,e.indent)+We(Me(t,a));case 4:return">"+Pe(t,e.indent)+We(Me(function(e,t){var n,i,r=/(\n+)([^\n]*)/g,o=(l=e.indexOf("\n"),l=-1!==l?l:e.length,r.lastIndex=l,He(e.slice(0,l),t)),a="\n"===e[0]||" "===e[0];var l;for(;i=r.exec(e);){var c=i[1],s=i[2];n=" "===s[0],o+=c+(a||n||""===s?"":"\n")+He(s,t),a=n}return o}(t,l),a));case 5:return'"'+function(e){for(var t,n="",i=0,r=0;r<e.length;i>=65536?r+=2:r++)i=Ye(e,r),!(t=je[i])&&De(i)?(n+=e[r],i>=65536&&(n+=e[r+1])):n+=t||Fe(i);return n}(t)+'"';default:throw new o("impossible error: invalid scalar style")}}()}function Pe(e,t){var n=Re(e)?String(t):"",i="\n"===e[e.length-1];return n+(i&&("\n"===e[e.length-2]||"\n"===e)?"+":i?"":"-")+"\n"}function We(e){return"\n"===e[e.length-1]?e.slice(0,-1):e}function He(e,t){if(""===e||" "===e[0])return e;for(var n,i,r=/ [^ ]/g,o=0,a=0,l=0,c="";n=r.exec(e);)(l=n.index)-o>t&&(i=a>o?a:l,c+="\n"+e.slice(o,i),o=i+1),a=l;return c+="\n",e.length-o>t&&a>o?c+=e.slice(o,a)+"\n"+e.slice(a+1):c+=e.slice(o),c.slice(1)}function $e(e,t,n,i){var r,o,a,l="",c=e.tag;for(r=0,o=n.length;r<o;r+=1)a=n[r],e.replacer&&(a=e.replacer.call(n,String(r),a)),(Ve(e,t+1,a,!0,!0,!1,!0)||void 0===a&&Ve(e,t+1,null,!0,!0,!1,!0))&&(i&&""===l||(l+=Le(e,t)),e.dump&&10===e.dump.charCodeAt(0)?l+="-":l+="- ",l+=e.dump);e.tag=c,e.dump=l||"[]"}function Ge(e,t,n){var i,r,a,l,c,s;for(a=0,l=(r=n?e.explicitTypes:e.implicitTypes).length;a<l;a+=1)if(((c=r[a]).instanceOf||c.predicate)&&(!c.instanceOf||"object"==typeof t&&t instanceof c.instanceOf)&&(!c.predicate||c.predicate(t))){if(n?c.multi&&c.representName?e.tag=c.representName(t):e.tag=c.tag:e.tag="?",c.represent){if(s=e.styleMap[c.tag]||c.defaultStyle,"[object Function]"===Ie.call(c.represent))i=c.represent(t,s);else{if(!Se.call(c.represent,s))throw new o("!<"+c.tag+'> tag resolver accepts not "'+s+'" style');i=c.represent[s](t,s)}e.dump=i}return!0}return!1}function Ve(e,t,n,i,r,a,l){e.tag=null,e.dump=n,Ge(e,n,!1)||Ge(e,n,!0);var c,s=Ie.call(e.dump),u=i;i&&(i=e.flowLevel<0||e.flowLevel>t);var p,f,d="[object Object]"===s||"[object Array]"===s;if(d&&(f=-1!==(p=e.duplicates.indexOf(n))),(null!==e.tag&&"?"!==e.tag||f||2!==e.indent&&t>0)&&(r=!1),f&&e.usedDuplicates[p])e.dump="*ref_"+p;else{if(d&&f&&!e.usedDuplicates[p]&&(e.usedDuplicates[p]=!0),"[object Object]"===s)i&&0!==Object.keys(e.dump).length?(!function(e,t,n,i){var r,a,l,c,s,u,p="",f=e.tag,d=Object.keys(n);if(!0===e.sortKeys)d.sort();else if("function"==typeof e.sortKeys)d.sort(e.sortKeys);else if(e.sortKeys)throw new o("sortKeys must be a boolean or a function");for(r=0,a=d.length;r<a;r+=1)u="",i&&""===p||(u+=Le(e,t)),c=n[l=d[r]],e.replacer&&(c=e.replacer.call(n,l,c)),Ve(e,t+1,l,!0,!0,!0)&&((s=null!==e.tag&&"?"!==e.tag||e.dump&&e.dump.length>1024)&&(e.dump&&10===e.dump.charCodeAt(0)?u+="?":u+="? "),u+=e.dump,s&&(u+=Le(e,t)),Ve(e,t+1,c,!0,s)&&(e.dump&&10===e.dump.charCodeAt(0)?u+=":":u+=": ",p+=u+=e.dump));e.tag=f,e.dump=p||"{}"}(e,t,e.dump,r),f&&(e.dump="&ref_"+p+e.dump)):(!function(e,t,n){var i,r,o,a,l,c="",s=e.tag,u=Object.keys(n);for(i=0,r=u.length;i<r;i+=1)l="",""!==c&&(l+=", "),e.condenseFlow&&(l+='"'),a=n[o=u[i]],e.replacer&&(a=e.replacer.call(n,o,a)),Ve(e,t,o,!1,!1)&&(e.dump.length>1024&&(l+="? "),l+=e.dump+(e.condenseFlow?'"':"")+":"+(e.condenseFlow?"":" "),Ve(e,t,a,!1,!1)&&(c+=l+=e.dump));e.tag=s,e.dump="{"+c+"}"}(e,t,e.dump),f&&(e.dump="&ref_"+p+" "+e.dump));else if("[object Array]"===s)i&&0!==e.dump.length?(e.noArrayIndent&&!l&&t>0?$e(e,t-1,e.dump,r):$e(e,t,e.dump,r),f&&(e.dump="&ref_"+p+e.dump)):(!function(e,t,n){var i,r,o,a="",l=e.tag;for(i=0,r=n.length;i<r;i+=1)o=n[i],e.replacer&&(o=e.replacer.call(n,String(i),o)),(Ve(e,t,o,!1,!1)||void 0===o&&Ve(e,t,null,!1,!1))&&(""!==a&&(a+=","+(e.condenseFlow?"":" ")),a+=e.dump);e.tag=l,e.dump="["+a+"]"}(e,t,e.dump),f&&(e.dump="&ref_"+p+" "+e.dump));else{if("[object String]"!==s){if("[object Undefined]"===s)return!1;if(e.skipInvalid)return!1;throw new o("unacceptable kind of an object to dump "+s)}"?"!==e.tag&&Ke(e,e.dump,t,a,u)}null!==e.tag&&"?"!==e.tag&&(c=encodeURI("!"===e.tag[0]?e.tag.slice(1):e.tag).replace(/!/g,"%21"),c="!"===e.tag[0]?"!"+c:"tag:yaml.org,2002:"===c.slice(0,18)?"!!"+c.slice(18):"!<"+c+">",e.dump=c+" "+e.dump)}return!0}function Ze(e,t){var n,i,r=[],o=[];for(Je(e,r,o),n=0,i=o.length;n<i;n+=1)t.duplicates.push(r[o[n]]);t.usedDuplicates=new Array(i)}function Je(e,t,n){var i,r,o;if(null!==e&&"object"==typeof e)if(-1!==(r=t.indexOf(e)))-1===n.indexOf(r)&&n.push(r);else if(t.push(e),Array.isArray(e))for(r=0,o=e.length;r<o;r+=1)Je(e[r],t,n);else for(r=0,o=(i=Object.keys(e)).length;r<o;r+=1)Je(e[i[r]],t,n)}function Qe(e,t){return function(){throw new Error("Function yaml."+e+" is removed in js-yaml 4. Use yaml."+t+" instead, which is now safe by default.")}}var ze=p,Xe=h,et=b,tt=O,nt=j,it=K,rt=xe.load,ot=xe.loadAll,at={dump:function(e,t){var n=new Ee(t=t||{});n.noRefs||Ze(e,n);var i=e;return n.replacer&&(i=n.replacer.call({"":i},"",i)),Ve(n,0,i,!0,!0)?n.dump+"\n":""}}.dump,lt=o,ct={binary:L,float:S,map:y,null:A,pairs:Y,set:B,timestamp:F,bool:v,int:C,merge:E,omap:U,seq:m,str:g},st=Qe("safeLoad","load"),ut=Qe("safeLoadAll","loadAll"),pt=Qe("safeDump","dump"),ft={Type:ze,Schema:Xe,FAILSAFE_SCHEMA:et,JSON_SCHEMA:tt,CORE_SCHEMA:nt,DEFAULT_SCHEMA:it,load:rt,loadAll:ot,dump:at,YAMLException:lt,types:ct,safeLoad:st,safeLoadAll:ut,safeDump:pt};e.CORE_SCHEMA=nt,e.DEFAULT_SCHEMA=it,e.FAILSAFE_SCHEMA=et,e.JSON_SCHEMA=tt,e.Schema=Xe,e.Type=ze,e.YAMLException=lt,e.default=ft,e.dump=at,e.load=rt,e.loadAll=ot,e.safeDump=pt,e.safeLoad=st,e.safeLoadAll=ut,e.types=ct,Object.defineProperty(e,"__esModule",{value:!0})}));
+</script>
+<script>
+const SAMPLE_TEXT = `@startjourney
+title Create a data product
+persona Data product team · one team, three resources, mostly in parallel
+
+start Team decides to create a data product
+
+sub Data contract : Contract editor
+  - Create candidate data contract : EXP
+  - Register candidate data contract to the catalog : EXP
+  join Product approval
+  - Promote data contract : DEV
+  - Add data quality rules : DEV
+  - Pass contract tests : DEV
+  join Product review
+  - Promote data contract : ACC
+  - Pass end-to-end integration tests : ACC
+  - Pass end-to-end UAT tests : ACC
+  join Final approval
+  - Promote data contract : PRD
+
+sub Data pipeline : Notebook, then PySpark
+  - Create data pipeline in a notebook : EXP
+  - Deploy and run the pipeline on the compute cluster : EXP
+  - Pass functional tests : EXP
+    note Generated table complies with the data contract
+  join Product approval
+  - Promote data pipeline : DEV
+  - Reimplement the business logic from notebook to PySpark : DEV
+  - Implement unit tests : DEV
+  join Product review
+  - Promote data pipeline : ACC
+  - Pass end-to-end integration tests : ACC
+  - Pass end-to-end UAT tests : ACC
+  join Final approval
+  - Promote data pipeline : PRD
+
+sub Compute cluster : Cluster console
+  - Create a compute cluster visually : EXP
+  join Product approval
+  - Migrate the compute cluster : DEV
+  - Optimize and reconfigure for cost and performance : DEV
+  join Product review
+  - Migrate the compute cluster : ACC
+  - Optimize and reconfigure for cost and performance : ACC
+  join Final approval
+  - Migrate the compute cluster : PRD
+
+end Data product is live in PRD
+@endjourney
+`;
+const BLANK_TEXT = `title New journey
+persona Who takes the journey
+
+start The journey begins
+
+sub First sub-journey
+  - First step
+
+sub Second sub-journey
+  - First step
+
+end The journey is done
+`;
+
+const $ = id => document.getElementById(id);
+const src = $('src'), hl = $('hl'), gutterInner = $('gutterInner'), canvas = $('canvas');
+const DRAFT = 'journeyline-draft', SPLIT = 'journeyline-split';
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ======================================================================
+   Journey model. Both file formats are parsed into the same model:
+   doc = {title, persona, start, end, lanes[{name, tool, line, items[]}],
+          gates[], steps[], order[], warnings[{line, msg}]}
+   ====================================================================== */
+const DETAIL_KW = ['pain','gain','idea','note'], GATE_KW = ['join','after'], SUB_KW = ['sub','stage'];
+function newItem(ln){ return {name:'', score:null, tag:'', line:ln, end:ln, pain:[], gain:[], idea:[], note:[]}; }
+function clampScore(raw, ln, warn){
+  const s = Math.round(Number(raw));
+  if (!Number.isFinite(s)){ warn(ln, `Score "${raw}" is not a number from 1 to 5`); return null; }
+  if (s < 1 || s > 5){ const c = Math.min(5, Math.max(1, s)); warn(ln, `Score ${raw} is outside 1–5, drawn as ${c}`); return c; }
+  return s;
+}
+function Builder(){
+  const doc = {title:'', persona:'', start:null, end:null, lanes:[], gates:[], steps:[], warnings:[]};
+  const gateMap = new Map();
+  const warn = (line, msg) => doc.warnings.push({line, msg});
+  return {
+    doc, warn,
+    event(kind, o){
+      if (!o.name) o.name = kind === 'start' ? 'Start' : 'End';
+      if (doc[kind]) warn(o.line, `There is already a "${kind}" on line ${doc[kind].line}. This one replaces it`);
+      doc[kind] = o; return {obj:o, rng:o};
+    },
+    lane(name, tool, line){
+      if (!name) warn(line, 'Give the sub-journey a name');
+      const l = {name: name || 'Untitled', tool: tool || '', line, end: line, items:[], idx: doc.lanes.length};
+      doc.lanes.push(l); return l;
+    },
+    section(l, name, line){ const s = {type:'section', name: name || 'Section', line, end: line}; l.items.push(s); return s; },
+    step(l, o){
+      if (!o.name){ warn(o.line, 'The step has no text'); o.name = 'Unnamed step'; }
+      o.type = 'step'; o.lane = l.idx; l.items.push(o); doc.steps.push(o); return {obj:o, rng:o};
+    },
+    ref(l, kw, o){
+      if (!o.name){ warn(o.line, `Name the gate step, for example: ${kw} Product approval`); return null; }
+      const key = o.name.toLowerCase();
+      let g = gateMap.get(key);
+      if (!g){ g = Object.assign(newItem(o.line), {name: o.name, key, refs:[], joins:new Set(), afters:new Set()}); gateMap.set(key, g); doc.gates.push(g); }
+      if (o.tag && !g.tag) g.tag = o.tag;
+      if (o.score && !g.score) g.score = o.score;
+      DETAIL_KW.forEach(k => g[k].push(...o[k]));
+      if (g.joins.has(l.idx) || g.afters.has(l.idx)){ warn(o.line, `"${l.name}" already refers to "${g.name}"`); return null; }
+      (kw === 'join' ? g.joins : g.afters).add(l.idx);
+      const ref = {type: kw, gate: g, line: o.line, end: o.line};
+      g.refs.push(ref); l.items.push(ref);
+      return {obj: g, rng: ref};
+    },
+    finish(){
+      doc.gates.forEach(g => { if (!g.joins.size) g.refs.forEach(r => warn(r.line, `Nothing joins "${g.name}", so no lane waits for it. Add a join for it to at least one sub-journey`)); });
+      doc.order = orderGates(doc, warn);
+      return doc;
+    }
+  };
+}
+function orderGates(doc, warn){
+  const out = new Map(doc.gates.map(g => [g, new Set()])), indeg = new Map(doc.gates.map(g => [g, 0]));
+  for (const l of doc.lanes){
+    const seq = l.items.filter(it => it.gate).map(it => it.gate);
+    for (let i = 0; i + 1 < seq.length; i++){
+      const a = seq[i], b = seq[i+1];
+      if (a !== b && !out.get(a).has(b)){ out.get(a).add(b); indeg.set(b, indeg.get(b) + 1); }
+    }
+  }
+  const order = [], ready = doc.gates.filter(g => !indeg.get(g));
+  while (ready.length){
+    ready.sort((a, b) => a.line - b.line);
+    const g = ready.shift(); order.push(g);
+    for (const b of out.get(g)){ indeg.set(b, indeg.get(b) - 1); if (!indeg.get(b)) ready.push(b); }
+  }
+  if (order.length < doc.gates.length){
+    const rest = doc.gates.filter(g => !order.includes(g)).sort((a, b) => a.line - b.line);
+    warn(rest[0].line, `Sub-journeys reach ${rest.map(g => '"' + g.name + '"').join(' and ')} in a different order, so they can never all meet. Use the same order in every lane`);
+    order.push(...rest);
+  }
+  return order;
+}
+
+/* ---------- PlantUML-like format (.journey) ---------- */
+const SEP = /\s+:(?=\s|$)/;   // a field separator is a colon with whitespace before it
+const splitFields = rest => rest.split(SEP).map(s => s.trim());
+function parseTail(rest, obj, ln, warn){
+  const parts = splitFields(rest);
+  obj.name = parts[0];
+  if (parts.length > 1 && parts[1] !== ''){
+    if (/^\d+(\.\d+)?$/.test(parts[1])) obj.score = clampScore(parts[1], ln, warn);
+    else obj.tag = parts[1];
+  }
+  if (parts.length > 2){ const t = parts.slice(2).join(' : ').trim(); if (t) obj.tag = t; }
+}
+function parseText(text){
+  const B = Builder(), warn = B.warn;
+  let lane = null, laneIndent = null, last = null;
+  const ensureLane = ln => {
+    if (!lane){ lane = B.lane('Journey', '', ln); warn(ln, 'Put this inside a sub-journey (sub <name>). It was placed in a lane called "Journey"'); }
+    return lane;
+  };
+  text.split('\n').forEach((raw, i) => {
+    const ln = i + 1;
+    const indent = raw.match(/^[ \t]*/)[0].replace(/\t/g, '  ').length;
+    const line = raw.trim();
+    if (!line || line.startsWith("'") || line.startsWith('//')) return;
+    if (/^@(start|end)journey\b/i.test(line)) return;
+    const m = line.match(/^(-|\*|[A-Za-z]+)(.*)$/);
+    if (!m){ warn(ln, 'Start the line with a keyword such as sub, -, join or pain'); return; }
+    let kw = m[1].toLowerCase();
+    const rest = m[2].trim().replace(/^:\s*/, '');
+    if (kw === '-' || kw === '*') kw = 'step';
+    if (kw === 'title'){ B.doc.title = rest; return; }
+    if (kw === 'persona' || kw === 'actor'){ B.doc.persona = rest; return; }
+    if (kw === 'start' || kw === 'end'){
+      const o = newItem(ln); parseTail(rest, o, ln, warn);
+      last = B.event(kw, o);
+      if (kw === 'end') lane = null;
+      return;
+    }
+    if (SUB_KW.includes(kw)){
+      const parts = splitFields(rest), name = parts[0], tool = parts.slice(1).join(' : ').trim();
+      if (lane && laneIndent !== null && indent > laneIndent){ B.section(lane, name, ln); last = null; return; }
+      if (laneIndent === null || indent < laneIndent) laneIndent = indent;
+      lane = B.lane(name, tool, ln); last = null; return;
+    }
+    if (kw === 'step'){
+      const o = newItem(ln); parseTail(rest, o, ln, warn);
+      last = B.step(ensureLane(ln), o); return;
+    }
+    if (GATE_KW.includes(kw)){
+      const o = newItem(ln); parseTail(rest, o, ln, warn);
+      last = B.ref(ensureLane(ln), kw, o); return;
+    }
+    if (DETAIL_KW.includes(kw)){
+      if (!last){ warn(ln, `"${kw}" needs a step, gate, start or end above it`); return; }
+      if (!rest){ warn(ln, `"${kw}" has no text`); return; }
+      last.obj[kw].push(rest); last.rng.end = ln; return;
+    }
+    warn(ln, `Unknown keyword "${m[1]}". Use title, persona, start, sub, -, join, after, end, pain, gain, idea or note`);
+  });
+  return B.finish();
+}
+function toText(doc){
+  const nm = s => String(s).replace(SEP, ':').replace(/\s+/g, ' ').trim();
+  const tail = o => (o.score ? ` : ${o.score}` : '') + (o.tag ? ` : ${nm(o.tag)}` : '');
+  const details = (o, ind) => DETAIL_KW.flatMap(k => o[k].map(t => `${ind}${k} ${String(t).replace(/\s+/g, ' ').trim()}`));
+  const out = ['@startjourney'];
+  if (doc.title) out.push(`title ${doc.title}`);
+  if (doc.persona) out.push(`persona ${doc.persona}`);
+  if (doc.start){ out.push('', `start ${nm(doc.start.name)}${tail(doc.start)}`, ...details(doc.start, '  ')); }
+  const emitted = new Set();
+  for (const l of doc.lanes){
+    out.push('', `sub ${nm(l.name)}${l.tool ? ' : ' + nm(l.tool) : ''}`);
+    for (const it of l.items){
+      if (it.type === 'step'){ out.push(`  - ${nm(it.name)}${tail(it)}`, ...details(it, '    ')); }
+      else if (it.type === 'section'){ out.push(`  sub ${nm(it.name)}`); }
+      else {
+        const g = it.gate, first = !emitted.has(g); emitted.add(g);
+        out.push(`  ${it.type} ${nm(g.name)}${first ? tail(g) : ''}`);
+        if (first) out.push(...details(g, '    '));
+      }
+    }
+  }
+  if (doc.end){ out.push('', `end ${nm(doc.end.name)}${tail(doc.end)}`, ...details(doc.end, '  ')); }
+  out.push('@endjourney');
+  return out.join('\n') + '\n';
+}
+
+/* ---------- YAML format (.journey.yaml) ---------- */
+function Locator(text){
+  const lines = text.split('\n');
+  const isCom = s => /^\s*(#|$)/.test(s);
+  const marks = new Set();
+  lines.forEach((l, i) => { if (/^[^\s#-][^:]*:/.test(l)) marks.add(i + 1); });
+  let ptr = 0;
+  return {
+    top(k){ const re = new RegExp(`^["']?${k}["']?\\s*:`); const i = lines.findIndex(l => re.test(l)); return i >= 0 ? i + 1 : 1; },
+    seek(ln){ ptr = Math.max(ptr, ln); },
+    next(re){
+      for (let i = ptr; i < lines.length; i++){
+        if (!isCom(lines[i]) && re.test(lines[i])){ ptr = i + 1; marks.add(i + 1); return i + 1; }
+      }
+      return Math.max(1, ptr);
+    },
+    endOf(ln){
+      let nb = lines.length + 1;
+      for (const m of marks) if (m > ln && m < nb) nb = m;
+      let e = nb - 1;
+      while (e > ln && isCom(lines[e - 1])) e--;
+      return e;
+    }
+  };
+}
+const keyRe = keys => new RegExp(`^\\s*(?:-\\s*)?\\{?\\s*["']?(?:${keys})["']?\\s*:`);
+function parseYaml(text){
+  const B = Builder(), warn = B.warn, doc = B.doc;
+  if (typeof jsyaml === 'undefined'){ warn(1, 'The YAML reader did not load, so YAML files cannot be drawn'); return B.finish(); }
+  let data;
+  try { data = jsyaml.load(text); }
+  catch(e){ warn(e.mark ? e.mark.line + 1 : 1, 'YAML error: ' + (e.reason || e.message)); return B.finish(); }
+  if (data == null) return B.finish();
+  if (typeof data !== 'object' || Array.isArray(data)){ warn(1, 'The file should start with keys such as title:, start: and subJourneys:'); return B.finish(); }
+  const L = Locator(text), ranges = [];
+  const TOP = ['title','persona','actor','start','end','subJourneys'];
+  for (const k of Object.keys(data)) if (!TOP.includes(k)) warn(L.top(k), `Unknown key "${k}". Use title, persona, start, subJourneys or end`);
+  if (data.title != null) doc.title = String(data.title);
+  const persona = data.persona ?? data.actor;
+  if (persona != null) doc.persona = String(persona);
+
+  const ITEM_KEYS = ['score','tag', ...DETAIL_KW];
+  function fill(o, v, mainKey){
+    if (typeof v !== 'object' || v === null || Array.isArray(v)){ o.name = v == null ? '' : String(v); return o; }
+    o.name = v[mainKey] == null ? '' : String(v[mainKey]);
+    if (v.score != null) o.score = clampScore(v.score, o.line, warn);
+    if (v.tag != null) o.tag = String(v.tag);
+    for (const k of DETAIL_KW){
+      if (v[k] == null) continue;
+      (Array.isArray(v[k]) ? v[k] : [v[k]]).forEach(t => {
+        if (t == null || typeof t === 'object') warn(o.line, `"${k}" should be text or a list of texts`);
+        else o[k].push(String(t));
+      });
+    }
+    for (const key of Object.keys(v)) if (key !== mainKey && !ITEM_KEYS.includes(key)) warn(o.line, `Unknown key "${key}" here. Use ${mainKey}, tag, score, pain, gain, idea or note`);
+    return o;
+  }
+  for (const kind of ['start', 'end']){
+    if (data[kind] == null) continue;
+    const o = fill(newItem(L.top(kind)), data[kind], 'name');
+    B.event(kind, o); ranges.push(o);
+  }
+  const sj = data.subJourneys;
+  if (sj != null && !Array.isArray(sj)) warn(L.top('subJourneys'), 'subJourneys should be a list. Start each sub-journey with "- name:"');
+  if (Array.isArray(sj)){
+    L.seek(L.top('subJourneys'));
+    sj.forEach(s => {
+      const ln = L.next(/^\s*-\s*\S/);
+      if (!s || typeof s !== 'object' || Array.isArray(s)){ warn(ln, 'Each sub-journey needs name: and flow:'); return; }
+      for (const key of Object.keys(s)) if (!['name','tool','flow'].includes(key)) warn(ln, `Unknown key "${key}" in a sub-journey. Use name, tool or flow`);
+      const lane = B.lane(s.name == null ? '' : String(s.name), s.tool == null ? '' : String(s.tool), ln);
+      const flow = s.flow == null ? [] : s.flow;
+      if (!Array.isArray(flow)){ warn(ln, 'flow should be a list of steps, each starting with "- step:"'); return; }
+      flow.forEach(it => {
+        if (it == null || typeof it !== 'object'){
+          const iln = L.next(/^\s*-\s*\S/);
+          const o = newItem(iln); o.name = it == null ? '' : String(it);
+          ranges.push(B.step(lane, o).rng); return;
+        }
+        const kind = ['step','join','after','section'].find(k => k in it);
+        const iln = L.next(keyRe(kind || 'step|join|after|section|tag|score|pain|gain|idea|note'));
+        if (!kind){ warn(iln, 'This flow item needs step:, join:, after: or section:'); return; }
+        if (kind === 'section'){ ranges.push(B.section(lane, String(it.section ?? ''), iln)); return; }
+        const o = fill(newItem(iln), it, kind);
+        const r = kind === 'step' ? B.step(lane, o) : B.ref(lane, kind, o);
+        if (r) ranges.push(r.rng);
+      });
+    });
+  }
+  ranges.forEach(r => { r.end = L.endOf(r.line); });
+  return B.finish();
+}
+function yq(v){
+  const s = String(v);
+  if (s === '' || /^\s|\s$/.test(s) || /^[-?:,\[\]{}#&*!|>'"%@`]/.test(s) || /:\s|:$|\s#/.test(s) ||
+      /^(true|false|yes|no|on|off|null|y|n|~)$/i.test(s) || /^[-+.]?\d/.test(s)) return JSON.stringify(s);
+  return s;
+}
+function toYaml(doc){
+  const details = (o, ind) => {
+    const out = [];
+    if (o.tag) out.push(`${ind}tag: ${yq(o.tag)}`);
+    if (o.score) out.push(`${ind}score: ${o.score}`);
+    for (const k of DETAIL_KW){
+      if (o[k].length === 1) out.push(`${ind}${k}: ${yq(o[k][0])}`);
+      else if (o[k].length > 1){ out.push(`${ind}${k}:`); o[k].forEach(t => out.push(`${ind}  - ${yq(t)}`)); }
+    }
+    return out;
+  };
+  const event = (kind, o) => {
+    const d = details(o, '  ');
+    return d.length ? [`${kind}:`, `  name: ${yq(o.name)}`, ...d] : [`${kind}: ${yq(o.name)}`];
+  };
+  const out = [];
+  if (doc.title) out.push(`title: ${yq(doc.title)}`);
+  if (doc.persona) out.push(`persona: ${yq(doc.persona)}`);
+  if (doc.start) out.push(...event('start', doc.start));
+  if (doc.lanes.length){
+    out.push('', 'subJourneys:');
+    const emitted = new Set();
+    doc.lanes.forEach((l, i) => {
+      if (i) out.push('');
+      out.push(`  - name: ${yq(l.name)}`);
+      if (l.tool) out.push(`    tool: ${yq(l.tool)}`);
+      if (!l.items.length){ out.push('    flow: []'); return; }
+      out.push('    flow:');
+      for (const it of l.items){
+        if (it.type === 'step'){ out.push(`      - step: ${yq(it.name)}`, ...details(it, '        ')); }
+        else if (it.type === 'section'){ out.push(`      - section: ${yq(it.name)}`); }
+        else {
+          const g = it.gate, first = !emitted.has(g); emitted.add(g);
+          out.push(`      - ${it.type}: ${yq(g.name)}`);
+          if (first) out.push(...details(g, '        '));
+        }
+      }
+    });
+  }
+  if (doc.end) out.push('', ...event('end', doc.end));
+  return out.join('\n') + '\n';
+}
+const SAMPLE_YAML = toYaml(parseText(SAMPLE_TEXT));
+const BLANK_YAML = toYaml(parseText(BLANK_TEXT));
+
+/* ======================================================================
+   Drawing
+   ====================================================================== */
+const FONT = `'IBM Plex Sans','Segoe UI',system-ui,sans-serif`;
+const mctx = document.createElement('canvas').getContext('2d');
+function measure(t, size, weight){ mctx.font = `${weight} ${size}px ${FONT}`; return mctx.measureText(t).width; }
+function wrap(text, maxW, size, weight){
+  const words = String(text).split(/\s+/).filter(Boolean), lines = [];
+  let cur = '';
+  for (let w of words){
+    while (measure(w, size, weight) > maxW && w.length > 1){
+      let k = w.length; while (k > 1 && measure(w.slice(0,k), size, weight) > maxW) k--;
+      if (cur){ lines.push(cur); cur = ''; }
+      lines.push(w.slice(0,k)); w = w.slice(k);
+    }
+    const t = cur ? cur + ' ' + w : w;
+    if (measure(t, size, weight) <= maxW) cur = t; else { if (cur) lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  return lines.length ? lines : [''];
+}
+function ellipsize(t, maxW, size, weight){
+  if (measure(t, size, weight) <= maxW) return t;
+  let k = t.length; while (k > 0 && measure(t.slice(0,k) + '…', size, weight) > maxW) k--;
+  return t.slice(0,k) + '…';
+}
+function txt(lines, x, y, size, lh, fill, weight, extra=''){
+  return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}" ${extra}>` +
+    lines.map((l,i) => `<tspan x="${x}" dy="${i ? lh : 0}">${esc(l)}</tspan>`).join('') + `</text>`;
+}
+function isDark(){
+  const t = document.documentElement.getAttribute('data-theme');
+  if (t === 'dark') return true; if (t === 'light') return false;
+  return matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function tokens(){
+  const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue('--' + n).trim();
+  const o = {}; ['panel','panel-2','ink','muted','faint','line','line-soft','accent','flow','pain','gain','idea','note','s1','s2','s3','s4','s5'].forEach(n => o[n] = g(n));
+  return o;
+}
+const LANE_HUES = [198, 152, 28, 268, 348, 88, 222, 8];
+const TAG_HUES = [212, 40, 150, 352, 272, 186, 96, 18];
+function laneColors(i){
+  const h = LANE_HUES[i % LANE_HUES.length];
+  return isDark()
+    ? {strip:`hsl(${h} 22% 12.5%)`, head:`hsl(${h} 32% 22%)`, stroke:`hsl(${h} 32% 30%)`, text:`hsl(${h} 60% 86%)`, sub:`hsl(${h} 25% 65%)`}
+    : {strip:`hsl(${h} 45% 97%)`, head:`hsl(${h} 58% 89%)`, stroke:`hsl(${h} 42% 80%)`, text:`hsl(${h} 55% 22%)`, sub:`hsl(${h} 30% 38%)`};
+}
+function tagColors(h){
+  return isDark()
+    ? {fill:`hsl(${h} 30% 22%)`, stroke:`hsl(${h} 35% 34%)`, text:`hsl(${h} 65% 84%)`}
+    : {fill:`hsl(${h} 70% 93%)`, stroke:`hsl(${h} 45% 78%)`, text:`hsl(${h} 60% 26%)`};
+}
+const KINDS = [['pain','Pain point'],['gain','Gain'],['idea','Opportunity'],['note','Note']];
+
+function buildSvg(doc){
+  const T = tokens();
+  const lanes = doc.lanes, n = lanes.length;
+  const PAD = 24, LW = 248, LG = 22, CW = LW - 28, GAP = 30, DH = 15;
+  const laneX = l => PAD + l * (LW + LG), cx = l => laneX(l) + LW / 2;
+  const W = Math.max(PAD * 2 + Math.max(n, 1) * LW + Math.max(n - 1, 0) * LG, 560);
+  const flow = [], nodes = [], sels = [], meta = [];
+  const tagHue = new Map();
+  const hueFor = t => { if (!tagHue.has(t)) tagHue.set(t, TAG_HUES[tagHue.size % TAG_HUES.length]); return tagHue.get(t); };
+  let y = PAD, selId = 0;
+
+  function diamond(gx, cy, r, small){
+    const p = small ? 3.5 : 7;
+    return `<g><title>AND-gateway</title><path d="M${gx},${cy - r} L${gx + r},${cy} L${gx},${cy + r} L${gx - r},${cy} Z" fill="${T.panel}" stroke="${T.ink}" stroke-width="${small ? 1.2 : 1.6}" stroke-linejoin="round"/>` +
+      `<path d="M${gx - p},${cy} H${gx + p} M${gx},${cy - p} V${cy + p}" stroke="${T.ink}" stroke-width="${small ? 1.4 : 2.2}" stroke-linecap="round"/></g>`;
+  }
+
+  const head = [];
+  head.push(txt([doc.title || 'Untitled journey'], PAD, y + 19, 20, 24, T.ink, 700, 'letter-spacing="-0.2"'));
+  y += 28;
+  if (doc.persona){ const pl = wrap(doc.persona, W - PAD * 2, 13, 400); head.push(txt(pl, PAD, y + 14, 13, 18, T.muted, 400)); y += 4 + pl.length * 18; }
+  const used = KINDS.filter(([k]) => doc.steps.some(s => s[k].length) || doc.gates.some(g => g[k].length) || (doc.start && doc.start[k].length) || (doc.end && doc.end[k].length));
+  let lx = PAD; const ly = y + 14;
+  for (const [k, label] of [['gate', 'AND-gateway'], ...used]){
+    if (k === 'gate') head.push(diamond(lx + 7, ly - 4, 7, true));
+    else head.push(`<circle cx="${lx + 7}" cy="${ly - 4}" r="4" fill="${T[k]}"/>`);
+    head.push(txt([label], lx + 20, ly, 11.5, 14, T.muted, 500));
+    lx += 20 + measure(label, 11.5, 500) + 18;
+  }
+  y += 34;
+
+  const HH = 50, laneTop = y + HH;
+  const last = lanes.map((l, i) => ({x: cx(i), y: laneTop}));
+  const cursor = lanes.map(() => laneTop + GAP);
+  const vline = (x, y1, y2, arrow) => flow.push(`<path d="M${x},${y1} V${y2}" fill="none" stroke="${T.flow}" stroke-width="1.4"${arrow ? ' marker-end="url(#jl-arrow)"' : ''}/>`);
+  const hline = (x1, x2, yy) => flow.push(`<path d="M${x1},${yy} H${x2}" fill="none" stroke="${T.flow}" stroke-width="1.4"/>`);
+  const addSel = (x, yy, w, h, ranges, rx = 11) => { const id = selId++; sels.push(`<rect data-sel="${id}" x="${x - 4}" y="${yy - 4}" width="${w + 8}" height="${h + 8}" rx="${rx}" fill="none" stroke="${T.accent}" stroke-width="2" opacity="0"/>`); meta.push({id, ranges}); };
+
+  function measureCard(item, w, eyebrow){
+    const lines = wrap(item.name, w - 24 - (item.score ? 26 : 0), 13, 600);
+    const tag = item.tag ? ellipsize(item.tag, w - 40, 11, 500) : '';
+    const det = [];
+    for (const [k] of KINDS) for (const t of item[k]) det.push({k, lines: wrap(t, w - 38, 12, 400)});
+    let h = 12 + (eyebrow ? 17 : 0) + lines.length * 17;
+    if (tag) h += 28;
+    if (det.length) h += 8 + det.reduce((a, d) => a + d.lines.length * 16 + 4, 0);
+    return {lines, tag, det, h: h + 10, w, eyebrow};
+  }
+  function drawCard(x, yy, m, item, gate){
+    let s = `<rect x="${x}" y="${yy}" width="${m.w}" height="${m.h}" rx="8" fill="${T.panel}" stroke="${gate ? T.accent : T.line}" stroke-width="${gate ? 1.6 : 1}"/>`;
+    if (gate) s += `<rect x="${x}" y="${yy}" width="${m.w}" height="${m.h}" rx="8" fill="${T.accent}" fill-opacity="0.07"/>`;
+    let c = yy + 12;
+    if (m.eyebrow){ s += txt([m.eyebrow], x + 12, c + 9, 10, 12, T.accent, 600, 'letter-spacing="0.9"'); c += 17; }
+    s += txt(m.lines, x + 12, c + 13, 13, 17, T.ink, 600);
+    c += m.lines.length * 17;
+    if (item.score){
+      s += `<circle cx="${x + m.w - 20}" cy="${yy + 21}" r="10" fill="${T['s' + item.score]}"/>` +
+        `<text x="${x + m.w - 20}" y="${yy + 25}" font-size="11" font-weight="700" text-anchor="middle" fill="#FFFFFF">${item.score}</text>`;
+    }
+    if (m.tag){
+      c += 8;
+      const tc = tagColors(hueFor(item.tag)), tw = measure(m.tag, 11, 500) + 18;
+      s += `<rect x="${x + 12}" y="${c}" width="${tw}" height="20" rx="10" fill="${tc.fill}" stroke="${tc.stroke}"/>` + txt([m.tag], x + 21, c + 13.5, 11, 14, tc.text, 500);
+      c += 20;
+    }
+    if (m.det.length){
+      c += 8;
+      for (const d of m.det){
+        s += `<circle cx="${x + 16}" cy="${c + 8}" r="3.5" fill="${T[d.k]}"/>` + txt(d.lines, x + 26, c + 12, 12, 16, T.ink, 400);
+        c += d.lines.length * 16 + 4;
+      }
+    }
+    return s;
+  }
+  function place(l, item){
+    const x = cx(l), top = cursor[l];
+    vline(x, last[l].y, top - 1, true);
+    if (item.type === 'section'){
+      const lc = laneColors(l), label = ellipsize(item.name, CW - 24, 11.5, 600), w = measure(label, 11.5, 600) + 24;
+      nodes.push(`<g data-line="${item.line}"><rect x="${x - w/2}" y="${top}" width="${w}" height="24" rx="12" fill="${lc.head}" stroke="${lc.stroke}" stroke-dasharray="3 3"/>` +
+        txt([label], x, top + 16, 11.5, 14, lc.text, 600, 'text-anchor="middle"') + `</g>`);
+      addSel(x - w/2, top, w, 24, [[item.line, item.end]], 15);
+      last[l] = {x, y: top + 24}; cursor[l] = top + 24 + GAP; return;
+    }
+    const m = measureCard(item, CW);
+    nodes.push(`<g data-line="${item.line}"><title>${esc(item.name)}</title>${drawCard(x - CW/2, top, m, item, false)}</g>`);
+    addSel(x - CW/2, top, CW, m.h, [[item.line, item.end]]);
+    last[l] = {x, y: top + m.h}; cursor[l] = top + m.h + GAP;
+  }
+  function joinLanes(ls){
+    const xs = ls.map(cx), minx = Math.min(...xs), maxx = Math.max(...xs), gx = (minx + maxx) / 2;
+    if (ls.length < 2) return {gx, y: last[ls[0]].y, xs};
+    const busY = Math.max(...ls.map(i => last[i].y)) + 20;
+    ls.forEach(i => vline(cx(i), last[i].y, busY, false));
+    hline(minx, maxx, busY);
+    const dTop = busY + 18;
+    vline(gx, busY, dTop - 1, true);
+    nodes.push(diamond(gx, dTop + DH, DH));
+    return {gx, y: dTop + 2 * DH, xs};
+  }
+  function forkLanes(ls, from){
+    if (!ls.length) return;
+    if (ls.length === 1 && Math.abs(cx(ls[0]) - from.gx) < 1){ last[ls[0]] = {x: from.gx, y: from.y}; cursor[ls[0]] = from.y + GAP; return; }
+    const dTop = from.y + 20;
+    vline(from.gx, from.y, dTop - 1, true);
+    nodes.push(diamond(from.gx, dTop + DH, DH));
+    const busY = dTop + 2 * DH + 16;
+    vline(from.gx, dTop + 2 * DH, busY, false);
+    const xs = ls.map(cx).concat(from.gx);
+    hline(Math.min(...xs), Math.max(...xs), busY);
+    ls.forEach(i => { last[i] = {x: cx(i), y: busY}; cursor[i] = busY + GAP; });
+  }
+  function eventNode(ev, gx, cy, endEvent){
+    const label = wrap(ev.name, 260, 12.5, 600);
+    let s = `<g data-line="${ev.line}"><circle cx="${gx}" cy="${cy}" r="13" fill="${T.panel}" stroke="${T.ink}" stroke-width="${endEvent ? 3.5 : 1.6}"/>` +
+      txt(label, gx + 22, cy + 4 - (label.length - 1) * 8, 12.5, 16, T.ink, 600);
+    let dy = cy + 4 + (label.length - 1) * 8 + 18;
+    for (const [k] of KINDS) for (const t of ev[k]){
+      s += `<circle cx="${gx + 26}" cy="${dy - 4}" r="3.5" fill="${T[k]}"/>` + txt([ellipsize(t, 240, 12, 400)], gx + 35, dy, 12, 16, T.ink, 400); dy += 16;
+    }
+    nodes.push(s + `</g>`);
+    const w = 22 + Math.max(...label.map(l => measure(l, 12.5, 600))) + 18;
+    addSel(gx - 15, cy - 15, w + 15, Math.max(30, dy - cy + 2), [[ev.line, ev.end]], 15);
+    return Math.max(cy + 13, dy - 12);
+  }
+
+  const all = lanes.map((l, i) => i);
+  if (n && doc.start){
+    const gx = (cx(0) + cx(n - 1)) / 2, cy = laneTop + 30;
+    const bottom = eventNode(doc.start, gx, cy, false);
+    forkLanes(all, {gx, y: cy + 13});
+    all.forEach(i => { cursor[i] = Math.max(cursor[i], bottom + GAP + 6); });
+  }
+  const ptr = lanes.map(() => 0), done = new Set();
+  function placeUntil(i, gate){
+    const items = lanes[i].items;
+    while (ptr[i] < items.length){
+      const it = items[ptr[i]];
+      if (it.gate){
+        if (it.gate === gate){ ptr[i]++; return; }
+        if (done.has(it.gate)){ ptr[i]++; continue; }
+        return;
+      }
+      place(i, it); ptr[i]++;
+    }
+  }
+  for (const g of doc.order){
+    const joins = [...g.joins].sort((a, b) => a - b), afters = [...g.afters].sort((a, b) => a - b);
+    const waiters = joins.length ? joins : afters;
+    joins.forEach(i => placeUntil(i, g));
+    afters.forEach(i => placeUntil(i, g));
+    if (!waiters.length){ done.add(g); continue; }
+    const p = joinLanes(waiters);
+    const spanW = Math.max(...p.xs) - Math.min(...p.xs) + CW;
+    const w = waiters.length > 1 ? Math.min(spanW, 340) : CW;
+    const eyebrow = joins.length > 1 ? `AND-JOIN · ${joins.length} SUB-JOURNEYS` : 'GATE STEP';
+    const m = measureCard(g, w, eyebrow);
+    const top = p.y + 22;
+    vline(p.gx, p.y, top - 1, true);
+    nodes.push(`<g data-line="${g.line}"><title>${esc(g.name)}</title>${drawCard(p.gx - w/2, top, m, g, true)}</g>`);
+    addSel(p.gx - w/2, top, w, m.h, g.refs.map(r => [r.line, r.end]));
+    forkLanes([...new Set(joins.concat(afters))].sort((a, b) => a - b), {gx: p.gx, y: top + m.h});
+    done.add(g);
+  }
+  all.forEach(i => placeUntil(i, null));
+
+  let bottom = Math.max(laneTop + 40, ...last.map(p => p.y));
+  if (n && doc.end){
+    const p = joinLanes(all);
+    const cy = p.y + 22 + 13;
+    vline(p.gx, p.y, cy - 14, true);
+    bottom = eventNode(doc.end, p.gx, cy, true) + 10;
+  }
+  const H = bottom + PAD + 12;
+
+  const strips = [];
+  lanes.forEach((l, i) => {
+    const lc = laneColors(i), x = laneX(i), top = laneTop - HH;
+    const name = ellipsize(l.name, LW - 24, 13.5, 700);
+    strips.push(`<rect x="${x}" y="${top}" width="${LW}" height="${H - PAD - top}" rx="10" fill="${lc.strip}"/>`);
+    strips.push(`<g data-line="${l.line}"><title>${esc(l.name)}${l.tool ? ' · ' + esc(l.tool) : ''}</title><rect x="${x}" y="${top}" width="${LW}" height="${HH}" rx="10" fill="${lc.head}" stroke="${lc.stroke}"/>` +
+      txt([name], x + 12, top + (l.tool ? 21 : 30), 13.5, 16, lc.text, 700) +
+      (l.tool ? txt([ellipsize(l.tool, LW - 24, 11.5, 500)], x + 12, top + 38, 11.5, 14, lc.sub, 500) : '') + `</g>`);
+    addSel(x, top, LW, HH, [[l.line, l.line]], 13);
+  });
+  if (!n) head.push(txt(['Add a sub-journey on the left to start the flow.'], PAD, laneTop - 10, 13, 20, T.muted, 400));
+
+  const defs = `<defs><marker id="jl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="${T.flow}"/></marker></defs>`;
+  const body = defs + `<rect width="${W}" height="${H}" fill="${T.panel}"/>` + head.join('') + strips.join('') + flow.join('') + nodes.join('') + `<g class="sels">${sels.join('')}</g>`;
+  return {W, H, body, meta};
+}
+
+/* ======================================================================
+   Editor
+   ====================================================================== */
+function colorizeTail(s, nameCls){
+  const parts = [];
+  let rest = s, m;
+  while ((m = rest.match(SEP))){ parts.push(rest.slice(0, m.index), m[0]); rest = rest.slice(m.index + m[0].length); }
+  parts.push(rest);
+  let out = '', field = 0;
+  parts.forEach((p, i) => {
+    if (i % 2){ out += `<span class="t-punct">${esc(p)}</span>`; return; }
+    if (field === 0) out += nameCls ? `<span class="${nameCls}">${esc(p)}</span>` : esc(p);
+    else out += `<span class="${field === 1 && /^\s*\d+(\.\d+)?\s*$/.test(p) ? 't-score' : 't-touch'}">${esc(p)}</span>`;
+    field++;
+  });
+  return out;
+}
+function highlightText(text){
+  return text.split('\n').map(line => {
+    const m = line.match(/^(\s*)(.*)$/), ind = m[1], body = m[2];
+    if (!body) return line;
+    if (body.startsWith("'") || body.startsWith('//') || /^@(start|end)journey/i.test(body)) return ind + `<span class="t-com">${esc(body)}</span>`;
+    const k = body.match(/^(-|\*|[A-Za-z]+)(.*)$/);
+    if (!k) return ind + `<span class="t-err">${esc(body)}</span>`;
+    const kw = k[1].toLowerCase(), rest = k[2];
+    if (kw === '-' || kw === '*' || kw === 'step') return ind + `<span class="t-step">${esc(k[1])}</span>` + colorizeTail(rest);
+    if (SUB_KW.includes(kw)) return ind + `<span class="t-sub">${esc(k[1])}</span>` + colorizeTail(rest, 't-sub');
+    if (GATE_KW.includes(kw)) return ind + `<span class="t-gate">${esc(k[1])}</span>` + colorizeTail(rest, 't-gate');
+    if (kw === 'start' || kw === 'end') return ind + `<span class="t-kw">${esc(k[1])}</span>` + colorizeTail(rest);
+    if (DETAIL_KW.includes(kw)) return ind + `<span class="t-${kw}">${esc(k[1])}</span>${esc(rest)}`;
+    if (['title','persona','actor'].includes(kw)) return ind + `<span class="t-kw">${esc(k[1])}</span>${esc(rest)}`;
+    return ind + `<span class="t-err">${esc(body)}</span>`;
+  }).join('\n') + '\n ';
+}
+const YKEY = {step:'t-step', name:'t-sub', section:'t-sub', join:'t-gate', after:'t-gate', pain:'t-pain', gain:'t-gain', idea:'t-idea', note:'t-note', tag:'t-touch', score:'t-score'};
+const YVAL = {name:'t-sub', section:'t-sub', join:'t-gate', after:'t-gate', tag:'t-touch', score:'t-score'};
+function commentStart(line){
+  let q = null;
+  for (let i = 0; i < line.length; i++){
+    const c = line[i];
+    if (q){ if (c === q && line[i-1] !== '\\') q = null; continue; }
+    if ((c === '"' || c === "'") && (i === 0 || /[\s:\[{,-]/.test(line[i-1]))) q = c;
+    else if (c === '#' && (i === 0 || /\s/.test(line[i-1]))) return i;
+  }
+  return -1;
+}
+function highlightYaml(text){
+  return text.split('\n').map(line => {
+    const ci = commentStart(line);
+    const code = ci < 0 ? line : line.slice(0, ci);
+    const com = ci < 0 ? '' : `<span class="t-com">${esc(line.slice(ci))}</span>`;
+    const m = code.match(/^(\s*)((?:-\s+)?\{?\s*)([A-Za-z_]+)(\s*:)(.*)$/);
+    if (!m){
+      const d = code.match(/^(\s*)(-\s+)(.*)$/);
+      return (d ? d[1] + `<span class="t-punct">${esc(d[2])}</span>${esc(d[3])}` : esc(code)) + com;
+    }
+    const [, ind, pre, key, colon, val] = m;
+    const vc = YVAL[key];
+    return ind + `<span class="t-punct">${esc(pre)}</span><span class="${YKEY[key] || 't-kw'}">${esc(key)}</span><span class="t-punct">${esc(colon)}</span>` +
+      (vc ? `<span class="${vc}">${esc(val)}</span>` : esc(val)) + com;
+  }).join('\n') + '\n ';
+}
+
+/* ---------- File state ---------- */
+const FORMAT_LABEL = {text:'PlantUML-like', yaml:'YAML'};
+const file = {name:'data-product.journey', format:'text', handle:null, dirty:false};
+const canPick = 'showOpenFilePicker' in window && (() => { try { return window.top === window; } catch(e){ return false; } })();
+const baseName = n => n.replace(/\.journey\.ya?ml$|\.ya?ml$|\.journey$|\.txt$/i, '');
+const extFor = f => f === 'yaml' ? '.journey.yaml' : '.journey';
+function formatOf(name, text){
+  if (/\.ya?ml$/i.test(name)) return 'yaml';
+  if (/\.journey$/i.test(name)) return 'text';
+  return /^\s*(subJourneys|title|persona)\s*:/m.test(text) && !/^\s*sub\s/m.test(text) ? 'yaml' : 'text';
+}
+function renderFile(){
+  $('fileName').textContent = file.name;
+  $('fileName').title = file.handle ? file.name : `${file.name} (not saved to a file yet)`;
+  $('formatChip').textContent = FORMAT_LABEL[file.format];
+  $('dirty').hidden = !file.dirty;
+  $('convertBtn').textContent = file.format === 'text' ? 'Convert to YAML' : 'Convert to PlantUML';
+  document.querySelectorAll('[data-help]').forEach(el => el.hidden = el.dataset.help !== file.format);
+  document.title = `${file.dirty ? '● ' : ''}${file.name} · Journeyline`;
+}
+function saveDraft(){ store.set(DRAFT, JSON.stringify({text: src.value, name: file.name, format: file.format, dirty: file.dirty})); }
+function setDirty(d){ if (file.dirty !== d){ file.dirty = d; renderFile(); } saveDraft(); }
+
+let toastTimer = null;
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 3200);
+}
+// Ask for a second click before throwing away unsaved changes.
+const armed = new Map();
+function guarded(key, btn, fn){
+  if (!file.dirty || armed.has(key)){ clearTimeout(armed.get(key)); armed.delete(key); if (btn) { btn.classList.remove('armed'); btn.textContent = btn.dataset.label || btn.textContent; } fn(); return; }
+  if (btn){ btn.dataset.label = btn.textContent; btn.textContent = 'Discard changes?'; btn.classList.add('armed'); }
+  else toast('You have unsaved changes. Do it again to discard them, or save first.');
+  armed.set(key, setTimeout(() => { armed.delete(key); if (btn){ btn.classList.remove('armed'); btn.textContent = btn.dataset.label; } }, 4000));
+}
+
+function setText(text){
+  src.value = text;
+  src.setSelectionRange(0, 0); src.scrollTop = 0; src.scrollLeft = 0;
+  update(true);
+}
+function loadFile(text, name, handle){
+  file.name = name; file.handle = handle || null; file.format = formatOf(name, text);
+  file.dirty = false; renderFile(); setText(text); saveDraft();
+  toast(`Opened ${name}`);
+}
+async function openFile(){
+  if (canPick){
+    try {
+      const [h] = await window.showOpenFilePicker({types:[{description:'User journeys', accept:{'text/plain':['.journey'], 'application/x-yaml':['.yaml','.yml']}}]});
+      const f = await h.getFile();
+      loadFile(await f.text(), f.name, h);
+    } catch(e){ if (e.name !== 'AbortError') toast(`Could not open the file: ${e.message}`); }
+    return;
+  }
+  $('fileInput').click();
+}
+$('fileInput').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (f) loadFile(await f.text(), f.name, null);
+});
+async function writeTo(handle){
+  const w = await handle.createWritable();
+  await w.write(src.value); await w.close();
+}
+async function save(){
+  if (!file.handle) return saveAs();
+  try { await writeTo(file.handle); setDirty(false); toast(`Saved ${file.name}`); }
+  catch(e){ toast(`Could not save: ${e.message}. Try Save as.`); }
+}
+async function saveAs(){
+  const suggested = baseName(file.name) + extFor(file.format);
+  if (canPick){
+    try {
+      const h = await window.showSaveFilePicker({suggestedName: suggested, types:[file.format === 'yaml'
+        ? {description:'YAML user journey', accept:{'application/x-yaml':['.yaml','.yml']}}
+        : {description:'User journey', accept:{'text/plain':['.journey']}}]});
+      await writeTo(h);
+      file.handle = h; file.name = h.name; setDirty(false); renderFile();
+      toast(`Saved ${h.name}`);
+      if (formatOf(h.name, '') !== file.format) toast(`Saved, but the name ${h.name} suggests ${FORMAT_LABEL[formatOf(h.name,'')]} while the content is ${FORMAT_LABEL[file.format]}. Use ${extFor(file.format)} to avoid confusion.`);
+    } catch(e){ if (e.name !== 'AbortError') toast(`Could not save: ${e.message}`); }
+    return;
+  }
+  let inFrame = false; try { inFrame = window.top !== window; } catch(e){ inFrame = true; }
+  if (inFrame){ toast('Saving to a file works when you open index.html on your own computer. Use Copy here instead.'); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([src.value], {type:'text/plain;charset=utf-8'}));
+  a.download = suggested; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  file.name = suggested; setDirty(false); renderFile();
+  toast(`Downloaded ${suggested}. This browser can't write to the original file, so each save is a new download.`);
+}
+function newFile(format){
+  file.name = 'untitled' + extFor(format); file.format = format; file.handle = null; file.dirty = false;
+  renderFile(); setText(format === 'yaml' ? BLANK_YAML : BLANK_TEXT); saveDraft();
+}
+function convert(){
+  const target = file.format === 'text' ? 'yaml' : 'text';
+  if (doc.warnings.length && doc.lanes.length === 0){ toast('Fix the errors first, there is nothing to convert yet.'); return; }
+  const out = target === 'yaml' ? toYaml(doc) : toText(doc);
+  file.format = target; file.name = baseName(file.name) + extFor(target); file.handle = null;
+  src.focus(); src.setSelectionRange(0, src.value.length); insertText(out);
+  src.setSelectionRange(0, 0); src.scrollTop = 0;
+  file.dirty = true; renderFile(); update(true);
+  toast(`Converted to ${FORMAT_LABEL[target]}. Comments are not carried over. Save to keep it as ${file.name}.`);
+}
+
+/* ---------- Rendering loop ---------- */
+let doc = null, built = null, zoom = 1, zoomMode = 'auto', activeSel = -1, warnLines = new Set(), curLine = 0;
+function renderGutter(){
+  const count = src.value.split('\n').length;
+  let h = '';
+  for (let i = 1; i <= count; i++) h += `<div class="${warnLines.has(i) ? 'warn' : ''}${i === curLine ? ' cur' : ''}">${i}</div>`;
+  gutterInner.innerHTML = h;
+  gutterInner.style.paddingTop = '12px';
+  syncScroll();
+}
+function syncScroll(){
+  hl.scrollTop = src.scrollTop; hl.scrollLeft = src.scrollLeft;
+  gutterInner.style.transform = `translateY(${-src.scrollTop}px)`;
+}
+function renderIssues(){
+  const box = $('issues');
+  if (!doc.warnings.length){ box.hidden = true; box.innerHTML = ''; return; }
+  box.hidden = false;
+  box.innerHTML = doc.warnings.sort((a, b) => a.line - b.line).map(w => `<button data-go="${w.line}"><span class="ln">Line ${w.line}</span><span>${esc(w.msg)}</span></button>`).join('');
+}
+function renderStats(){
+  const joins = doc.gates.filter(g => g.joins.size > 1).length;
+  $('stats').textContent = `${doc.lanes.length} sub-journeys · ${doc.steps.length} steps · ${joins} AND-joins`;
+}
+function fitZoom(){ return built ? Math.min(1.5, (canvas.clientWidth - 2) / built.W) : 1; }
+function drawDiagram(){
+  built = buildSvg(doc);
+  if (zoomMode === 'auto') zoom = Math.min(1, Math.max(0.75, fitZoom()));
+  if (zoomMode === 'fit') zoom = fitZoom();
+  applyZoom();
+}
+function applyZoom(){
+  if (!built) return;
+  canvas.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.round(built.W * zoom)}" height="${Math.round(built.H * zoom)}" viewBox="0 0 ${built.W} ${built.H}" font-family="${FONT}" role="img" aria-label="${esc(doc.title || 'Journey flow')}">${built.body}</svg>`;
+  $('zoomVal').textContent = Math.round(zoom * 100) + '%';
+  setActive(activeSel, false);
+}
+function setActive(id, scroll){
+  activeSel = id;
+  canvas.querySelectorAll('[data-sel]').forEach(r => r.setAttribute('opacity', +r.dataset.sel === id ? '1' : '0'));
+  if (scroll && id >= 0){
+    const r = canvas.querySelector(`[data-sel="${id}"]`);
+    if (r){
+      const b = r.getBoundingClientRect(), c = canvas.getBoundingClientRect();
+      let dx = 0, dy = 0;
+      if (b.left < c.left || b.right > c.right) dx = b.left - c.left - c.width / 2 + b.width / 2;
+      if (b.top < c.top || b.bottom > c.bottom) dy = b.top - c.top - c.height / 3;
+      if (dx || dy) canvas.scrollBy({left: dx, top: dy, behavior: 'smooth'});
+    }
+  }
+}
+function caretLine(){ return src.value.slice(0, src.selectionStart).split('\n').length; }
+function syncFromCaret(){
+  const ln = caretLine();
+  if (ln !== curLine){ curLine = ln; renderGutter(); }
+  if (!built) return;
+  const hit = built.meta.find(m => m.ranges.some(([a, b]) => ln >= a && ln <= b));
+  const id = hit ? hit.id : -1;
+  if (id !== activeSel) setActive(id, true);
+}
+function goToLine(ln){
+  const lines = src.value.split('\n');
+  let start = 0; for (let i = 0; i < ln - 1; i++) start += lines[i].length + 1;
+  const lead = (lines[ln - 1] || '').match(/^\s*/)[0].length;
+  src.focus();
+  src.setSelectionRange(start + lead, start + (lines[ln - 1] || '').length);
+  src.scrollTop = Math.max(0, (ln - 1) * 20 - src.clientHeight / 3);
+  syncScroll(); syncFromCaret();
+}
+let timer = null;
+function update(immediate){
+  hl.innerHTML = file.format === 'yaml' ? highlightYaml(src.value) : highlightText(src.value);
+  syncScroll();
+  clearTimeout(timer);
+  const run = () => {
+    doc = file.format === 'yaml' ? parseYaml(src.value) : parseText(src.value);
+    warnLines = new Set(doc.warnings.map(w => w.line));
+    renderGutter(); renderIssues(); renderStats(); drawDiagram(); syncFromCaret();
+    saveDraft();
+  };
+  immediate ? run() : (timer = setTimeout(run, 120));
+}
+function insertText(t){
+  if (!document.execCommand || !document.execCommand('insertText', false, t)){
+    const s = src.selectionStart, e = src.selectionEnd;
+    src.value = src.value.slice(0, s) + t + src.value.slice(e);
+    src.selectionStart = src.selectionEnd = s + t.length;
+    src.dispatchEvent(new Event('input'));
+  }
+}
+
+/* ---------- Events ---------- */
+src.addEventListener('input', () => { setDirty(true); update(); });
+src.addEventListener('scroll', syncScroll);
+['keyup','click','select'].forEach(ev => src.addEventListener(ev, syncFromCaret));
+src.addEventListener('keydown', e => {
+  if (e.key === 'Tab' && !e.shiftKey){ e.preventDefault(); insertText('  '); }
+  else if (e.key === 'Tab' && e.shiftKey){
+    e.preventDefault();
+    const v = src.value, ls = v.lastIndexOf('\n', src.selectionStart - 1) + 1;
+    const lead = v.slice(ls).match(/^ {1,2}/);
+    if (lead){ const pos = Math.max(ls, src.selectionStart - lead[0].length); src.setSelectionRange(ls, ls + lead[0].length); insertText(''); src.setSelectionRange(pos, pos); }
+  } else if (e.key === 'Enter' && !e.isComposing && !e.ctrlKey && !e.metaKey){
+    const v = src.value, ls = v.lastIndexOf('\n', src.selectionStart - 1) + 1;
+    const line = v.slice(ls, src.selectionStart);
+    let ind = line.match(/^\s*/)[0];
+    const t = line.trim();
+    if (file.format === 'yaml'){ if (/:\s*$/.test(t)) ind += '  '; else if (/^-\s+\w+\s*:/.test(t)) ind += '  '; }
+    else if (/^(sub|stage)\b/i.test(t)) ind += '  ';
+    e.preventDefault(); insertText('\n' + ind);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (!(e.ctrlKey || e.metaKey)) return;
+  const k = e.key.toLowerCase();
+  if (k === 's'){ e.preventDefault(); e.shiftKey ? saveAs() : save(); }
+  else if (k === 'o'){ e.preventDefault(); guarded('open', null, openFile); }
+});
+window.addEventListener('beforeunload', e => { if (file.dirty && file.handle){ e.preventDefault(); e.returnValue = ''; } });
+
+$('newBtn').addEventListener('click', e => {
+  const m = $('newMenu'); m.hidden = !m.hidden; e.currentTarget.setAttribute('aria-expanded', String(!m.hidden));
+  if (!m.hidden) m.querySelector('button').focus();
+});
+$('newMenu').addEventListener('click', e => {
+  const b = e.target.closest('[data-new]'); if (!b) return;
+  $('newMenu').hidden = true; $('newBtn').setAttribute('aria-expanded', 'false');
+  guarded('new', $('newBtn'), () => newFile(b.dataset.new));
+});
+document.addEventListener('click', e => { if (!e.target.closest('.actions')){ $('newMenu').hidden = true; $('newBtn').setAttribute('aria-expanded', 'false'); } });
+$('openBtn').addEventListener('click', e => guarded('open', e.currentTarget, openFile));
+$('saveBtn').addEventListener('click', save);
+$('saveAsBtn').addEventListener('click', saveAs);
+$('convertBtn').addEventListener('click', convert);
+$('exampleBtn').addEventListener('click', e => guarded('example', e.currentTarget, () => {
+  file.name = 'data-product' + extFor(file.format); file.handle = null; file.dirty = false;
+  renderFile(); setText(file.format === 'yaml' ? SAMPLE_YAML : SAMPLE_TEXT); saveDraft();
+}));
+$('helpBtn').addEventListener('click', e => { const h = $('help'); h.hidden = !h.hidden; e.currentTarget.setAttribute('aria-pressed', String(!h.hidden)); });
+canvas.addEventListener('click', e => { const t = e.target.closest('[data-line]'); if (t) goToLine(+t.dataset.line); });
+$('issues').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) goToLine(+b.dataset.go); });
+
+const editorEl = $('editor');
+editorEl.addEventListener('dragover', e => { if ([...e.dataTransfer.types].includes('Files')){ e.preventDefault(); editorEl.classList.add('drop'); } });
+editorEl.addEventListener('dragleave', e => { if (!editorEl.contains(e.relatedTarget)) editorEl.classList.remove('drop'); });
+editorEl.addEventListener('drop', async e => {
+  e.preventDefault(); editorEl.classList.remove('drop');
+  const item = e.dataTransfer.items && e.dataTransfer.items[0];
+  let handle = null;
+  if (item && item.getAsFileSystemHandle){ try { const h = await item.getAsFileSystemHandle(); if (h && h.kind === 'file') handle = h; } catch(err){} }
+  const f = handle ? await handle.getFile() : e.dataTransfer.files[0];
+  if (f) guarded('drop', null, async () => loadFile(await f.text(), f.name, handle));
+});
+
+function flash(btn, msg){ const o = btn.textContent; btn.textContent = msg; setTimeout(() => btn.textContent = o, 1400); }
+async function copy(text, btn){
+  try { await navigator.clipboard.writeText(text); flash(btn, 'Copied'); }
+  catch(err){ flash(btn, 'Copy blocked'); }
+}
+$('copyTextBtn').addEventListener('click', e => copy(src.value, e.currentTarget));
+$('copySvgBtn').addEventListener('click', e => {
+  if (!built) return;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${built.W}" height="${built.H}" viewBox="0 0 ${built.W} ${built.H}" font-family="${esc(FONT)}">${built.body.replace(/<g class="sels">[\s\S]*<\/g>$/, '')}</svg>`;
+  copy(svg, e.currentTarget);
+});
+const setZoom = z => { zoomMode = 'manual'; zoom = Math.min(2, Math.max(0.25, z)); applyZoom(); };
+$('zoomIn').addEventListener('click', () => setZoom(Math.round((zoom + 0.1) * 10) / 10));
+$('zoomOut').addEventListener('click', () => setZoom(Math.round((zoom - 0.1) * 10) / 10));
+$('fitBtn').addEventListener('click', () => { zoomMode = 'fit'; zoom = fitZoom(); applyZoom(); });
+canvas.addEventListener('wheel', e => { if (e.ctrlKey || e.metaKey){ e.preventDefault(); setZoom(zoom * (e.deltaY < 0 ? 1.08 : 0.93)); } }, {passive:false});
+new ResizeObserver(() => { if (zoomMode !== 'manual' && built) drawDiagram(); }).observe(canvas);
+
+const work = $('work'), divider = $('divider');
+const savedSplit = store.get(SPLIT); if (savedSplit) work.style.setProperty('--left', savedSplit);
+divider.addEventListener('pointerdown', e => {
+  divider.setPointerCapture(e.pointerId);
+  const move = ev => {
+    const r = work.getBoundingClientRect();
+    work.style.setProperty('--left', Math.min(75, Math.max(20, (ev.clientX - r.left) / r.width * 100)).toFixed(1) + '%');
+  };
+  const up = () => { divider.removeEventListener('pointermove', move); divider.removeEventListener('pointerup', up); store.set(SPLIT, work.style.getPropertyValue('--left')); };
+  divider.addEventListener('pointermove', move); divider.addEventListener('pointerup', up);
+});
+divider.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const cur = parseFloat(work.style.getPropertyValue('--left')) || 36;
+  const pct = Math.min(75, Math.max(20, cur + (e.key === 'ArrowLeft' ? -3 : 3)));
+  work.style.setProperty('--left', pct + '%'); store.set(SPLIT, pct + '%');
+});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => doc && drawDiagram());
+new MutationObserver(() => doc && drawDiagram()).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+/* ---------- Start ---------- */
+(function boot(){
+  let draft = null;
+  try { draft = JSON.parse(store.get(DRAFT) || 'null'); } catch(e){}
+  if (draft && typeof draft.text === 'string'){
+    file.name = draft.name || 'untitled.journey'; file.format = draft.format === 'yaml' ? 'yaml' : 'text'; file.dirty = !!draft.dirty;
+    src.value = draft.text;
+  } else src.value = SAMPLE_TEXT;
+  renderFile(); update(true);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => drawDiagram());
+})();
+</script>
+</body>
+</html>

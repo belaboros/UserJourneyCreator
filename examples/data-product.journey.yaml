@@ -1,0 +1,78 @@
+title: Create a data product
+persona: Data product team · one team, three resources, mostly in parallel
+start: Team decides to create a data product
+
+subJourneys:
+  - name: Data contract
+    tool: Contract editor
+    flow:
+      - step: Create candidate data contract
+        tag: EXP
+      - step: Register candidate data contract to the catalog
+        tag: EXP
+      - join: Product approval
+      - step: Promote data contract
+        tag: DEV
+      - step: Add data quality rules
+        tag: DEV
+      - step: Pass contract tests
+        tag: DEV
+      - join: Product review
+      - step: Promote data contract
+        tag: ACC
+      - step: Pass end-to-end integration tests
+        tag: ACC
+      - step: Pass end-to-end UAT tests
+        tag: ACC
+      - join: Final approval
+      - step: Promote data contract
+        tag: PRD
+
+  - name: Data pipeline
+    tool: Notebook, then PySpark
+    flow:
+      - step: Create data pipeline in a notebook
+        tag: EXP
+      - step: Deploy and run the pipeline on the compute cluster
+        tag: EXP
+      - step: Pass functional tests
+        tag: EXP
+        note: Generated table complies with the data contract
+      - join: Product approval
+      - step: Promote data pipeline
+        tag: DEV
+      - step: Reimplement the business logic from notebook to PySpark
+        tag: DEV
+      - step: Implement unit tests
+        tag: DEV
+      - join: Product review
+      - step: Promote data pipeline
+        tag: ACC
+      - step: Pass end-to-end integration tests
+        tag: ACC
+      - step: Pass end-to-end UAT tests
+        tag: ACC
+      - join: Final approval
+      - step: Promote data pipeline
+        tag: PRD
+
+  - name: Compute cluster
+    tool: Cluster console
+    flow:
+      - step: Create a compute cluster visually
+        tag: EXP
+      - join: Product approval
+      - step: Migrate the compute cluster
+        tag: DEV
+      - step: Optimize and reconfigure for cost and performance
+        tag: DEV
+      - join: Product review
+      - step: Migrate the compute cluster
+        tag: ACC
+      - step: Optimize and reconfigure for cost and performance
+        tag: ACC
+      - join: Final approval
+      - step: Migrate the compute cluster
+        tag: PRD
+
+end: Data product is live in PRD

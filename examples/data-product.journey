@@ -1,0 +1,49 @@
+@startjourney
+title Create a data product
+persona Data product team · one team, three resources, mostly in parallel
+
+start Team decides to create a data product
+
+sub Data contract : Contract editor
+  - Create candidate data contract : EXP
+  - Register candidate data contract to the catalog : EXP
+  join Product approval
+  - Promote data contract : DEV
+  - Add data quality rules : DEV
+  - Pass contract tests : DEV
+  join Product review
+  - Promote data contract : ACC
+  - Pass end-to-end integration tests : ACC
+  - Pass end-to-end UAT tests : ACC
+  join Final approval
+  - Promote data contract : PRD
+
+sub Data pipeline : Notebook, then PySpark
+  - Create data pipeline in a notebook : EXP
+  - Deploy and run the pipeline on the compute cluster : EXP
+  - Pass functional tests : EXP
+    note Generated table complies with the data contract
+  join Product approval
+  - Promote data pipeline : DEV
+  - Reimplement the business logic from notebook to PySpark : DEV
+  - Implement unit tests : DEV
+  join Product review
+  - Promote data pipeline : ACC
+  - Pass end-to-end integration tests : ACC
+  - Pass end-to-end UAT tests : ACC
+  join Final approval
+  - Promote data pipeline : PRD
+
+sub Compute cluster : Cluster console
+  - Create a compute cluster visually : EXP
+  join Product approval
+  - Migrate the compute cluster : DEV
+  - Optimize and reconfigure for cost and performance : DEV
+  join Product review
+  - Migrate the compute cluster : ACC
+  - Optimize and reconfigure for cost and performance : ACC
+  join Final approval
+  - Migrate the compute cluster : PRD
+
+end Data product is live in PRD
+@endjourney
